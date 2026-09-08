@@ -4,6 +4,10 @@
  * 
  * IMPORTANT: This file contains READ-ONLY addresses only.
  * NEVER commit private keys or sensitive wallet data.
+ * 
+ * Wallets can be loaded from:
+ * 1. Hardcoded defaults below
+ * 2. web/public/leaderboard/swarm-wallets.json (if present, merged with defaults)
  */
 
 export interface SwarmWallet {
@@ -12,7 +16,7 @@ export interface SwarmWallet {
   type: 'deployer' | 'bot' | 'tester'
 }
 
-export const SWARM_WALLETS: SwarmWallet[] = [
+const DEFAULT_SWARM_WALLETS: SwarmWallet[] = [
   {
     address: '0xC46c1f8B4FEF6D45C6f3BCB433e928c4db4FbaE0',
     label: 'Deployer',
@@ -25,17 +29,55 @@ export const SWARM_WALLETS: SwarmWallet[] = [
   },
 ]
 
-const swarmAddressSet = new Set(
-  SWARM_WALLETS.map((w) => w.address.toLowerCase())
+let loadedWallets: SwarmWallet[] = [...DEFAULT_SWARM_WALLETS]
+let walletMap = new Map<string, SwarmWallet>(
+  loadedWallets.map((w) => [w.address.toLowerCase(), w])
 )
+let loadAttempted = false
+
+async function loadSwarmWalletsFromJson(): Promise<void> {
+  if (loadAttempted) return
+  loadAttempted = true
+  
+  try {
+    const res = await fetch('/leaderboard/swarm-wallets.json', { cache: 'no-cache' })
+    if (!res.ok) return
+    
+    const data = await res.json()
+    if (!Array.isArray(data.wallets)) return
+    
+    for (const w of data.wallets) {
+      if (w.address && w.type) {
+        const wallet: SwarmWallet = {
+          address: w.address as `0x${string}`,
+          label: w.label || w.type,
+          type: w.type,
+        }
+        const key = wallet.address.toLowerCase()
+        if (!walletMap.has(key)) {
+          loadedWallets.push(wallet)
+          walletMap.set(key, wallet)
+        }
+      }
+    }
+  } catch {
+    // JSON file not present or invalid - use defaults only
+  }
+}
+
+// Start loading immediately (non-blocking)
+loadSwarmWalletsFromJson()
+
+export function getSwarmWallets(): SwarmWallet[] {
+  return loadedWallets
+}
 
 export function isSwarmWallet(address: string): boolean {
-  return swarmAddressSet.has(address.toLowerCase())
+  return walletMap.has(address.toLowerCase())
 }
 
 export function getSwarmWalletInfo(address: string): SwarmWallet | undefined {
-  const lower = address.toLowerCase()
-  return SWARM_WALLETS.find((w) => w.address.toLowerCase() === lower)
+  return walletMap.get(address.toLowerCase())
 }
 
 export function getSwarmBadge(address: string): string | null {
@@ -52,3 +94,6 @@ export function getSwarmBadge(address: string): string | null {
       return 'swarm'
   }
 }
+
+// Re-export for backwards compatibility
+export const SWARM_WALLETS = DEFAULT_SWARM_WALLETS

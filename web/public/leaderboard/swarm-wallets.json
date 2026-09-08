@@ -1,0 +1,15 @@
+{
+  "description": "Known swarm/bot/system wallets for leaderboard badging. Add addresses here to badge them in the UI.",
+  "wallets": [
+    {
+      "address": "0xC46c1f8B4FEF6D45C6f3BCB433e928c4db4FbaE0",
+      "label": "Deployer",
+      "type": "deployer"
+    },
+    {
+      "address": "0x189d68bbe7935bb36699642c76FDA96a7E872424",
+      "label": "Test User",
+      "type": "tester"
+    }
+  ]
+}
