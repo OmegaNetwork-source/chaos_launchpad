@@ -11,7 +11,8 @@ import { CreateToken } from './components/CreateToken'
 import { ChaosLogoSimple } from './components/ChaosLogo'
 import { DocsModal } from './components/DocsModal'
 import { Profile } from './components/Profile'
-import { ExternalLink } from 'lucide-react'
+import { Leaderboard } from './components/Leaderboard'
+import { ExternalLink, Trophy } from 'lucide-react'
 
 const queryClient = new QueryClient()
 
@@ -34,6 +35,7 @@ function AppContent() {
   const [showCreate, setShowCreate] = useState(false)
   const [showDocs, setShowDocs] = useState(false)
   const [showProfile, setShowProfile] = useState(false)
+  const [showLeaderboard, setShowLeaderboard] = useState(false)
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -83,6 +85,14 @@ function AppContent() {
           <div className="flex items-center gap-4 text-xs">
             <button
               type="button"
+              onClick={() => setShowLeaderboard(true)}
+              className="text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors flex items-center gap-1"
+            >
+              <Trophy className="w-3 h-3" />
+              Leaderboard
+            </button>
+            <button
+              type="button"
               onClick={() => setShowProfile(true)}
               className="text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
             >
@@ -125,6 +135,11 @@ function AppContent() {
           setView('detail')
           setShowProfile(false)
         }}
+      />
+
+      <Leaderboard
+        isOpen={showLeaderboard}
+        onClose={() => setShowLeaderboard(false)}
       />
 
       <Toaster
