@@ -367,3 +367,275 @@ input[type="number"] {
 .token-card-new {
   animation: token-new-flash 1.8s ease-out;
 }
+
+/* ===========================================
+   CHAOS MODE STYLES
+   =========================================== */
+
+/* Chaos mode CSS variables */
+body.chaos-mode {
+  --chaos-neon-cyan: #00ffff;
+  --chaos-neon-magenta: #ff00ff;
+  --chaos-neon-green: #39ff14;
+  --chaos-neon-pink: #ff1493;
+  --chaos-neon-yellow: #ffff00;
+  
+  --bg-primary: #050508;
+  --bg-secondary: #0a0a10;
+  --bg-card: #0f0f18;
+  --bg-elevated: #141420;
+  --bg-hover: #1a1a28;
+  
+  --border: #1a1a2e;
+  --border-hover: #2a2a4e;
+  
+  --accent: var(--chaos-neon-cyan);
+  --accent-dim: rgba(0, 255, 255, 0.15);
+}
+
+/* Chaos mode global visual effects */
+body.chaos-mode::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at 20% 20%, rgba(0, 255, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(255, 0, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(57, 255, 20, 0.02) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.chaos-mode #root {
+  position: relative;
+  z-index: 1;
+}
+
+/* Subtle scanline effect */
+body.chaos-mode::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Chaos logo blinking eye animation */
+@keyframes chaos-blink {
+  0%, 92%, 100% {
+    transform: scaleY(0);
+  }
+  95%, 97% {
+    transform: scaleY(1);
+  }
+}
+
+.chaos-logo-blink .chaos-eyelid {
+  transform-origin: center center;
+  animation: chaos-blink 4s ease-in-out infinite;
+}
+
+/* Speed up blink on hover/activity */
+.chaos-logo-blink:hover .chaos-eyelid,
+body.chaos-mode .chaos-logo-blink .chaos-eyelid {
+  animation-duration: 2.5s;
+}
+
+/* Chaos logo glow effect */
+.chaos-logo-glow {
+  filter: drop-shadow(0 0 4px rgba(0, 255, 255, 0.6));
+}
+
+/* Chaos mode buttons */
+.btn-chaos {
+  background: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%);
+  color: #000;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-chaos::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: btn-chaos-shimmer 2s ease-in-out infinite;
+}
+
+@keyframes btn-chaos-shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.btn-chaos:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 0 40px rgba(255, 0, 255, 0.3);
+}
+
+/* Yeet button - extra chaotic */
+.btn-yeet {
+  background: linear-gradient(135deg, #ff1493 0%, #ffff00 50%, #39ff14 100%);
+  color: #000;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border: none;
+  position: relative;
+  animation: yeet-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes yeet-pulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 20, 147, 0.8), 0 0 30px rgba(255, 255, 0, 0.4);
+  }
+}
+
+.btn-yeet:hover {
+  animation: none;
+  box-shadow: 0 0 25px rgba(255, 20, 147, 0.9), 0 0 50px rgba(57, 255, 20, 0.5);
+  transform: scale(1.05);
+}
+
+/* Normal mode toggle button (shown in chaos mode) */
+.btn-normal {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.btn-normal:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--text-primary);
+}
+
+/* Chaos mode card enhancements */
+body.chaos-mode .card-hover:hover {
+  border-color: var(--chaos-neon-cyan);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2), inset 0 0 15px rgba(0, 255, 255, 0.05);
+}
+
+/* Enhanced token flash for chaos mode */
+body.chaos-mode .token-card-new {
+  animation: token-chaos-flash 1.8s ease-out;
+}
+
+@keyframes token-chaos-flash {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.8), 0 0 30px rgba(255, 0, 255, 0.5);
+    border-color: var(--chaos-neon-cyan);
+    background-color: rgba(0, 255, 255, 0.1);
+  }
+  25% {
+    box-shadow: 0 0 0 6px rgba(255, 0, 255, 0.4), 0 0 40px rgba(0, 255, 255, 0.6);
+    border-color: var(--chaos-neon-magenta);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(57, 255, 20, 0.3), 0 0 25px rgba(255, 0, 255, 0.4);
+    border-color: var(--chaos-neon-green);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 255, 0);
+    border-color: var(--border);
+    background-color: var(--bg-card);
+  }
+}
+
+/* Chaos mode header glow */
+body.chaos-mode header {
+  border-bottom-color: rgba(0, 255, 255, 0.3);
+  box-shadow: 0 1px 20px rgba(0, 255, 255, 0.1);
+}
+
+/* Chaos mode primary button override */
+body.chaos-mode .btn-primary {
+  background: var(--chaos-neon-cyan);
+  color: #000;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+body.chaos-mode .btn-primary:hover {
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+/* Chaos mode progress bar */
+body.chaos-mode .progress-bar-fill {
+  background: linear-gradient(90deg, var(--chaos-neon-cyan), var(--chaos-neon-magenta));
+}
+
+body.chaos-mode .progress-bar-fill.near-grad {
+  background: linear-gradient(90deg, var(--chaos-neon-green), var(--chaos-neon-yellow));
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+}
+
+/* Chaos badge */
+.badge-chaos {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2));
+  color: var(--chaos-neon-cyan);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+}
+
+/* Glitch text effect for chaos mode headings */
+body.chaos-mode h1 {
+  text-shadow: 
+    0 0 5px rgba(0, 255, 255, 0.5),
+    0 0 10px rgba(0, 255, 255, 0.3),
+    0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+/* Chaos wordmark in chaos mode */
+body.chaos-mode .chaos-wordmark {
+  background: linear-gradient(90deg, var(--chaos-neon-cyan), var(--chaos-neon-magenta));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 3px rgba(0, 255, 255, 0.5));
+}
+
+/* Yeet modal */
+.yeet-modal {
+  background: linear-gradient(180deg, rgba(15, 15, 25, 0.98), rgba(10, 10, 18, 0.98));
+  border: 2px solid;
+  border-image: linear-gradient(135deg, var(--chaos-neon-cyan), var(--chaos-neon-magenta)) 1;
+  box-shadow: 
+    0 0 30px rgba(0, 255, 255, 0.3),
+    0 0 60px rgba(255, 0, 255, 0.2),
+    inset 0 0 30px rgba(0, 255, 255, 0.05);
+}
+
+/* Chaos mode scrollbar */
+body.chaos-mode ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--chaos-neon-cyan), var(--chaos-neon-magenta));
+}
+
+body.chaos-mode ::-webkit-scrollbar-thumb:hover {
+  background: var(--chaos-neon-cyan);
+}

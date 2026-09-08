@@ -12,6 +12,7 @@ import { ChaosLogoSimple } from './components/ChaosLogo'
 import { DocsModal } from './components/DocsModal'
 import { Profile } from './components/Profile'
 import { Leaderboard } from './components/Leaderboard'
+import { ChaosProvider, useChaos } from './context/ChaosContext'
 import { ExternalLink } from 'lucide-react'
 
 const queryClient = new QueryClient()
@@ -36,6 +37,7 @@ function AppContent() {
   const [showDocs, setShowDocs] = useState(false)
   const [showProfile, setShowProfile] = useState(false)
   const [showLeaderboard, setShowLeaderboard] = useState(false)
+  const { isChaosMode } = useChaos()
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -80,7 +82,7 @@ function AppContent() {
       <footer className="border-t border-[var(--border)] mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <ChaosLogoSimple size={16} className="text-[var(--text-tertiary)]" />
+            <ChaosLogoSimple size={16} className="text-[var(--text-tertiary)]" blink={isChaosMode} chaosMode={isChaosMode} />
             <span className="chaos-wordmark text-xs text-[var(--text-muted)]">Chaos</span>
           </div>
           <div className="flex items-center gap-4 text-xs">
@@ -175,7 +177,9 @@ export default function App() {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <AppContent />
+        <ChaosProvider>
+          <AppContent />
+        </ChaosProvider>
       </QueryClientProvider>
     </WagmiProvider>
   )

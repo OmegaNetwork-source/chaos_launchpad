@@ -3,6 +3,7 @@ import { useAccount, useConnect, useDisconnect, useBalance, useSwitchChain } fro
 import { Wallet, LogOut, X, ChevronDown, ExternalLink, Download, User, BarChart3 } from 'lucide-react'
 import { formatUnits } from 'viem'
 import { ChaosLogo } from './ChaosLogo'
+import { useChaos } from '../context/ChaosContext'
 
 const WALLET_ICONS: Record<string, string> = {
   metamask: 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2035%2033%22%3E%3Cpath%20fill%3D%22%23E17726%22%20d%3D%22M32.96%201l-13.14%209.72%202.45-5.73L32.96%201z%22/%3E%3Cpath%20fill%3D%22%23E27625%22%20d%3D%22M2.66%201l13.02%209.8-2.33-5.81L2.66%201zm25.57%2022.53l-3.5%205.34%207.49%202.06%202.14-7.28-6.13-.12zm-26.96.12l2.13%207.28%207.47-2.06-3.48-5.34-6.12.12z%22/%3E%3Cpath%20fill%3D%22%23E27625%22%20d%3D%22M10.47%2014.51l-2.08%203.14%207.4.34-.26-7.97-5.06%204.49zm14.68%200l-5.16-4.58-.17%208.06%207.4-.34-2.07-3.14z%22/%3E%3C/svg%3E',
@@ -61,6 +62,7 @@ export function Header({ onProfileClick, onLeaderboardClick }: HeaderProps) {
   const { disconnect } = useDisconnect()
   const { switchChain } = useSwitchChain()
   const { data: balance } = useBalance({ address })
+  const { isChaosMode } = useChaos()
   
   const [showConnectorModal, setShowConnectorModal] = useState(false)
   const [showNetworkMenu, setShowNetworkMenu] = useState(false)
@@ -164,7 +166,7 @@ export function Header({ onProfileClick, onLeaderboardClick }: HeaderProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           {/* Logo */}
           <a href="/" className="flex items-center gap-2">
-            <ChaosLogo size={28} />
+            <ChaosLogo size={28} blink={isChaosMode} chaosMode={isChaosMode} />
             <span className="chaos-wordmark text-[17px] text-[var(--text-primary)]">Chaos</span>
           </a>
 

@@ -7,7 +7,9 @@ import { FACTORY_ABI } from '../config/contracts'
 import { TokenCard } from './TokenCard'
 import { seedTokens, isSeedEnabled } from '../seed/seedTokens'
 import { useTokenCache } from '../hooks/useTokenCache'
-import { Clock, TrendingUp, Rocket, Loader2, ExternalLink, ChevronLeft, ChevronRight, RefreshCw } from 'lucide-react'
+import { useChaos } from '../context/ChaosContext'
+import { YeetModal } from './YeetModal'
+import { Clock, TrendingUp, Rocket, Loader2, ExternalLink, ChevronLeft, ChevronRight, RefreshCw, Zap, Sparkles } from 'lucide-react'
 
 interface TokenState {
   virtualQuote: bigint
@@ -57,10 +59,12 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
   const [activeTab, setActiveTab] = useState<SortTab>('new')
   const [page, setPage] = useState(0)
   const [flashing, setFlashing] = useState<Set<string>>(new Set())
+  const [showYeet, setShowYeet] = useState(false)
   const seenAddressesRef = useRef<Set<string> | null>(null)
   const flashTimersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map())
   const seedEnabled = isSeedEnabled()
   const { chainId } = useAccount()
+  const { isChaosMode, enableChaosMode, disableChaosMode } = useChaos()
 
   const factoryAddress = getFactoryAddress(chainId || 5042002)
   const nativeSymbol = getNativeSymbol(chainId || 5042002)
@@ -348,17 +352,47 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
       {/* Hero - minimal */}
       <div className="text-center py-8 sm:py-12">
         <h1 className="text-2xl sm:text-3xl font-semibold text-[var(--text-primary)] mb-2">
-          The quickest way to launch memes
+          {isChaosMode ? '⚡ CHAOS UNLEASHED ⚡' : 'The quickest way to launch memes'}
         </h1>
         <p className="text-sm text-[var(--text-secondary)] mb-6">
-          Create a memecoin in seconds. Trade on a bonding curve. Graduate to DEX.
+          {isChaosMode 
+            ? 'Embrace the chaos. YEET into random memecoins. No regrets.'
+            : 'Create a memecoin in seconds. Trade on a bonding curve. Graduate to DEX.'
+          }
         </p>
-        <button
-          onClick={onCreateToken}
-          className="px-5 py-2.5 btn-primary rounded-lg text-sm font-medium"
-        >
-          Create token
-        </button>
+        <div className="flex items-center justify-center gap-3 flex-wrap">
+          <button
+            onClick={onCreateToken}
+            className="px-5 py-2.5 btn-primary rounded-lg text-sm font-medium"
+          >
+            Create token
+          </button>
+          {isChaosMode ? (
+            <>
+              <button
+                onClick={() => setShowYeet(true)}
+                className="px-5 py-2.5 btn-yeet rounded-lg text-sm font-bold flex items-center gap-2"
+              >
+                <Zap className="w-4 h-4" />
+                YEET
+              </button>
+              <button
+                onClick={disableChaosMode}
+                className="px-4 py-2.5 btn-normal rounded-lg text-sm font-medium"
+              >
+                ← Normal
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={enableChaosMode}
+              className="px-5 py-2.5 btn-chaos rounded-lg text-sm font-medium flex items-center gap-2"
+            >
+              <Sparkles className="w-4 h-4" />
+              Chaos
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Tabs with refresh indicator */}
@@ -472,6 +506,14 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
           </a>
         </div>
       )}
+
+      {/* Yeet Modal */}
+      <YeetModal
+        isOpen={showYeet}
+        onClose={() => setShowYeet(false)}
+        tokens={allTokens}
+        onSelectToken={onSelectToken}
+      />
     </div>
   )
 }
