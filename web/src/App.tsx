@@ -43,6 +43,7 @@ function AppContent() {
       <Header
         onCreateClick={() => setShowCreate(true)}
         onProfileClick={() => setShowProfile(true)}
+        onLeaderboardClick={() => setShowLeaderboard(true)}
       />
       
       <main className="flex-1 w-full px-4 py-6">

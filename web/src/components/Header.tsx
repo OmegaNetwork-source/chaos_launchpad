@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAccount, useConnect, useDisconnect, useBalance, useSwitchChain } from 'wagmi'
-import { Wallet, LogOut, X, ChevronDown, ExternalLink, Download, User } from 'lucide-react'
+import { Wallet, LogOut, X, ChevronDown, ExternalLink, Download, User, BarChart3 } from 'lucide-react'
 import { formatUnits } from 'viem'
 import { ChaosLogo } from './ChaosLogo'
 
@@ -42,6 +42,7 @@ import { supportedChains, getChainConfig, getNativeSymbol } from '../config/chai
 interface HeaderProps {
   onCreateClick: () => void
   onProfileClick?: () => void
+  onLeaderboardClick?: () => void
 }
 
 const isMobile = () => {
@@ -54,7 +55,7 @@ const hasInjectedProvider = () => {
   return !!(window as unknown as { ethereum?: unknown }).ethereum
 }
 
-export function Header({ onProfileClick }: HeaderProps) {
+export function Header({ onProfileClick, onLeaderboardClick }: HeaderProps) {
   const { address, isConnected, chainId } = useAccount()
   const { connect, connectors, isPending, error: connectError } = useConnect()
   const { disconnect } = useDisconnect()
@@ -248,6 +249,18 @@ export function Header({ onProfileClick }: HeaderProps) {
               >
                 <Wallet className="w-3.5 h-3.5" />
                 {isPending ? 'Connecting...' : 'Connect'}
+              </button>
+            )}
+
+            {/* Leaderboard button */}
+            {onLeaderboardClick && (
+              <button
+                onClick={onLeaderboardClick}
+                className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border bg-[var(--bg-secondary)] border-[var(--border)] hover:border-[var(--border-hover)] transition-colors"
+                title="Leaderboard"
+              >
+                <BarChart3 className="w-3.5 h-3.5 text-[var(--text-tertiary)]" />
+                <span className="hidden sm:inline text-xs font-medium text-[var(--text-secondary)]">Leaderboard</span>
               </button>
             )}
 
