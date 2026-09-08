@@ -10,7 +10,7 @@ import { useTokenCache } from '../hooks/useTokenCache'
 import { useChaos } from '../context/ChaosContext'
 import { YeetModal } from './YeetModal'
 import { ChaosMemePopup, ChaosFlashOverlay } from './ChaosMemePopup'
-import { Clock, TrendingUp, Rocket, Loader2, ExternalLink, ChevronLeft, ChevronRight, RefreshCw, Zap, Sparkles } from 'lucide-react'
+import { Clock, TrendingUp, Rocket, Loader2, ExternalLink, ChevronLeft, ChevronRight, RefreshCw, Zap } from 'lucide-react'
 
 const CHAOS_CYCLE_INTERVAL_MIN = 4000
 const CHAOS_CYCLE_INTERVAL_MAX = 6000
@@ -69,7 +69,7 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
   const gridRef = useRef<HTMLDivElement>(null)
   const seedEnabled = isSeedEnabled()
   const { chainId } = useAccount()
-  const { isChaosMode, enableChaosMode, disableChaosMode } = useChaos()
+  const { isChaosMode } = useChaos()
   
   // Chaos mode board cycling state
   const [chaosSeed, setChaosSeed] = useState(0)
@@ -431,29 +431,13 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
           >
             Create token
           </button>
-          {isChaosMode ? (
-            <>
-              <button
-                onClick={() => setShowYeet(true)}
-                className="px-5 py-2.5 btn-yeet rounded-lg text-sm font-bold flex items-center gap-2"
-              >
-                <Zap className="w-4 h-4" />
-                YEET
-              </button>
-              <button
-                onClick={disableChaosMode}
-                className="px-4 py-2.5 btn-normal rounded-lg text-sm font-medium"
-              >
-                ← Normal
-              </button>
-            </>
-          ) : (
+          {isChaosMode && (
             <button
-              onClick={enableChaosMode}
-              className="px-5 py-2.5 btn-chaos rounded-lg text-sm font-medium flex items-center gap-2"
+              onClick={() => setShowYeet(true)}
+              className="px-5 py-2.5 btn-yeet rounded-lg text-sm font-bold flex items-center gap-2"
             >
-              <Sparkles className="w-4 h-4" />
-              Chaos
+              <Zap className="w-4 h-4" />
+              YEET
             </button>
           )}
         </div>

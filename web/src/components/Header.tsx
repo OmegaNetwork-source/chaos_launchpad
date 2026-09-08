@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAccount, useConnect, useDisconnect, useBalance, useSwitchChain } from 'wagmi'
-import { Wallet, LogOut, X, ChevronDown, ExternalLink, Download, User, BarChart3 } from 'lucide-react'
+import { Wallet, LogOut, X, ChevronDown, ExternalLink, Download, User, BarChart3, Zap } from 'lucide-react'
 import { formatUnits } from 'viem'
 import { ChaosLogo } from './ChaosLogo'
 import { useChaos } from '../context/ChaosContext'
@@ -62,7 +62,7 @@ export function Header({ onProfileClick, onLeaderboardClick }: HeaderProps) {
   const { disconnect } = useDisconnect()
   const { switchChain } = useSwitchChain()
   const { data: balance } = useBalance({ address })
-  const { isChaosMode } = useChaos()
+  const { isChaosMode, toggleChaosMode } = useChaos()
   
   const [showConnectorModal, setShowConnectorModal] = useState(false)
   const [showNetworkMenu, setShowNetworkMenu] = useState(false)
@@ -265,6 +265,33 @@ export function Header({ onProfileClick, onLeaderboardClick }: HeaderProps) {
                 <span className="hidden sm:inline text-xs font-medium text-[var(--text-secondary)]">Leaderboard</span>
               </button>
             )}
+
+            {/* Chaos Mode toggle */}
+            <button
+              onClick={toggleChaosMode}
+              className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border transition-colors ${
+                isChaosMode
+                  ? 'bg-[#ff00ff]/15 border-[#ff00ff]/40 text-[#ff00ff]'
+                  : 'bg-[var(--bg-secondary)] border-[var(--border)] hover:border-[var(--border-hover)] text-[var(--text-tertiary)]'
+              }`}
+              title={isChaosMode ? 'Disable Chaos Mode' : 'Enable Chaos Mode'}
+            >
+              <Zap className={`w-3.5 h-3.5 ${isChaosMode ? 'animate-pulse' : ''}`} />
+              <span className="hidden sm:inline text-xs font-medium">
+                Chaos
+              </span>
+              <div
+                className={`w-6 h-3.5 rounded-full relative transition-colors ${
+                  isChaosMode ? 'bg-[#ff00ff]' : 'bg-[var(--border)]'
+                }`}
+              >
+                <div
+                  className={`absolute top-0.5 w-2.5 h-2.5 rounded-full bg-white transition-transform ${
+                    isChaosMode ? 'translate-x-3' : 'translate-x-0.5'
+                  }`}
+                />
+              </div>
+            </button>
 
           </div>
         </div>
