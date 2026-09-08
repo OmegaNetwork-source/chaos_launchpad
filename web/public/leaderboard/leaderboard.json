@@ -1,12 +1,5 @@
 {
-  "generatedAt": "2026-09-08T20:36:03.794Z",
-  "factoryAddress": "0xEFAc4bcB8b10947B5E30B5F3F9b4f5b6306a445A",
-  "blockRange": {
-    "from": "61027471",
-    "to": "61127471"
-  },
-  "totalWallets": 16,
-  "refreshIntervalHours": 24,
+  "generatedAt": "2026-09-08T20:38:51.380Z",
   "entries": [
     {
       "wallet": "0xeed940f93fdc72e0bbfa1fd447ae3396ba92c53b",
@@ -105,20 +98,6 @@
       "feesClaimed": "0",
       "chaosVolume": "891200000000000000",
       "tradeCount": 1
-    },
-    {
-      "wallet": "0x189d68bbe7935bb36699642c76fda96a7e872424",
-      "tokensLaunched": 2,
-      "feesClaimed": "0",
-      "chaosVolume": "0",
-      "tradeCount": 0
-    },
-    {
-      "wallet": "0xc46c1f8b4fef6d45c6f3bcb433e928c4db4fbae0",
-      "tokensLaunched": 63,
-      "feesClaimed": "0",
-      "chaosVolume": "0",
-      "tradeCount": 0
     }
   ]
 }

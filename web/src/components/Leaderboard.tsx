@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { formatUnits } from 'viem'
 import { X, Loader2, ExternalLink, ArrowUpDown, RefreshCw, Bot, Zap, User } from 'lucide-react'
-import { useLeaderboard, type SortField } from '../hooks/useLeaderboard'
+import { useLeaderboard } from '../hooks/useLeaderboard'
+import type { SortField } from '../hooks/useLeaderboard'
 import { getSwarmBadge } from '../config/swarmWallets'
 import { getExplorerUrl, getNativeSymbol } from '../config/chains'
 
@@ -20,6 +21,31 @@ function formatVolume(vol: bigint): string {
   if (num >= 1_000_000) return `${(num / 1_000_000).toFixed(2)}M`
   if (num >= 1_000) return `${(num / 1_000).toFixed(2)}K`
   return num.toFixed(2)
+}
+
+function formatRelativeDate(isoDate: string | null): string {
+  if (!isoDate) return ''
+  try {
+    const date = new Date(isoDate)
+    const now = new Date()
+    const diffMs = now.getTime() - date.getTime()
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+    
+    if (diffDays === 0) {
+      const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
+      if (diffHours === 0) {
+        const diffMins = Math.floor(diffMs / (1000 * 60))
+        return diffMins <= 1 ? 'just now' : `${diffMins}m ago`
+      }
+      return `${diffHours}h ago`
+    }
+    if (diffDays === 1) return 'yesterday'
+    if (diffDays < 7) return `${diffDays}d ago`
+    
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  } catch {
+    return ''
+  }
 }
 
 function SwarmBadge({ type }: { type: string }) {
@@ -85,7 +111,7 @@ function SortButton({
 }
 
 export function Leaderboard({ isOpen, onClose, chainId = 5042002 }: LeaderboardProps) {
-  const { entries, isLoading, error, refetch, hasData, dataSource } = useLeaderboard(chainId)
+  const { entries, isLoading, error, refetch, hasData, generatedAt } = useLeaderboard(chainId)
   const [sortBy, setSortBy] = useState<SortField>('chaosVolume')
 
   const explorerUrl = getExplorerUrl(chainId)
@@ -121,6 +147,8 @@ export function Leaderboard({ isOpen, onClose, chainId = 5042002 }: LeaderboardP
 
   if (!isOpen) return null
 
+  const relativeDate = formatRelativeDate(generatedAt)
+
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center modal-backdrop"
@@ -134,18 +162,13 @@ export function Leaderboard({ isOpen, onClose, chainId = 5042002 }: LeaderboardP
         <div className="flex items-center justify-between p-4 border-b border-[var(--border)]">
           <div className="flex items-center gap-2 min-w-0">
             <h2 className="text-lg font-semibold text-[var(--text-primary)]">Leaderboard</h2>
-            {dataSource !== 'none' && (
-              <span className="text-[10px] text-[var(--text-muted)] bg-[var(--bg-secondary)] px-1.5 py-0.5 rounded">
-                {dataSource === 'static' ? 'snapshot' : 'live'}
-              </span>
-            )}
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={refetch}
               disabled={isLoading}
               className="p-1.5 rounded-lg hover:bg-[var(--bg-hover)] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors disabled:opacity-50"
-              title="Refresh"
+              title="Refresh snapshot"
             >
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             </button>
@@ -179,12 +202,11 @@ export function Leaderboard({ isOpen, onClose, chainId = 5042002 }: LeaderboardP
           {isLoading && !hasData ? (
             <div className="flex flex-col items-center justify-center py-16 gap-3">
               <Loader2 className="w-6 h-6 text-[var(--text-tertiary)] animate-spin" />
-              <p className="text-sm text-[var(--text-secondary)]">Loading leaderboard...</p>
-              <p className="text-xs text-[var(--text-muted)]">Indexing on-chain events (may take a moment)</p>
+              <p className="text-sm text-[var(--text-secondary)]">Loading leaderboard…</p>
             </div>
           ) : error && !hasData ? (
             <div className="flex flex-col items-center justify-center py-16 gap-3">
-              <p className="text-sm text-[var(--red)]">{error}</p>
+              <p className="text-sm text-[var(--text-secondary)]">{error}</p>
               <button
                 onClick={refetch}
                 className="px-4 py-2 text-sm btn-primary rounded-lg"
@@ -292,12 +314,10 @@ export function Leaderboard({ isOpen, onClose, chainId = 5042002 }: LeaderboardP
         </div>
 
         {/* Footer */}
-        <div className="px-4 py-3 border-t border-[var(--border)] text-xs text-[var(--text-muted)] flex items-center justify-between">
+        <div className="px-4 py-3 border-t border-[var(--border)] text-xs text-[var(--text-muted)] flex items-center justify-center">
           <span>
-            {sortedEntries.length} wallet{sortedEntries.length !== 1 ? 's' : ''}
-          </span>
-          <span>
-            Chaos Volume = sum of quote tokens traded (buys + sells)
+            Snapshot · refreshes every 24 hours
+            {relativeDate && <span className="ml-1">· Updated {relativeDate}</span>}
           </span>
         </div>
       </div>
