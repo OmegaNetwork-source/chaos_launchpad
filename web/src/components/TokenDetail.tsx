@@ -37,6 +37,7 @@ import toast from 'react-hot-toast'
 import { formatPrice } from '../utils/format'
 import { PriceChart } from './PriceChart'
 import { useTokenAnalytics } from '../hooks/useTokenAnalytics'
+import { resolveTokenImage } from '../utils/tokenImage'
 
 interface TokenState {
   virtualQuote: bigint
@@ -471,6 +472,9 @@ export function TokenDetail({ tokenInfo, onBack }: TokenDetailProps) {
   let metadata: TokenMetadata = {}
   try {
     metadata = JSON.parse(tokenInfo.metadataURI || '{}')
+    if (metadata && typeof metadata === 'object' && 'image' in metadata) {
+      metadata = { ...metadata, image: resolveTokenImage((metadata as { image?: string }).image) }
+    }
   } catch {}
 
   const socials = metadata.socials || {}

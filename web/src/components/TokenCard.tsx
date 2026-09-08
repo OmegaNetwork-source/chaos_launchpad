@@ -3,6 +3,7 @@ import { useReadContract } from 'wagmi'
 import { BONDING_CURVE_ABI } from '../config/contracts'
 import { useMemo } from 'react'
 import { formatCompactPrice } from '../utils/format'
+import { resolveTokenImage } from '../utils/tokenImage'
 
 interface TokenState {
   virtualQuote: bigint
@@ -88,7 +89,7 @@ export function TokenCard({ tokenInfo, onClick, nativeSymbol = 'USDC', isNew = f
   let imageUrl = ''
   try {
     const meta = JSON.parse(tokenInfo.metadataURI || '{}')
-    imageUrl = meta.image || ''
+    imageUrl = resolveTokenImage(meta.image || '')
   } catch {}
 
   return (
