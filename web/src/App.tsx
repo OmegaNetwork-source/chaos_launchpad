@@ -12,7 +12,7 @@ import { ChaosLogoSimple } from './components/ChaosLogo'
 import { DocsModal } from './components/DocsModal'
 import { Profile } from './components/Profile'
 import { Leaderboard } from './components/Leaderboard'
-import { ExternalLink, Trophy } from 'lucide-react'
+import { ExternalLink } from 'lucide-react'
 
 const queryClient = new QueryClient()
 
@@ -86,9 +86,8 @@ function AppContent() {
             <button
               type="button"
               onClick={() => setShowLeaderboard(true)}
-              className="text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors flex items-center gap-1"
+              className="text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
             >
-              <Trophy className="w-3 h-3" />
               Leaderboard
             </button>
             <button

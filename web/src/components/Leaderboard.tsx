@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { formatUnits } from 'viem'
-import { X, Trophy, Loader2, ExternalLink, ArrowUpDown, RefreshCw, Bot, Zap, User } from 'lucide-react'
-import { useLeaderboard, type LeaderboardEntry, type SortField } from '../hooks/useLeaderboard'
-import { isSwarmWallet, getSwarmBadge } from '../config/swarmWallets'
+import { X, Loader2, ExternalLink, ArrowUpDown, RefreshCw, Bot, Zap, User } from 'lucide-react'
+import { useLeaderboard, type SortField } from '../hooks/useLeaderboard'
+import { getSwarmBadge } from '../config/swarmWallets'
 import { getExplorerUrl, getNativeSymbol } from '../config/chains'
 
 interface LeaderboardProps {
@@ -87,7 +87,6 @@ function SortButton({
 export function Leaderboard({ isOpen, onClose, chainId = 5042002 }: LeaderboardProps) {
   const { entries, isLoading, error, refetch, hasData, dataSource } = useLeaderboard(chainId)
   const [sortBy, setSortBy] = useState<SortField>('chaosVolume')
-  const [showSwarm, setShowSwarm] = useState(true)
 
   const explorerUrl = getExplorerUrl(chainId)
   const nativeSymbol = getNativeSymbol(chainId)
@@ -107,9 +106,7 @@ export function Leaderboard({ isOpen, onClose, chainId = 5042002 }: LeaderboardP
   }, [isOpen, onClose])
 
   const sortedEntries = useMemo(() => {
-    let filtered = showSwarm ? entries : entries.filter((e) => !isSwarmWallet(e.wallet))
-
-    return [...filtered].sort((a, b) => {
+    return [...entries].sort((a, b) => {
       switch (sortBy) {
         case 'tokensLaunched':
           return b.tokensLaunched - a.tokensLaunched
@@ -120,7 +117,7 @@ export function Leaderboard({ isOpen, onClose, chainId = 5042002 }: LeaderboardP
           return a.chaosVolume > b.chaosVolume ? -1 : a.chaosVolume < b.chaosVolume ? 1 : 0
       }
     })
-  }, [entries, sortBy, showSwarm])
+  }, [entries, sortBy])
 
   if (!isOpen) return null
 
@@ -136,7 +133,6 @@ export function Leaderboard({ isOpen, onClose, chainId = 5042002 }: LeaderboardP
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-[var(--border)]">
           <div className="flex items-center gap-2 min-w-0">
-            <Trophy className="w-5 h-5 text-amber-500" />
             <h2 className="text-lg font-semibold text-[var(--text-primary)]">Leaderboard</h2>
             {dataSource !== 'none' && (
               <span className="text-[10px] text-[var(--text-muted)] bg-[var(--bg-secondary)] px-1.5 py-0.5 rounded">
@@ -163,30 +159,19 @@ export function Leaderboard({ isOpen, onClose, chainId = 5042002 }: LeaderboardP
         </div>
 
         {/* Sort tabs */}
-        <div className="px-4 py-3 border-b border-[var(--border)] flex items-center justify-between gap-4 flex-wrap">
-          <div className="flex items-center gap-4">
-            <span className="text-xs text-[var(--text-muted)]">Sort by:</span>
-            <div className="flex items-center gap-3 text-xs">
-              <SortButton field="chaosVolume" current={sortBy} onClick={setSortBy}>
-                Chaos Volume
-              </SortButton>
-              <SortButton field="tokensLaunched" current={sortBy} onClick={setSortBy}>
-                Launched
-              </SortButton>
-              <SortButton field="feesClaimed" current={sortBy} onClick={setSortBy}>
-                Fees Claimed
-              </SortButton>
-            </div>
+        <div className="px-4 py-3 border-b border-[var(--border)] flex items-center gap-4">
+          <span className="text-xs text-[var(--text-muted)]">Sort by:</span>
+          <div className="flex items-center gap-3 text-xs">
+            <SortButton field="chaosVolume" current={sortBy} onClick={setSortBy}>
+              Chaos Volume
+            </SortButton>
+            <SortButton field="tokensLaunched" current={sortBy} onClick={setSortBy}>
+              Launched
+            </SortButton>
+            <SortButton field="feesClaimed" current={sortBy} onClick={setSortBy}>
+              Fees Claimed
+            </SortButton>
           </div>
-          <label className="flex items-center gap-2 text-xs text-[var(--text-tertiary)] cursor-pointer">
-            <input
-              type="checkbox"
-              checked={showSwarm}
-              onChange={(e) => setShowSwarm(e.target.checked)}
-              className="rounded border-[var(--border)] bg-[var(--bg-secondary)]"
-            />
-            Show swarm wallets
-          </label>
         </div>
 
         {/* Content */}
@@ -209,7 +194,6 @@ export function Leaderboard({ isOpen, onClose, chainId = 5042002 }: LeaderboardP
             </div>
           ) : sortedEntries.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 gap-2">
-              <Trophy className="w-8 h-8 text-[var(--text-muted)]" />
               <p className="text-sm text-[var(--text-secondary)]">No activity yet</p>
               <p className="text-xs text-[var(--text-muted)]">Be the first to trade on Chaos!</p>
             </div>
@@ -311,9 +295,6 @@ export function Leaderboard({ isOpen, onClose, chainId = 5042002 }: LeaderboardP
         <div className="px-4 py-3 border-t border-[var(--border)] text-xs text-[var(--text-muted)] flex items-center justify-between">
           <span>
             {sortedEntries.length} wallet{sortedEntries.length !== 1 ? 's' : ''}
-            {!showSwarm && entries.length > sortedEntries.length && (
-              <span> ({entries.length - sortedEntries.length} swarm hidden)</span>
-            )}
           </span>
           <span>
             Chaos Volume = sum of quote tokens traded (buys + sells)
