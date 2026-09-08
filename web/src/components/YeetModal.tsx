@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt, useBalance } from 'wagmi'
 import { formatUnits, parseUnits } from 'viem'
 import { BONDING_CURVE_ABI } from '../config/contracts'
@@ -36,7 +36,9 @@ interface YeetModalProps {
   onSelectToken: (token: TokenInfo) => void
 }
 
-const YEET_AMOUNT = 1
+const PRESET_AMOUNTS = [1, 5, 10, 25]
+const DEFAULT_AMOUNT = 1
+const MIN_AMOUNT = 0.001
 
 export function YeetModal({ isOpen, onClose, tokens, onSelectToken }: YeetModalProps) {
   const { address, isConnected, chainId } = useAccount()
@@ -46,6 +48,8 @@ export function YeetModal({ isOpen, onClose, tokens, onSelectToken }: YeetModalP
 
   const [selectedToken, setSelectedToken] = useState<TokenInfo | null>(null)
   const [isSpinning, setIsSpinning] = useState(false)
+  const [yeetAmount, setYeetAmount] = useState<string>(DEFAULT_AMOUNT.toString())
+  const [amountError, setAmountError] = useState<string | null>(null)
 
   const eligibleTokens = useMemo(() => {
     return tokens.filter(t => {
@@ -89,17 +93,51 @@ export function YeetModal({ isOpen, onClose, tokens, onSelectToken }: YeetModalP
   useEffect(() => {
     if (!isOpen) {
       setSelectedToken(null)
+      setYeetAmount(DEFAULT_AMOUNT.toString())
+      setAmountError(null)
     }
   }, [isOpen])
 
-  const amountInWei = parseUnits(YEET_AMOUNT.toString(), 18)
+  const userBalance = balance ? Number(formatUnits(balance.value, 18)) : 0
+
+  const validateAmount = useCallback((value: string): string | null => {
+    if (!value || value.trim() === '') {
+      return 'Enter an amount'
+    }
+    const num = parseFloat(value)
+    if (isNaN(num)) {
+      return 'Invalid number'
+    }
+    if (num < MIN_AMOUNT) {
+      return `Minimum is ${MIN_AMOUNT} ${nativeSymbol}`
+    }
+    if (userBalance > 0 && num > userBalance) {
+      return `Exceeds balance (${userBalance.toFixed(4)} ${nativeSymbol})`
+    }
+    return null
+  }, [userBalance, nativeSymbol])
+
+  const handleAmountChange = (value: string) => {
+    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+      setYeetAmount(value)
+      setAmountError(validateAmount(value))
+    }
+  }
+
+  const handlePresetClick = (amount: number) => {
+    setYeetAmount(amount.toString())
+    setAmountError(validateAmount(amount.toString()))
+  }
+
+  const parsedAmount = parseFloat(yeetAmount) || 0
+  const amountInWei = parsedAmount > 0 ? parseUnits(parsedAmount.toFixed(18), 18) : 0n
 
   const { data: buyQuote } = useReadContract({
     address: selectedToken?.curve,
     abi: BONDING_CURVE_ABI,
     functionName: 'getBuyQuote',
     args: [amountInWei],
-    query: { enabled: !!selectedToken && !selectedToken.isSeed && !selectedToken.graduated },
+    query: { enabled: !!selectedToken && !selectedToken.isSeed && !selectedToken.graduated && parsedAmount > 0 },
   })
 
   const { writeContract, data: hash, isPending, reset } = useWriteContract()
@@ -119,6 +157,12 @@ export function YeetModal({ isOpen, onClose, tokens, onSelectToken }: YeetModalP
   const handleYeet = () => {
     if (!selectedToken || !isConnected) {
       toast.error('Connect wallet to yeet!')
+      return
+    }
+
+    const error = validateAmount(yeetAmount)
+    if (error) {
+      toast.error(error)
       return
     }
 
@@ -147,8 +191,8 @@ export function YeetModal({ isOpen, onClose, tokens, onSelectToken }: YeetModalP
     ? Number(formatUnits((buyQuote as readonly [bigint, bigint, bigint])[0], 18))
     : 0
 
-  const userBalance = balance ? Number(formatUnits(balance.value, 18)) : 0
-  const hasEnoughBalance = userBalance >= YEET_AMOUNT
+  const hasEnoughBalance = userBalance >= parsedAmount && parsedAmount > 0
+  const isAmountValid = !amountError && parsedAmount >= MIN_AMOUNT
 
   if (!isOpen) return null
 
@@ -241,10 +285,60 @@ export function YeetModal({ isOpen, onClose, tokens, onSelectToken }: YeetModalP
               {isSpinning ? '🎰 Spinning...' : '🎲 Pick another'}
             </button>
 
+            {/* Amount Input Section */}
+            <div className="bg-black/20 rounded-lg p-3 mb-3">
+              <label className="block text-xs text-[var(--text-tertiary)] mb-2">
+                Amount to YEET ({nativeSymbol})
+              </label>
+              <div className="flex items-center gap-2 mb-2">
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  value={yeetAmount}
+                  onChange={(e) => handleAmountChange(e.target.value)}
+                  placeholder="Enter amount"
+                  disabled={isPending || isConfirming}
+                  className="flex-1 px-3 py-2 bg-black/30 border border-[rgba(0,255,255,0.2)] rounded-lg text-[var(--text-primary)] text-sm font-medium focus:outline-none focus:border-[var(--chaos-neon-cyan)] transition-colors disabled:opacity-50"
+                />
+                {userBalance > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => handlePresetClick(Math.floor(userBalance * 100) / 100)}
+                    disabled={isPending || isConfirming}
+                    className="px-2 py-2 text-xs font-medium text-[var(--chaos-neon-cyan)] hover:bg-[rgba(0,255,255,0.1)] rounded transition-colors disabled:opacity-50"
+                  >
+                    MAX
+                  </button>
+                )}
+              </div>
+              <div className="flex gap-1.5">
+                {PRESET_AMOUNTS.map((amount) => (
+                  <button
+                    key={amount}
+                    type="button"
+                    onClick={() => handlePresetClick(amount)}
+                    disabled={isPending || isConfirming}
+                    className={`flex-1 py-1.5 text-xs font-medium rounded transition-colors disabled:opacity-50 ${
+                      parsedAmount === amount
+                        ? 'bg-[var(--chaos-neon-cyan)] text-black'
+                        : 'bg-black/30 text-[var(--text-secondary)] hover:bg-black/50 border border-[rgba(255,255,255,0.1)]'
+                    }`}
+                  >
+                    {amount}
+                  </button>
+                ))}
+              </div>
+              {amountError && (
+                <p className="mt-2 text-xs text-[var(--red)]">{amountError}</p>
+              )}
+            </div>
+
             <div className="bg-black/20 rounded-lg p-3 mb-4 text-sm space-y-2">
               <div className="flex justify-between">
                 <span className="text-[var(--text-tertiary)]">You pay</span>
-                <span className="font-medium text-[var(--text-primary)]">{YEET_AMOUNT} {nativeSymbol}</span>
+                <span className="font-medium text-[var(--text-primary)]">
+                  {parsedAmount > 0 ? parsedAmount : '—'} {nativeSymbol}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-[var(--text-tertiary)]">You get ~</span>
@@ -257,7 +351,7 @@ export function YeetModal({ isOpen, onClose, tokens, onSelectToken }: YeetModalP
               </div>
               <div className="flex justify-between text-xs">
                 <span className="text-[var(--text-muted)]">Your balance</span>
-                <span className={`${hasEnoughBalance ? 'text-[var(--text-tertiary)]' : 'text-[var(--red)]'}`}>
+                <span className={`${hasEnoughBalance || parsedAmount === 0 ? 'text-[var(--text-tertiary)]' : 'text-[var(--red)]'}`}>
                   {userBalance.toFixed(4)} {nativeSymbol}
                 </span>
               </div>
@@ -267,14 +361,18 @@ export function YeetModal({ isOpen, onClose, tokens, onSelectToken }: YeetModalP
               <p className="text-center text-sm text-[var(--text-tertiary)]">
                 Connect wallet to YEET
               </p>
+            ) : !isAmountValid ? (
+              <p className="text-center text-sm text-[var(--text-tertiary)]">
+                Enter a valid amount to YEET
+              </p>
             ) : !hasEnoughBalance ? (
               <p className="text-center text-sm text-[var(--red)]">
-                Need at least {YEET_AMOUNT} {nativeSymbol}
+                Insufficient balance ({userBalance.toFixed(4)} {nativeSymbol})
               </p>
             ) : (
               <button
                 onClick={handleYeet}
-                disabled={isPending || isConfirming || isSpinning || !selectedToken}
+                disabled={isPending || isConfirming || isSpinning || !selectedToken || !isAmountValid}
                 className="w-full py-3 rounded-lg text-sm font-bold btn-yeet disabled:opacity-50 disabled:animation-none"
               >
                 {isPending || isConfirming ? (
@@ -283,7 +381,7 @@ export function YeetModal({ isOpen, onClose, tokens, onSelectToken }: YeetModalP
                     {isConfirming ? 'Confirming...' : 'Yeeting...'}
                   </span>
                 ) : (
-                  `🚀 YEET ${YEET_AMOUNT} ${nativeSymbol}`
+                  `🚀 YEET ${parsedAmount} ${nativeSymbol}`
                 )}
               </button>
             )}
