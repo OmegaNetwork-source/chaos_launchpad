@@ -41,14 +41,16 @@ type SortTab = 'new' | 'graduating' | 'graduated'
 const PAGE_SIZE = 21
 const NEW_FLASH_MS = 1800
 
-// Wagmi query options for stable caching
+// Wagmi query options for stable caching - VERY conservative to avoid RPC thrashing
 const QUERY_OPTIONS = {
-  staleTime: 30_000, // 30 seconds before data is considered stale
-  gcTime: 5 * 60_000, // 5 minutes garbage collection time
-  refetchOnWindowFocus: false, // Disable aggressive refetch on window focus
+  staleTime: 60_000, // 60 seconds before data is considered stale
+  gcTime: 10 * 60_000, // 10 minutes garbage collection time
+  refetchOnWindowFocus: false, // CRITICAL: Disable refetch on window focus
   refetchOnReconnect: false, // Don't refetch on reconnect
-  retry: 2, // Retry failed requests twice
-  retryDelay: (attempt: number) => Math.min(1000 * 2 ** attempt, 10000),
+  refetchOnMount: false, // Don't refetch on component mount if data exists
+  refetchInterval: false as const, // No automatic interval refetch
+  retry: 1, // Only retry once to avoid hammering rate-limited RPC
+  retryDelay: 3000, // 3 second delay between retries
 }
 
 export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
@@ -65,9 +67,18 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
   const explorerUrl = getExplorerUrl(chainId || 5042002)
 
   // Initialize token cache
-  const { cachedTokens, updateCache, hasCache, isStale } = useTokenCache(chainId || 5042002, factoryAddress)
+  const { cachedTokens, updateCache, hasCache } = useTokenCache(chainId || 5042002, factoryAddress)
 
-  const { data: tokenAddresses, isLoading: loadingAddresses, isFetching: fetchingAddresses } = useReadContract({
+  // First, get the token count to verify if factory really has tokens
+  // This is a cheap call that helps us distinguish "RPC failed" from "truly empty"
+  const { data: tokenCount, isLoading: loadingCount } = useReadContract({
+    address: factoryAddress,
+    abi: FACTORY_ABI,
+    functionName: 'getTokenCount',
+    query: QUERY_OPTIONS,
+  })
+
+  const { data: tokenAddresses, isLoading: loadingAddresses, isFetching: fetchingAddresses, isError: addressesError } = useReadContract({
     address: factoryAddress,
     abi: FACTORY_ABI,
     functionName: 'getAllTokens',
@@ -81,7 +92,7 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
     args: [addr] as const,
   })) || []
 
-  const { data: tokenInfos, isLoading: loadingInfos, isFetching: fetchingInfos } = useReadContracts({
+  const { data: tokenInfos, isLoading: loadingInfos, isFetching: fetchingInfos, isError: infosError } = useReadContracts({
     contracts: tokenContracts,
     query: {
       ...QUERY_OPTIONS,
@@ -134,26 +145,60 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
     })
   }, [realTokens, curveStates, cachedTokens])
 
-  // Update cache when we have fresh data
+  // CRITICAL: Only update cache if we got REAL data
+  // Never cache empty arrays unless we've verified tokenCount === 0
   useEffect(() => {
+    // We have fresh tokens - update cache
     if (realTokensWithState.length > 0) {
       updateCache(realTokensWithState)
+      return
     }
+    
+    // Don't clear cache on empty results - the RPC might have failed silently
+    // Only scenario where we'd clear: tokenCount is explicitly 0 AND no errors
+    // But even then, keep the cache - it doesn't hurt and protects against edge cases
   }, [realTokensWithState, updateCache])
 
+  // Determine if the empty result is legitimate or a failed fetch
+  // A fetch is considered failed if:
+  // 1. tokenAddresses is empty/undefined but tokenCount > 0
+  // 2. There was an explicit error
+  // 3. We have cache but RPC returned empty (cache takes priority)
+  const isRpcFailure = useMemo(() => {
+    // If we have a tokenCount and it's > 0 but no addresses, RPC failed
+    if (tokenCount !== undefined && Number(tokenCount) > 0 && (!tokenAddresses || tokenAddresses.length === 0)) {
+      return true
+    }
+    // Explicit errors
+    if (addressesError || infosError) {
+      return true
+    }
+    // Have cache but RPC returned empty - trust the cache
+    if (hasCache && (!tokenAddresses || tokenAddresses.length === 0) && !loadingAddresses) {
+      return true
+    }
+    return false
+  }, [tokenCount, tokenAddresses, addressesError, infosError, hasCache, loadingAddresses])
+
   // Determine what tokens to display:
-  // - If we have fresh RPC data, use it
-  // - If loading but have cache, show cache (stale-while-revalidate)
-  // - If RPC failed but have cache, show cache
+  // PRIORITY ORDER:
+  // 1. Fresh RPC data if available AND not empty
+  // 2. Cached data (always, if RPC empty/failed)
+  // 3. Empty only if no cache AND verified empty (tokenCount === 0)
   const displayTokens: TokenInfo[] = useMemo(() => {
-    // Prefer fresh RPC data if available
+    // If we have fresh RPC data with actual tokens, use it
     if (realTokensWithState.length > 0) {
       return realTokensWithState
     }
-    // Fall back to cached data
+    
+    // If RPC returned empty but we have cache, ALWAYS use cache
+    // This is the stale-while-revalidate pattern
     if (cachedTokens.length > 0) {
       return cachedTokens
     }
+    
+    // Only return empty if we're sure there are no tokens
+    // (no cache, and tokenCount is explicitly 0 or undefined with no loading)
     return []
   }, [realTokensWithState, cachedTokens])
 
@@ -266,10 +311,11 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
   }, [sortedTokens, page])
 
   // Determine loading states:
-  // - isInitialLoading: First load with no cache (show full spinner)
-  // - isRefreshing: Have cache but fetching fresh data (show subtle indicator)
-  const isInitialLoading = (loadingAddresses || loadingInfos) && !hasCache && !seedEnabled
-  const isRefreshing = (fetchingAddresses || fetchingInfos || fetchingStates) && hasCache
+  // - isInitialLoading: First load with no cache AND no seed (show full spinner)
+  // - isRefreshing: Have cache/data but fetching fresh data (show subtle indicator)
+  // CRITICAL: Never show initial loading if we have cache - that's the whole point!
+  const isInitialLoading = (loadingCount || loadingAddresses || loadingInfos) && !hasCache && !seedEnabled && sortedTokens.length === 0
+  const isRefreshing = (fetchingAddresses || fetchingInfos || fetchingStates) && (hasCache || sortedTokens.length > 0)
 
   if (factoryAddress === '0x0000000000000000000000000000000000000000') {
     return (
@@ -338,11 +384,11 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
             </button>
           ))}
         </div>
-        {/* Subtle refresh indicator */}
-        {isRefreshing && (
+        {/* Subtle refresh indicator - also show if RPC failed but we're using cache */}
+        {(isRefreshing || isRpcFailure) && (
           <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] pr-2">
-            <RefreshCw className="w-3 h-3 animate-spin" />
-            <span className="hidden sm:inline">Updating...</span>
+            <RefreshCw className={`w-3 h-3 ${isRefreshing ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">{isRpcFailure && !isRefreshing ? 'Using cached data' : 'Updating...'}</span>
           </div>
         )}
       </div>

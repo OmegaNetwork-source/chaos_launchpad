@@ -44,11 +44,11 @@ export interface TokenInfo {
 interface CacheData {
   tokens: CachedTokenInfo[]
   timestamp: number
+  tokenCount: number // Store the count to detect stale data
 }
 
-const CACHE_VERSION = 'v1'
-const CACHE_STALE_MS = 5 * 60 * 1000 // 5 minutes until stale (still usable but refetch)
-const CACHE_EXPIRE_MS = 24 * 60 * 60 * 1000 // 24 hours until cache fully expires
+const CACHE_VERSION = 'v2' // Bumped version for new format
+const CACHE_EXPIRE_MS = 7 * 24 * 60 * 60 * 1000 // 7 days - keep cache for a long time
 
 function getCacheKey(chainId: number, factoryAddress: string): string {
   return `chaos_tokens_${CACHE_VERSION}_${chainId}_${factoryAddress.toLowerCase()}`
@@ -104,7 +104,7 @@ function loadFromLocalStorage(chainId: number, factoryAddress: string): CacheDat
     
     const data: CacheData = JSON.parse(raw)
     
-    // Check if cache is completely expired
+    // Check if cache is completely expired (7 days)
     if (Date.now() - data.timestamp > CACHE_EXPIRE_MS) {
       localStorage.removeItem(key)
       return null
@@ -122,14 +122,15 @@ function saveToLocalStorage(chainId: number, factoryAddress: string, tokens: Tok
     const data: CacheData = {
       tokens: tokens.map(serializeToken),
       timestamp: Date.now(),
+      tokenCount: tokens.length,
     }
     localStorage.setItem(key, JSON.stringify(data))
   } catch {
-    // localStorage might be full or disabled
+    // localStorage might be full or disabled - fail silently
   }
 }
 
-// In-memory cache for immediate access (survives component remounts)
+// In-memory cache for immediate access (survives component remounts within session)
 const memoryCache = new Map<string, { tokens: TokenInfo[]; timestamp: number }>()
 
 export function useTokenCache(chainId: number, factoryAddress: string) {
@@ -137,17 +138,17 @@ export function useTokenCache(chainId: number, factoryAddress: string) {
   
   // Initialize from memory cache first, then localStorage
   const [cachedTokens, setCachedTokens] = useState<TokenInfo[]>(() => {
-    // Try memory cache first (fastest)
+    // Try memory cache first (fastest, already deserialized)
     const memCached = memoryCache.get(cacheKey)
-    if (memCached && Date.now() - memCached.timestamp < CACHE_EXPIRE_MS) {
+    if (memCached && memCached.tokens.length > 0) {
       return memCached.tokens
     }
     
     // Fall back to localStorage
     const lsCached = loadFromLocalStorage(chainId, factoryAddress)
-    if (lsCached) {
+    if (lsCached && lsCached.tokens.length > 0) {
       const tokens = lsCached.tokens.map(deserializeToken)
-      // Populate memory cache
+      // Populate memory cache immediately
       memoryCache.set(cacheKey, { tokens, timestamp: lsCached.timestamp })
       return tokens
     }
@@ -167,13 +168,31 @@ export function useTokenCache(chainId: number, factoryAddress: string) {
   
   const lastUpdateRef = useRef<number>(0)
   
+  // Re-hydrate from localStorage on mount (in case memory cache was cleared)
+  useEffect(() => {
+    if (cachedTokens.length === 0) {
+      const lsCached = loadFromLocalStorage(chainId, factoryAddress)
+      if (lsCached && lsCached.tokens.length > 0) {
+        const tokens = lsCached.tokens.map(deserializeToken)
+        setCachedTokens(tokens)
+        setCacheTimestamp(lsCached.timestamp)
+        memoryCache.set(cacheKey, { tokens, timestamp: lsCached.timestamp })
+      }
+    }
+  }, [chainId, factoryAddress, cacheKey, cachedTokens.length])
+  
   // Update cache with new tokens
+  // CRITICAL: Only updates if new tokens array is non-empty
+  // NEVER clears the cache - that's the whole point of stale-while-revalidate
   const updateCache = useCallback((tokens: TokenInfo[]) => {
-    if (!tokens.length) return
+    // NEVER update cache with empty array - this is the critical fix
+    if (!tokens || tokens.length === 0) {
+      return
+    }
     
     const now = Date.now()
-    // Debounce rapid updates
-    if (now - lastUpdateRef.current < 1000) return
+    // Debounce rapid updates (e.g., multiple RPC responses in quick succession)
+    if (now - lastUpdateRef.current < 500) return
     lastUpdateRef.current = now
     
     setCachedTokens(tokens)
@@ -186,11 +205,11 @@ export function useTokenCache(chainId: number, factoryAddress: string) {
     saveToLocalStorage(chainId, factoryAddress, tokens)
   }, [chainId, factoryAddress, cacheKey])
   
-  // Check if cache is stale (should refetch but can still show cached data)
-  const isStale = Date.now() - cacheTimestamp > CACHE_STALE_MS
-  
   // Check if we have any cached data to show
   const hasCache = cachedTokens.length > 0
+  
+  // Check if cache is stale (older than 5 minutes)
+  const isStale = Date.now() - cacheTimestamp > 5 * 60 * 1000
   
   return {
     cachedTokens,
@@ -199,42 +218,4 @@ export function useTokenCache(chainId: number, factoryAddress: string) {
     isStale,
     cacheTimestamp,
   }
-}
-
-// Hook to merge fresh RPC data with cached data
-export function useMergedTokenData(
-  freshTokens: TokenInfo[] | undefined,
-  freshCurveStates: { status: string; result: unknown }[] | undefined,
-  cachedTokens: TokenInfo[],
-  isLoading: boolean,
-): { tokens: TokenInfo[]; isRefreshing: boolean } {
-  // If we have fresh data, use it
-  if (freshTokens && freshTokens.length > 0) {
-    const tokensWithState = freshTokens.map((token, index) => {
-      const stateResult = freshCurveStates?.[index]
-      if (stateResult?.status === 'success') {
-        return { ...token, state: stateResult.result as TokenState }
-      }
-      // Fall back to cached state for this token if fresh state failed
-      const cached = cachedTokens.find(t => t.token.toLowerCase() === token.token.toLowerCase())
-      if (cached?.state) {
-        return { ...token, state: cached.state }
-      }
-      return token
-    })
-    return { tokens: tokensWithState, isRefreshing: false }
-  }
-  
-  // If loading but have cache, show cache with refreshing indicator
-  if (isLoading && cachedTokens.length > 0) {
-    return { tokens: cachedTokens, isRefreshing: true }
-  }
-  
-  // If not loading and have cache (RPC failed), show cache
-  if (!isLoading && cachedTokens.length > 0) {
-    return { tokens: cachedTokens, isRefreshing: false }
-  }
-  
-  // No data available
-  return { tokens: [], isRefreshing: isLoading }
 }
