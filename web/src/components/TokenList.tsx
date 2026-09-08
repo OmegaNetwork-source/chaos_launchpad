@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from 'react'
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react'
 import { useReadContract, useReadContracts, useAccount } from 'wagmi'
 import { formatUnits } from 'viem'
 import { BONDING_CURVE_ABI } from '../config/contracts'
@@ -11,6 +11,9 @@ import { useChaos } from '../context/ChaosContext'
 import { YeetModal } from './YeetModal'
 import { ChaosMemePopup, ChaosFlashOverlay } from './ChaosMemePopup'
 import { Clock, TrendingUp, Rocket, Loader2, ExternalLink, ChevronLeft, ChevronRight, RefreshCw, Zap, Sparkles } from 'lucide-react'
+
+const CHAOS_CYCLE_INTERVAL_MIN = 4000
+const CHAOS_CYCLE_INTERVAL_MAX = 6000
 
 interface TokenState {
   virtualQuote: bigint
@@ -67,6 +70,11 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
   const seedEnabled = isSeedEnabled()
   const { chainId } = useAccount()
   const { isChaosMode, enableChaosMode, disableChaosMode } = useChaos()
+  
+  // Chaos mode board cycling state
+  const [chaosSeed, setChaosSeed] = useState(0)
+  const [isCycling, setIsCycling] = useState(false)
+  const chaosIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   
   // Chaos mode visual effects
   const { flashCards, highlightIndex } = ChaosFlashOverlay({ active: isChaosMode })
@@ -313,11 +321,74 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
     }
   }, [])
 
+  // Chaos board cycling - shuffle and/or change page every ~5 seconds
+  const cycleBoard = useCallback(() => {
+    setIsCycling(true)
+    setChaosSeed(prev => prev + 1)
+    
+    // 50% chance to also change page for more visible cycling
+    if (Math.random() > 0.5) {
+      const maxPage = Math.ceil(sortedTokens.length / PAGE_SIZE) - 1
+      if (maxPage > 0) {
+        setPage(prev => (prev + 1) % (maxPage + 1))
+      }
+    }
+    
+    setTimeout(() => setIsCycling(false), 350)
+  }, [sortedTokens.length])
+
+  useEffect(() => {
+    if (isChaosMode) {
+      // Initial cycle after a short delay
+      const initialDelay = setTimeout(() => cycleBoard(), 1000)
+      
+      const scheduleCycle = () => {
+        const jitter = CHAOS_CYCLE_INTERVAL_MIN + Math.random() * (CHAOS_CYCLE_INTERVAL_MAX - CHAOS_CYCLE_INTERVAL_MIN)
+        chaosIntervalRef.current = setTimeout(() => {
+          cycleBoard()
+          scheduleCycle()
+        }, jitter)
+      }
+      
+      scheduleCycle()
+      
+      return () => {
+        clearTimeout(initialDelay)
+        if (chaosIntervalRef.current) {
+          clearTimeout(chaosIntervalRef.current)
+          chaosIntervalRef.current = null
+        }
+      }
+    } else {
+      // Reset when chaos mode is disabled
+      if (chaosIntervalRef.current) {
+        clearTimeout(chaosIntervalRef.current)
+        chaosIntervalRef.current = null
+      }
+      setChaosSeed(0)
+      setIsCycling(false)
+    }
+  }, [isChaosMode, cycleBoard])
+
   const totalPages = Math.max(1, Math.ceil(sortedTokens.length / PAGE_SIZE))
   const pageTokens = useMemo(() => {
     const start = page * PAGE_SIZE
-    return sortedTokens.slice(start, start + PAGE_SIZE)
-  }, [sortedTokens, page])
+    let tokens = sortedTokens.slice(start, start + PAGE_SIZE)
+    
+    // Apply deterministic shuffle when in chaos mode
+    if (isChaosMode && chaosSeed > 0) {
+      const shuffled = [...tokens]
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        // Deterministic pseudo-random based on seed and index
+        const seed = chaosSeed * 1000 + i
+        const j = Math.floor(Math.abs(Math.sin(seed) * 10000) % (i + 1))
+        ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+      }
+      tokens = shuffled
+    }
+    
+    return tokens
+  }, [sortedTokens, page, isChaosMode, chaosSeed])
 
   // Determine loading states:
   // - isInitialLoading: First load with no cache AND no seed (show full spinner)
@@ -459,7 +530,7 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
         <>
           <div 
             ref={gridRef}
-            className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 relative ${isChaosMode ? 'chaos-grid' : ''}`}
+            className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 relative ${isChaosMode ? 'chaos-grid' : ''} ${isCycling ? 'chaos-board-cycling' : ''}`}
           >
             {pageTokens.map((token, index) => (
               <TokenCard

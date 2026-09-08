@@ -812,7 +812,7 @@ body.chaos-mode .chaos-card:nth-child(3n+2) {
 }
 
 /* ===========================================
-   COMIC-BOOK MEME POPUPS
+   COMIC-BOOK MEME POPUPS WITH IMAGES
    =========================================== */
 
 .chaos-popup-container {
@@ -828,118 +828,197 @@ body.chaos-mode .chaos-card:nth-child(3n+2) {
 
 .chaos-popup {
   position: absolute;
-  padding: 8px 14px;
-  font-weight: 900;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #000;
-  background: var(--popup-color, #00ffff);
+  padding: 0;
   transform: rotate(var(--popup-rotation, 0deg)) scale(var(--popup-scale, 1));
-  animation: chaos-popup-appear 1.2s ease-out forwards;
+  animation: chaos-popup-appear 3s ease-out forwards;
   pointer-events: none;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+}
+
+.chaos-popup-content {
+  position: relative;
+  background: #fff;
+  border-radius: 16px;
+  padding: 10px;
+  border: 4px solid #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  animation: chaos-popup-float 2s ease-in-out infinite;
+}
+
+.chaos-popup-image {
+  display: block;
+  max-width: 140px;
+  max-height: 100px;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.chaos-popup-caption {
+  font-size: 13px;
+  font-weight: 800;
+  color: #000;
+  text-align: center;
+  font-family: 'Comic Sans MS', 'Chalkboard', 'Comic Neue', cursive, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   white-space: nowrap;
-  text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
 }
 
 @keyframes chaos-popup-appear {
   0% {
     opacity: 0;
-    transform: rotate(var(--popup-rotation, 0deg)) scale(0.3) translateY(20px);
+    transform: rotate(var(--popup-rotation, 0deg)) scale(0.3) translateY(30px);
   }
-  15% {
+  10% {
     opacity: 1;
-    transform: rotate(var(--popup-rotation, 0deg)) scale(calc(var(--popup-scale, 1) * 1.2)) translateY(-5px);
+    transform: rotate(var(--popup-rotation, 0deg)) scale(calc(var(--popup-scale, 1) * 1.15)) translateY(-5px);
   }
-  30% {
+  20% {
     transform: rotate(var(--popup-rotation, 0deg)) scale(var(--popup-scale, 1)) translateY(0);
   }
-  70% {
+  80% {
     opacity: 1;
     transform: rotate(var(--popup-rotation, 0deg)) scale(var(--popup-scale, 1)) translateY(0);
   }
   100% {
     opacity: 0;
-    transform: rotate(calc(var(--popup-rotation, 0deg) + 10deg)) scale(0.8) translateY(-30px);
+    transform: rotate(calc(var(--popup-rotation, 0deg) + 5deg)) scale(0.7) translateY(-40px);
   }
 }
 
-/* Burst shape - starburst/explosion */
-.chaos-popup-burst {
+@keyframes chaos-popup-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Burst shape - starburst behind image */
+.chaos-popup-burst .chaos-popup-content {
+  background: var(--popup-color, #00ffff);
+  border-color: color-mix(in srgb, var(--popup-color, #00ffff) 70%, #000);
+}
+
+.chaos-popup-burst .chaos-popup-content::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: var(--popup-color, #00ffff);
   clip-path: polygon(
-    50% 0%, 61% 25%, 90% 15%, 75% 40%, 100% 50%,
-    75% 60%, 90% 85%, 61% 75%, 50% 100%, 39% 75%,
-    10% 85%, 25% 60%, 0% 50%, 25% 40%, 10% 15%, 39% 25%
+    50% 0%, 61% 25%, 90% 10%, 75% 35%, 100% 50%,
+    75% 65%, 90% 90%, 61% 75%, 50% 100%, 39% 75%,
+    10% 90%, 25% 65%, 0% 50%, 25% 35%, 10% 10%, 39% 25%
   );
-  padding: 18px 22px;
+  z-index: -1;
 }
 
 /* Cloud shape - thought bubble */
-.chaos-popup-cloud {
-  border-radius: 50% / 40%;
-  box-shadow: 
-    -12px 8px 0 -4px var(--popup-color, #00ffff),
-    12px 12px 0 -6px var(--popup-color, #00ffff),
-    -8px -8px 0 -4px var(--popup-color, #00ffff);
-  padding: 12px 18px;
+.chaos-popup-cloud .chaos-popup-content {
+  border-radius: 50% / 35%;
+}
+
+.chaos-popup-cloud .chaos-popup-content::before {
+  content: '';
+  position: absolute;
+  bottom: -18px;
+  left: 25%;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border: 4px solid #000;
+  border-radius: 50%;
+}
+
+.chaos-popup-cloud .chaos-popup-content::after {
+  content: '';
+  position: absolute;
+  bottom: -28px;
+  left: 20%;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 50%;
 }
 
 /* Speech bubble */
-.chaos-popup-speech {
-  border-radius: 12px;
-  border: 3px solid #000;
-}
-
-.chaos-popup-speech::after {
+.chaos-popup-speech .chaos-popup-content::after {
   content: '';
   position: absolute;
-  bottom: -12px;
-  left: 20%;
+  bottom: -16px;
+  left: 25%;
   width: 0;
   height: 0;
-  border: 12px solid transparent;
-  border-top-color: var(--popup-color, #00ffff);
+  border: 16px solid transparent;
+  border-top-color: #fff;
+  border-bottom: 0;
+}
+
+.chaos-popup-speech .chaos-popup-content::before {
+  content: '';
+  position: absolute;
+  bottom: -22px;
+  left: calc(25% - 2px);
+  width: 0;
+  height: 0;
+  border: 18px solid transparent;
+  border-top-color: #000;
   border-bottom: 0;
 }
 
 /* POW/action shape */
-.chaos-popup-pow {
-  clip-path: polygon(
-    30% 0%, 40% 20%, 50% 0%, 60% 20%, 70% 0%,
-    80% 20%, 100% 10%, 85% 35%, 100% 50%,
-    85% 65%, 100% 90%, 80% 80%, 70% 100%,
-    60% 80%, 50% 100%, 40% 80%, 30% 100%,
-    20% 80%, 0% 90%, 15% 65%, 0% 50%,
-    15% 35%, 0% 10%, 20% 20%
-  );
-  padding: 20px 28px;
+.chaos-popup-pow .chaos-popup-content {
+  background: var(--popup-color, #ffff00);
+  border-width: 5px;
+}
+
+.chaos-popup-pow .chaos-popup-caption {
   font-size: 16px;
-}
-
-.chaos-popup-text {
-  display: block;
-  animation: chaos-popup-text-shake 0.1s ease-in-out 3;
-}
-
-@keyframes chaos-popup-text-shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-2px); }
-  75% { transform: translateX(2px); }
+  font-weight: 900;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
 }
 
 /* Mobile adjustments */
 @media (max-width: 640px) {
-  .chaos-popup {
+  .chaos-popup-image {
+    max-width: 100px;
+    max-height: 75px;
+  }
+  
+  .chaos-popup-caption {
     font-size: 11px;
-    padding: 6px 10px;
   }
   
-  .chaos-popup-burst {
-    padding: 14px 16px;
+  .chaos-popup-content {
+    padding: 8px;
+    border-width: 3px;
   }
-  
-  .chaos-popup-pow {
-    padding: 16px 20px;
-    font-size: 12px;
+}
+
+/* ===========================================
+   CHAOS BOARD CYCLING ANIMATION
+   =========================================== */
+
+@keyframes chaos-board-shuffle {
+  0% {
+    opacity: 0.6;
+    transform: scale(0.97);
   }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.chaos-board-cycling {
+  animation: chaos-board-shuffle 0.35s ease-out;
 }

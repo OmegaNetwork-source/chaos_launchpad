@@ -1,47 +1,26 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 
-const MEME_PHRASES = [
-  'WAGMI',
-  'LFG!',
-  'TO THE MOON',
-  'HODL',
-  'NGMI',
-  'SER',
-  'DEGEN',
-  'APE IN',
-  'GG',
-  'BULLISH',
-  'PUMP IT',
-  'NO CAP',
-  'BASED',
-  'FOMO',
-  'MOON SOON',
-  'CHAD',
-  'DIAMOND HANDS',
-  'LETS GO',
-  'SENDING IT',
-  'FULL SEND',
-  'VIBE CHECK',
-  'BIG BRAIN',
-  'YEET',
-  'HUGE',
-  'WEN LAMBO',
-  'BRUH',
-  'SHEESH',
-  'HYPE',
-  'SMASH',
-  'BOOM',
-  'POW',
-  'ZAP',
-  'WHAM',
-  'ZOOM',
+interface MemeConfig {
+  src: string
+  caption: string
+}
+
+const MEME_CONFIGS: MemeConfig[] = [
+  { src: '/memes/doge.gif', caption: 'Much wow!' },
+  { src: '/memes/moon.gif', caption: 'TO THE MOON!' },
+  { src: '/memes/rocket.gif', caption: 'LFG!' },
+  { src: '/memes/fire.gif', caption: 'This is fine 🔥' },
+  { src: '/memes/party.gif', caption: 'WAGMI!' },
+  { src: '/memes/money.gif', caption: 'Making it rain!' },
+  { src: '/memes/stonks.gif', caption: 'STONKS!' },
+  { src: '/memes/wow.gif', caption: 'WOW!' },
 ]
 
 type BubbleShape = 'burst' | 'cloud' | 'speech' | 'pow'
 
 interface Popup {
   id: number
-  text: string
+  meme: MemeConfig
   x: number
   y: number
   shape: BubbleShape
@@ -51,12 +30,12 @@ interface Popup {
 }
 
 const COLORS = [
-  '#00ffff', // cyan
-  '#ff00ff', // magenta
-  '#39ff14', // green
-  '#ff1493', // pink
-  '#ffff00', // yellow
-  '#ff6b35', // orange
+  '#00ffff',
+  '#ff00ff',
+  '#39ff14',
+  '#ff1493',
+  '#ffff00',
+  '#ff6b35',
 ]
 
 function getRandomItem<T>(arr: T[]): T {
@@ -70,7 +49,7 @@ interface ChaosMemePopupProps {
 
 export function ChaosMemePopup({ active, containerRef }: ChaosMemePopupProps) {
   const [popups, setPopups] = useState<Popup[]>([])
-  const popupIdRef = { current: 0 }
+  const popupIdRef = useRef(0)
 
   const createPopup = useCallback(() => {
     if (!containerRef.current) return
@@ -78,16 +57,16 @@ export function ChaosMemePopup({ active, containerRef }: ChaosMemePopupProps) {
     const rect = containerRef.current.getBoundingClientRect()
     const popup: Popup = {
       id: popupIdRef.current++,
-      text: getRandomItem(MEME_PHRASES),
-      x: Math.random() * (rect.width - 120) + 20,
-      y: Math.random() * (rect.height - 80) + 20,
+      meme: getRandomItem(MEME_CONFIGS),
+      x: Math.random() * (rect.width - 180) + 40,
+      y: Math.random() * (rect.height - 140) + 40,
       shape: getRandomItem(['burst', 'cloud', 'speech', 'pow'] as BubbleShape[]),
       color: getRandomItem(COLORS),
-      rotation: (Math.random() - 0.5) * 30,
-      scale: 0.8 + Math.random() * 0.4,
+      rotation: (Math.random() - 0.5) * 20,
+      scale: 0.85 + Math.random() * 0.3,
     }
 
-    setPopups(prev => [...prev.slice(-4), popup]) // Keep max 5 popups
+    setPopups(prev => [...prev.slice(-3), popup])
   }, [containerRef])
 
   useEffect(() => {
@@ -96,29 +75,25 @@ export function ChaosMemePopup({ active, containerRef }: ChaosMemePopupProps) {
       return
     }
 
-    // Initial burst of popups
-    setTimeout(() => createPopup(), 100)
-    setTimeout(() => createPopup(), 400)
+    setTimeout(() => createPopup(), 200)
 
-    // Continue spawning popups at random intervals
     const spawnPopup = () => {
       if (!active) return
       createPopup()
-      const nextDelay = 800 + Math.random() * 1500 // 0.8-2.3 seconds
+      const nextDelay = 4000 + Math.random() * 4000
       setTimeout(spawnPopup, nextDelay)
     }
 
-    const initialTimer = setTimeout(spawnPopup, 1000)
+    const initialTimer = setTimeout(spawnPopup, 2000)
     return () => clearTimeout(initialTimer)
   }, [active, createPopup])
 
-  // Remove popups after animation
   useEffect(() => {
     if (popups.length === 0) return
 
     const timer = setTimeout(() => {
       setPopups(prev => prev.slice(1))
-    }, 1200)
+    }, 3000)
 
     return () => clearTimeout(timer)
   }, [popups])
@@ -139,7 +114,15 @@ export function ChaosMemePopup({ active, containerRef }: ChaosMemePopupProps) {
             '--popup-scale': popup.scale,
           } as React.CSSProperties}
         >
-          <span className="chaos-popup-text">{popup.text}</span>
+          <div className="chaos-popup-content">
+            <img 
+              src={popup.meme.src} 
+              alt="" 
+              className="chaos-popup-image"
+              loading="eager"
+            />
+            <span className="chaos-popup-caption">{popup.meme.caption}</span>
+          </div>
         </div>
       ))}
     </div>
@@ -157,10 +140,9 @@ export function ChaosFlashOverlay({ active }: { active: boolean }) {
       return
     }
 
-    // Random card flashes
     const flashInterval = setInterval(() => {
-      const numCards = 21 // PAGE_SIZE
-      const flashCount = 1 + Math.floor(Math.random() * 3) // Flash 1-3 cards
+      const numCards = 21
+      const flashCount = 1 + Math.floor(Math.random() * 3)
       const newFlashes = new Set<number>()
       
       for (let i = 0; i < flashCount; i++) {
@@ -169,11 +151,9 @@ export function ChaosFlashOverlay({ active }: { active: boolean }) {
       
       setFlashCards(newFlashes)
       
-      // Clear flashes after animation
       setTimeout(() => setFlashCards(new Set()), 400)
     }, 600 + Math.random() * 800)
 
-    // Cycling highlight that sweeps through cards
     const cycleInterval = setInterval(() => {
       setHighlightIndex(prev => {
         const next = prev + 1
