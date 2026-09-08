@@ -1,0 +1,35 @@
+{
+  "token": "0x9895bdf24fd4c7a730335608e58d2d2e8339064f",
+  "curve": "0x4bb8cbdd1c2c1718ce80973a275b02b592d300b8",
+  "createBlock": "61111832",
+  "indexedAt": "2026-09-08T18:41:45.614Z",
+  "holderCount": 1,
+  "buyCount": 1,
+  "sellCount": 0,
+  "totalVolume": "1461100000000000000",
+  "holders": [
+    {
+      "address": "0x12e5defd0d5e2890011ccec1fa4466e301122b74",
+      "balance": "36692344049972454612033189",
+      "percentage": 100
+    }
+  ],
+  "trades": [
+    {
+      "type": "buy",
+      "trader": "0x12e5deFd0D5e2890011ccEC1Fa4466e301122b74",
+      "quoteAmount": "1461100000000000000",
+      "tokenAmount": "36692344049972454612033189",
+      "newPrice": "41191917118",
+      "timestamp": 1788891966,
+      "txHash": "0xabfe1f432879400f756a78256b501710573e47ab40334ff6689fe2ee43160752",
+      "blockNumber": "61113660"
+    }
+  ],
+  "priceHistory": [
+    {
+      "time": 1788891966,
+      "price": 4.1191917118e-8
+    }
+  ]
+}

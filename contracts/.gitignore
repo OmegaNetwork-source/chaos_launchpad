@@ -1,0 +1,19 @@
+# Compiler files
+cache/
+out/
+
+# Ignores development broadcast logs
+/broadcast/**/31337/
+/broadcast/**/localhost/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Editor
+.idea/
+*.iml
+
+# OS
+.DS_Store

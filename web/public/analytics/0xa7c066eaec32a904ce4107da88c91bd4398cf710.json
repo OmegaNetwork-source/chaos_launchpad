@@ -1,0 +1,68 @@
+{
+  "token": "0xa7c066eaec32a904ce4107da88c91bd4398cf710",
+  "curve": "0x5fb08b60c21fa3aa1e9ba47d879081c8ef7803da",
+  "createBlock": "61111935",
+  "indexedAt": "2026-09-08T18:42:12.028Z",
+  "holderCount": 2,
+  "buyCount": 2,
+  "sellCount": 1,
+  "totalVolume": "3576051643547947222",
+  "holders": [
+    {
+      "address": "0x52cb6c8510ed3828787ff9dbf8ee015fe72a39fd",
+      "balance": "43744101924131063658564412",
+      "percentage": 83.46
+    },
+    {
+      "address": "0x91289ad4835d05ecaceedb0c90974499c97b3ced",
+      "balance": "8665418986084541027353070",
+      "percentage": 16.53
+    }
+  ],
+  "trades": [
+    {
+      "type": "buy",
+      "trader": "0x52CB6c8510Ed3828787FF9dbf8EE015fE72A39fd",
+      "quoteAmount": "1798000000000000000",
+      "tokenAmount": "43744101924131063658564412",
+      "newPrice": "42942143423",
+      "timestamp": 1788892498,
+      "txHash": "0x4dd12d93a32be04effdf8689c91624a263393f692309659361b300cfcaa714da",
+      "blockNumber": "61113926"
+    },
+    {
+      "type": "sell",
+      "trader": "0x91289Ad4835D05eCACeedB0C90974499c97B3ced",
+      "quoteAmount": "713151643547947222",
+      "tokenAmount": "18414015345429649683125273",
+      "newPrice": "38325775598",
+      "timestamp": 1788892426,
+      "txHash": "0x4894dc4b2941a6906c57429621aea15de4ffe1fa5ff711dc43959a30438fc67c",
+      "blockNumber": "61113890"
+    },
+    {
+      "type": "buy",
+      "trader": "0x91289Ad4835D05eCACeedB0C90974499c97B3ced",
+      "quoteAmount": "1064900000000000000",
+      "tokenAmount": "27079434331514190710478343",
+      "newPrice": "40173670722",
+      "timestamp": 1788892390,
+      "txHash": "0x7e92f37ec9dd47bfa786ad419a85d970b9820c89d53ac471e6553fc1391a53ef",
+      "blockNumber": "61113872"
+    }
+  ],
+  "priceHistory": [
+    {
+      "time": 1788892390,
+      "price": 4.0173670722e-8
+    },
+    {
+      "time": 1788892426,
+      "price": 3.8325775598e-8
+    },
+    {
+      "time": 1788892498,
+      "price": 4.2942143423e-8
+    }
+  ]
+}

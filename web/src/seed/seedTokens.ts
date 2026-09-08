@@ -1,0 +1,454 @@
+// Seed tokens for making the launchpad look busy
+// Loaded when VITE_SEED_DEMO=true (default for testnet)
+
+export interface SeedTokenState {
+  virtualQuote: bigint
+  virtualTokens: bigint
+  realQuoteRaised: bigint
+  tokensSold: bigint
+  graduated: boolean
+  pair: `0x${string}`
+}
+
+export interface SeedToken {
+  token: `0x${string}`
+  curve: `0x${string}`
+  name: string
+  symbol: string
+  metadataURI: string
+  creator: `0x${string}`
+  createdAt: bigint
+  graduated: boolean
+  isSeed: true
+  state: SeedTokenState
+}
+
+export interface SeedTrade {
+  symbol: string
+  action: 'buy' | 'sell'
+  amount: string
+  tokensAmount: string
+  timestamp: number
+}
+
+// Generate dynamic timestamps relative to now
+const now = Math.floor(Date.now() / 1000)
+
+function parseState(state: any): SeedTokenState {
+  return {
+    virtualQuote: BigInt(state.virtualQuote || state.virtualUsdc),
+    virtualTokens: BigInt(state.virtualTokens),
+    realQuoteRaised: BigInt(state.realQuoteRaised || state.realUsdcRaised),
+    tokensSold: BigInt(state.tokensSold),
+    graduated: state.graduated,
+    pair: state.pair as `0x${string}`,
+  }
+}
+
+// Themed meme seed roster with varied Dicebear styles
+export const seedTokens: SeedToken[] = [
+  {
+    token: '0x5c4f1eb55128f37e440aee7fb3d882e9ad298726',
+    curve: '0xda6c2326c4813bb4895f6836c6f054d62eb28e59',
+    name: 'Grumpy Toad',
+    symbol: 'GRUMP',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/fun-emoji/svg?seed=GrumpyToad42","description":"Always mad. Never sells."}',
+    creator: '0xab16c6557ddc9431c828e10eecc878abccceeb42',
+    createdAt: BigInt(now - 5000),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '30800000000000000000', virtualTokens: '794000000000000000000000000', realUsdcRaised: '2000000000000000000', tokensSold: '6000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x1cd0c566cf724d187955f7cf28ddcc84e34ccb5a',
+    curve: '0x733d713f4864bc3da1118930e678284b78b1f743',
+    name: 'Noodle Cat',
+    symbol: 'NOOD',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/lorelei/svg?seed=NoodleCat99","description":"Long cat. Longer gains."}',
+    creator: '0x2f438e2008c058c696486467932a622cc7187246',
+    createdAt: BigInt(now - 90),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '32000000000000000000', virtualTokens: '785000000000000000000000000', realUsdcRaised: '5000000000000000000', tokensSold: '15000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x97c9db0fd55f1b02f8dda1a027eba4dbcd95fa8b',
+    curve: '0x1f88d6195bde0bbeb0c28c81f53c86e40edd13aa',
+    name: 'Based Pickle',
+    symbol: 'PICKLE',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/bottts-neutral/svg?seed=BasedPickle7","description":"Briny and based."}',
+    creator: '0xed3e0ee8599b6f2fbe188283c8a0a76be3b73ddc',
+    createdAt: BigInt(now - 10),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '33200000000000004096', virtualTokens: '776000000000000000000000000', realUsdcRaised: '8000000000000000000', tokensSold: '24000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x57774c7c8297b02db1eff6743d072ca5887dac56',
+    curve: '0xc2e271d1949a8eb67604fed96a71420bdf23c5ef',
+    name: 'Spicy Hamster',
+    symbol: 'HAM',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/thumbs/svg?seed=SpicyHamster1","description":"Cheek pouches full of bags."}',
+    creator: '0x334110b671b41b1e6daa6c2286fa3e589f1b8a67',
+    createdAt: BigInt(now - 480),
+    graduated: true,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '145000000000000000000', virtualTokens: '0', realUsdcRaised: '100000000000000000000', tokensSold: '800000000000000000000000000', graduated: true, pair: '0xa4ebee379aa2bb624020b11a30ede75709aec8e5' }),
+  },
+  {
+    token: '0x1a0e9b2ae39803a18fa5003c784a71a09abab1c5',
+    curve: '0x6abcda66a4c1efcb42ad97dedacfe43a561da785',
+    name: 'Moon Banana',
+    symbol: 'BNNA',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/pixel-art/svg?seed=MoonBanana88","description":"Slippery path to the moon."}',
+    creator: '0xb82b6febc9cea659b79091aa8883f2f9ef21b3c0',
+    createdAt: BigInt(now - 360),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '37200000000000000000', virtualTokens: '746000000000000000000000000', realUsdcRaised: '18000000000000000000', tokensSold: '54000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x598cb7a8196a19fe9aea278ac679239d807f3441',
+    curve: '0x4820bb57feb957aaad76b9324ee00b92e9a9efe7',
+    name: 'Chaos Goose',
+    symbol: 'GOOSE',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/shapes/svg?seed=ChaosGoose3","description":"Honk if you are early."}',
+    creator: '0x3d9489e13d1a9031f6dbd5b7daa2a431d8173e8a',
+    createdAt: BigInt(now - 360),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '38800000000000000000', virtualTokens: '734000000000000000000000000', realUsdcRaised: '22000000000000000000', tokensSold: '66000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0xc39581a755d534b7129930dabfe131a4e3307bad',
+    curve: '0x8dcd615e834c2a5bd18b7be1d0908fd2e26e79ee',
+    name: 'Pixel Frog',
+    symbol: 'PFROG',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/identicon/svg?seed=PixelFrog21","description":"8-bit hops only."}',
+    creator: '0x0da13e1a953f5a5030a4dd3ba00ab14830571b95',
+    createdAt: BigInt(now - 120),
+    graduated: true,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '144000000000000000000', virtualTokens: '0', realUsdcRaised: '105000000000000000000', tokensSold: '800000000000000000000000000', graduated: true, pair: '0x09d7b058759fac97a1e2669aa853d2e768a05eb6' }),
+  },
+  {
+    token: '0xa3d355f3324a20bb62bd98569b7c59992a35b3d5',
+    curve: '0x3c820c0802a5297e932bd2e6eb7cc0459a26f5cf',
+    name: 'Disco Duck',
+    symbol: 'DISCO',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/fun-emoji/svg?seed=DiscoDuck77","description":"Boogie to green candles."}',
+    creator: '0xd2bacae42fbd665db69103f348cea5311e314e54',
+    createdAt: BigInt(now - 90),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '44000000000000000000', virtualTokens: '695000000000000000000000000', realUsdcRaised: '35000000000000000000', tokensSold: '105000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x81b82a5323e30fa4d2900b337de31c55d8f75359',
+    curve: '0xd3a7a140569e9860da845d1c5f2ce50040a146da',
+    name: 'Turbo Potato',
+    symbol: 'TATO',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/lorelei/svg?seed=TurboPotato5","description":"Starchy acceleration."}',
+    creator: '0x2fb9a9c12bae7205bb5beeb1179302b1bdb79c94',
+    createdAt: BigInt(now - 7200),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '46800000000000000000', virtualTokens: '674000000000000000000000000', realUsdcRaised: '42000000000000000000', tokensSold: '126000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x22f2040f101b8026b07704c6c8a5c7e12c2336b3',
+    curve: '0x8bd56d31d77cfd49f97102b92aff7a7e12aa1661',
+    name: 'Neon Sloth',
+    symbol: 'SLOTH',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/bottts-neutral/svg?seed=NeonSloth13","description":"Slow is the new fast."}',
+    creator: '0xe0cf47559c0ddfe8d81d25c3441da3765d8998a0',
+    createdAt: BigInt(now - 2100),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '49200000000000000000', virtualTokens: '656000000000000000000000000', realUsdcRaised: '48000000000000000000', tokensSold: '144000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0xe2610fb4af8b8155b1d148fc4fb5f91e70db5d35',
+    curve: '0x87284b2523cc9949e8d14da03e6073d7a777b1e9',
+    name: 'Cosmic Donut',
+    symbol: 'DNUT',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/thumbs/svg?seed=CosmicDonut9","description":"Glazed for liftoff."}',
+    creator: '0x4850cde518e425958fa4fafd2e054d91ebf4d936',
+    createdAt: BigInt(now - 45),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '52000000000000000000', virtualTokens: '635000000000000000000000000', realUsdcRaised: '55000000000000000000', tokensSold: '165000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x7a0887224ea30b35143c03c0bc1ea1c76156000b',
+    curve: '0x3e96f4096858c30d42f91ae5d83a941bc355f461',
+    name: 'Angry Mango',
+    symbol: 'MANGO',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/pixel-art/svg?seed=AngryMango66","description":"Tropical rage mode."}',
+    creator: '0x490240029dd85bf81a5b9e2aa18439af18237fe8',
+    createdAt: BigInt(now - 3600),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '54800000000000000000', virtualTokens: '614000000000000000000000000', realUsdcRaised: '62000000000000000000', tokensSold: '186000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x0b70ccee8c8b8c2fb31c3fa303f654608fb9400a',
+    curve: '0x4f796da2c2255b61b5c6103e3642944b2ba91c5d',
+    name: 'Lazy Lobster',
+    symbol: 'LOB',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/shapes/svg?seed=LazyLobster2","description":"Claws out. Charts up."}',
+    creator: '0x24923ef8fb830e00e5d08590adc68a66836b4fca',
+    createdAt: BigInt(now - 960),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '57200000000000000000', virtualTokens: '596000000000000000000000000', realUsdcRaised: '68000000000000000000', tokensSold: '204000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x4b52ef547f227d9a9ce1626cca63a07cdee316ca',
+    curve: '0xbd595fd1b2b8b5dae8851d8d92a948503829ca30',
+    name: 'Wizard Bean',
+    symbol: 'BEAN',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/identicon/svg?seed=WizardBean44","description":"Casting bags of holding."}',
+    creator: '0x83259ccf11e31dc8abc4091d234212ca4e91631c',
+    createdAt: BigInt(now - 20),
+    graduated: true,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '142000000000000000000', virtualTokens: '0', realUsdcRaised: '113000000000000000000', tokensSold: '800000000000000000000000000', graduated: true, pair: '0x0accc9fa8df553f1f94058c607bc93b79ec2fff9' }),
+  },
+  {
+    token: '0x0723881d352d4da0c0d925a5ec5313fd50218439',
+    curve: '0x173315e152bf4c01bf81aff9f6f7d9c0bdf8338c',
+    name: 'Rocket Raccoon',
+    symbol: 'RACC',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/fun-emoji/svg?seed=RocketRaccoon8","description":"Trash panda to the stars."}',
+    creator: '0x497264c96f30c7b12211b49c4e806d90a16594b3',
+    createdAt: BigInt(now - 10),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '61200000000000000000', virtualTokens: '566000000000000000000000000', realUsdcRaised: '78000000000000000000', tokensSold: '234000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x7271a5a13807f945061f8bc9e5e21cbc4b07ba9f',
+    curve: '0xbfe559b35a2854ffb23b18904777a7490810d86e',
+    name: 'Bubble Whale',
+    symbol: 'WHALE',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/lorelei/svg?seed=BubbleWhale11","description":"Blowing bubbles of liquidity."}',
+    creator: '0x5b90cb69a8a44ed9212497db1b45a6bbd73042ab',
+    createdAt: BigInt(now - 45),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '64000000000000000000', virtualTokens: '545000000000000000000000000', realUsdcRaised: '85000000000000000000', tokensSold: '255000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0xb93dfc9c3054f2f829559958fb4eae4fdedadfe6',
+    curve: '0xcd9921a8249ece385c84560e931ad6959ccf2362',
+    name: 'Cursed Toast',
+    symbol: 'TOAST',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/bottts-neutral/svg?seed=CursedToast55","description":"Burnt on both sides. Still eats."}',
+    creator: '0xc4b8e778c30959e6d86402ed65420a90928a4adb',
+    createdAt: BigInt(now - 300),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '66400000000000008192', virtualTokens: '527000000000000000000000000', realUsdcRaised: '91000000000000000000', tokensSold: '273000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0xdf8d5e3a9d3c9200297c0e825e85964bb2917dc3',
+    curve: '0xf90d485d4874c6aef74d51c1a42333279a2b3148',
+    name: 'Glitchy Penguin',
+    symbol: 'PENG',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/thumbs/svg?seed=GlitchyPenguin4","description":"Waddles through volatility."}',
+    creator: '0x65224dfbb95a340fb5dd98684c0891b92b166d0b',
+    createdAt: BigInt(now - 360),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '45200000000000000000', virtualTokens: '686000000000000000000000000', realUsdcRaised: '38000000000000000000', tokensSold: '114000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x0f5aa719bb5a2707f7428474330bbd3ee77393ad',
+    curve: '0x4590bc57d2bb44fdf90ee4ddbf80e0f8cb8e03b6',
+    name: 'Funky Cactus',
+    symbol: 'CACT',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/pixel-art/svg?seed=FunkyCactus19","description":"Prickly but pumping."}',
+    creator: '0xe1898575d6876299a566afd30e78e8231b60dd92',
+    createdAt: BigInt(now - 1800),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '36000000000000000000', virtualTokens: '755000000000000000000000000', realUsdcRaised: '15000000000000000000', tokensSold: '45000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x05d4c374b565dbf28424c9a247614565c20b1a02',
+    curve: '0xbc99d0975cbcdadabb7d4c1df0c79e1024f012c1',
+    name: 'Mega Moth',
+    symbol: 'MOTH',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/shapes/svg?seed=MegaMoth27","description":"Drawn to the green light."}',
+    creator: '0x3280595f8708f9f40a436824d71cd68b98892304',
+    createdAt: BigInt(now - 4200),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '40000000000000000000', virtualTokens: '725000000000000000000000000', realUsdcRaised: '25000000000000000000', tokensSold: '75000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x39f43958ed94c0b7341d830eec11a7b6ea4097e8',
+    curve: '0x56ee46ec588807376ad0575ee742b507d24a1335',
+    name: 'Chill Chili',
+    symbol: 'CHILI',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/identicon/svg?seed=ChillChili36","description":"Hot take. Cool hands."}',
+    creator: '0xf5ae2d292342a79dcca04dc638858a0295df4472',
+    createdAt: BigInt(now - 10),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '48000000000000000000', virtualTokens: '665000000000000000000000000', realUsdcRaised: '45000000000000000000', tokensSold: '135000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x14a78f605f436e40f32d70bf9346d329cf1284ae',
+    curve: '0x46cef84b15317b8e775f7f8d96d65e53937a4074',
+    name: 'Quantum Quokka',
+    symbol: 'QOK',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/fun-emoji/svg?seed=QuantumQuokka0","description":"Smiles in multiple states."}',
+    creator: '0x69429028b338e5544dbdd98b4af9edb5aa592c91',
+    createdAt: BigInt(now - 2100),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '53200000000000000000', virtualTokens: '626000000000000000000000000', realUsdcRaised: '58000000000000000000', tokensSold: '174000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x5ffdef35521f83fe1ab82d062c6f9278438a0356',
+    curve: '0xae9a5154f12cb930c552931f40d863f1327fb061',
+    name: 'Spooky Squid',
+    symbol: 'SQUID',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/lorelei/svg?seed=SpookySquid72","description":"Ink the order book."}',
+    creator: '0xafdc4bb79bec9bb39c16ce274de4eebfcac9de93',
+    createdAt: BigInt(now - 300),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '58000000000000000000', virtualTokens: '590000000000000000000000000', realUsdcRaised: '70000000000000000000', tokensSold: '210000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0xf69a523fc9b5d89c0a7c5c7b44dc1ad8409ef138',
+    curve: '0xcdf1133592be551f5b6627015d4921ca7a5cac84',
+    name: 'Fluffy Falcon',
+    symbol: 'FLCN',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/bottts-neutral/svg?seed=FluffyFalcon15","description":"Soft feathers. Sharp entries."}',
+    creator: '0xdccaa332649d26de10192b13f3e9cbbf552250af',
+    createdAt: BigInt(now - 5000),
+    graduated: true,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '130000000000000000000', virtualTokens: '0', realUsdcRaised: '108000000000000000000', tokensSold: '800000000000000000000000000', graduated: true, pair: '0x1e20f2d01b5c58e491cf4f1a34390b61b051c892' }),
+  },
+  {
+    token: '0x1e6b8ac24b36aff0bc60d2d2b1cdbab236f51e38',
+    curve: '0x5265a353d0c2088f412bc0b017532919dd029ff6',
+    name: 'Degen Dumpling',
+    symbol: 'DUMP',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/thumbs/svg?seed=DegenDumpling6","description":"Steamed and ready."}',
+    creator: '0x4473ee9035b78ccc3a26a1a192fe56f7d07a3da9',
+    createdAt: BigInt(now - 2100),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '43200000000000000000', virtualTokens: '701000000000000000000000000', realUsdcRaised: '33000000000000000000', tokensSold: '99000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x59cbd7e0aeeaf020d0a9e22aba999380fd446f56',
+    curve: '0x48f3a0fb2916eeb206d98b4bdc49a7c7138de424',
+    name: 'Lucky Llama',
+    symbol: 'LLAMA',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/pixel-art/svg?seed=LuckyLlama33","description":"Spits on bears."}',
+    creator: '0x10887aad249936bd2712a161e333d6e75a62f5fd',
+    createdAt: BigInt(now - 960),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '50000000000000000000', virtualTokens: '650000000000000000000000000', realUsdcRaised: '50000000000000000000', tokensSold: '150000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0xfef6026e8c3a3614211ace4075e411e5eb211d6d',
+    curve: '0x211e8192e2520634a2ac6a05d5a4f22e9cda57e6',
+    name: 'Zoom Zebra',
+    symbol: 'ZEBRA',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/shapes/svg?seed=ZoomZebra48","description":"Stripes go sideways never."}',
+    creator: '0x3309b4f87bc144a0067e6e8ad6e4dad8c5be2443',
+    createdAt: BigInt(now - 360),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '56000000000000000000', virtualTokens: '605000000000000000000000000', realUsdcRaised: '65000000000000000000', tokensSold: '195000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x1a9e902148467c38230cdae73210bac1b6a179f1',
+    curve: '0x861b3041f9f474ff1c2f2acf0d19aaf3466b5663',
+    name: 'Melted Sundae',
+    symbol: 'MELT',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/identicon/svg?seed=MeltedSundae12","description":"Dripping into the next ATH."}',
+    creator: '0x209af0249aa7a93c26cb24196e1ef815d20564d6',
+    createdAt: BigInt(now - 1200),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '65200000000000000000', virtualTokens: '536000000000000000000000000', realUsdcRaised: '88000000000000000000', tokensSold: '264000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x457d6804e323e863b3b2e466f1e6f0d1429e3c89',
+    curve: '0xf85a87079d1653f8e995cd82afb50b2bd354a52a',
+    name: 'Turbo Taco',
+    symbol: 'TACO',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/fun-emoji/svg?seed=TurboTaco91","description":"Crunchy momentum."}',
+    creator: '0x050c831171fc163f100e7259bfd3397d9f74a192',
+    createdAt: BigInt(now - 3600),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '34000000000000000000', virtualTokens: '770000000000000000000000000', realUsdcRaised: '10000000000000000000', tokensSold: '30000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+  {
+    token: '0x7d6143b570f7c54750d5f052477585a55e93e5fa',
+    curve: '0x25e4cf079fa4a4f3a9e9ccbecd8333ad8dff438a',
+    name: 'Sassy Snail',
+    symbol: 'SNAIL',
+    metadataURI: '{"image":"https://api.dicebear.com/7.x/lorelei/svg?seed=SassySnail24","description":"Shell-backed diamond hands."}',
+    creator: '0xccde38b2f19458c2a0ac0bbd29b78e121377e1ea',
+    createdAt: BigInt(now - 480),
+    graduated: false,
+    isSeed: true,
+    state: parseState({ virtualUsdc: '46000000000000000000', virtualTokens: '680000000000000000000000000', realUsdcRaised: '40000000000000000000', tokensSold: '120000000000000000000000000', graduated: false, pair: '0x0000000000000000000000000000000000000000' }),
+  },
+]
+
+// Symbols for fake live trades
+export const tradeSymbols = seedTokens.map(t => t.symbol)
+
+// Generate a random fake trade
+export function generateFakeTrade(): SeedTrade {
+  const symbol = tradeSymbols[Math.floor(Math.random() * tradeSymbols.length)]
+  const action = Math.random() > 0.35 ? 'buy' : 'sell' // 65% buys, 35% sells
+  const amount = (Math.random() * 4.5 + 0.5).toFixed(2) // 0.5 - 5 USDC
+  const tokensAmount = (parseFloat(amount) * (Math.random() * 20000000 + 5000000)).toFixed(0)
+  return {
+    symbol,
+    action,
+    amount,
+    tokensAmount,
+    timestamp: Date.now(),
+  }
+}
+
+// Check if seed mode is enabled (env name kept internal)
+export function isSeedEnabled(): boolean {
+  const envValue = import.meta.env.VITE_SEED_DEMO
+  // Default to false when unset/empty (live board uses real tokens)
+  if (envValue === undefined || envValue === '') return false
+  return envValue === 'true' || envValue === '1'
+}
+
+// Feed item for live activity display
+export interface FeedItem {
+  id: string
+  type: 'buy' | 'sell'
+  symbol: string
+  amount: string
+  timestamp: number
+}
+
+// Generate initial seed feed
+export const seedFeed: FeedItem[] = seedTokens.slice(0, 10).map((token, i) => ({
+  id: `feed-${i}`,
+  type: Math.random() > 0.4 ? 'buy' : 'sell',
+  symbol: token.symbol,
+  amount: (Math.random() * 4 + 0.5).toFixed(2),
+  timestamp: Date.now() - (i * 30000),
+}))

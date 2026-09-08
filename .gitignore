@@ -1,0 +1,11 @@
+node_modules/
+dist/
+cache/
+out/
+broadcast/
+.env
+.env.local
+*.log
+wallets.json
+**/wallets.json
+.DS_Store

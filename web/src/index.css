@@ -1,0 +1,369 @@
+@import "tailwindcss";
+
+:root {
+  /* Neutral palette - modern pump.fun style */
+  --bg-primary: #0c0c0c;
+  --bg-secondary: #111111;
+  --bg-card: #161616;
+  --bg-elevated: #1a1a1a;
+  --bg-input: #0f0f0f;
+  --bg-hover: #1f1f1f;
+  
+  /* Text hierarchy */
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1a1;
+  --text-tertiary: #6b6b6b;
+  --text-muted: #4a4a4a;
+  
+  /* Borders */
+  --border: #222222;
+  --border-hover: #333333;
+  --border-active: #444444;
+  
+  /* Accents - muted, not neon */
+  --accent: #e5e5e5;
+  --accent-dim: rgba(229, 229, 229, 0.1);
+  --accent-hover: #ffffff;
+  
+  /* Status colors - subtle */
+  --green: #22c55e;
+  --green-dim: rgba(34, 197, 94, 0.12);
+  --red: #ef4444;
+  --red-dim: rgba(239, 68, 68, 0.12);
+  --blue: #3b82f6;
+  --blue-dim: rgba(59, 130, 246, 0.12);
+  --yellow: #eab308;
+  --yellow-dim: rgba(234, 179, 8, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-primary);
+  min-height: 100vh;
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Scrollbar - minimal */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
+
+/* Input reset */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Card hover - subtle */
+.card-hover {
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.card-hover:hover {
+  border-color: var(--border-hover);
+  background-color: var(--bg-hover);
+}
+
+/* Primary button */
+.btn-primary {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  font-weight: 600;
+  transition: opacity 0.15s ease;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Secondary button */
+.btn-secondary {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  font-weight: 500;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.btn-secondary:hover {
+  border-color: var(--border-hover);
+  background-color: var(--bg-hover);
+}
+
+/* Buy/Sell buttons */
+.btn-buy {
+  background: var(--green);
+  color: #000;
+  font-weight: 600;
+  transition: opacity 0.15s ease;
+}
+
+.btn-buy:hover {
+  opacity: 0.9;
+}
+
+.btn-buy:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-sell {
+  background: var(--red);
+  color: #fff;
+  font-weight: 600;
+  transition: opacity 0.15s ease;
+}
+
+.btn-sell:hover {
+  opacity: 0.9;
+}
+
+/* Tab active state */
+.tab-active {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+}
+
+/* Progress bar */
+.progress-bar {
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  background: #14b8a6;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.progress-bar-fill.near-grad {
+  background: #5eead4;
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+/* Animations - minimal */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { 
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-up-sheet {
+  from { 
+    transform: translateY(100%);
+  }
+  to { 
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.15s ease-out;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.2s ease-out;
+}
+
+.animate-slide-up-sheet {
+  animation: slide-up-sheet 0.25s ease-out;
+}
+
+/* Toast styles */
+.toast-success {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--green) !important;
+  color: var(--text-primary) !important;
+}
+
+.toast-error {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--red) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Connector picker */
+.connector-option {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.connector-option:hover {
+  background: var(--bg-elevated);
+  border-color: var(--border-hover);
+}
+
+/* Slider styling */
+.slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.slider-thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  cursor: pointer;
+  border: none;
+  transition: transform 0.1s ease;
+}
+
+.slider-thumb::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.slider-thumb::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  cursor: pointer;
+  border: none;
+}
+
+/* Safe area utilities */
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Status badges */
+.badge {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.badge-new {
+  background: var(--blue-dim);
+  color: var(--blue);
+}
+
+.badge-hot {
+  background: var(--yellow-dim);
+  color: var(--yellow);
+}
+
+.badge-graduated {
+  background: var(--green-dim);
+  color: var(--green);
+}
+
+
+/* Network indicator */
+.network-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+/* Dense data display */
+.stat-label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stat-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* Chaos brand wordmark — SF-like */
+.chaos-wordmark {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-weight: 560;
+  letter-spacing: -0.03em;
+  text-transform: none;
+  line-height: 1;
+}
+
+/* New token flash — brief ring/pulse when a fresh address cycles onto the board */
+@keyframes token-new-flash {
+  0% {
+    box-shadow: 0 0 0 0 rgba(94, 234, 212, 0.55);
+    border-color: rgba(94, 234, 212, 0.85);
+    background-color: color-mix(in srgb, var(--bg-card) 70%, rgba(94, 234, 212, 0.18));
+  }
+  40% {
+    box-shadow: 0 0 0 4px rgba(94, 234, 212, 0.25);
+    border-color: rgba(94, 234, 212, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(94, 234, 212, 0);
+    border-color: var(--border);
+    background-color: var(--bg-card);
+  }
+}
+
+.token-card-new {
+  animation: token-new-flash 1.8s ease-out;
+}

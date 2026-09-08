@@ -1,0 +1,162 @@
+{
+  "0xd2dcaccf9a121f9e5dab22282a9f552ef34105f2": {
+    "holderCount": 14,
+    "buyCount": 14,
+    "sellCount": 0,
+    "totalVolume": "79408180058329497264",
+    "curve": "0xc569185ba2a37e287149559e857d6340964c7303",
+    "symbol": "GRUMP"
+  },
+  "0x43f3647376078e74280ce0769a591952bf6fec6a": {
+    "holderCount": 15,
+    "buyCount": 16,
+    "sellCount": 0,
+    "totalVolume": "80348191516994952156",
+    "curve": "0x0399245c80fd820ca585c1d1c24a9a76dbacc9cf",
+    "symbol": "NOOD"
+  },
+  "0x199148a9277463db454c19e915937b9a0ec920ed": {
+    "holderCount": 12,
+    "buyCount": 14,
+    "sellCount": 0,
+    "totalVolume": "79733944067444525510",
+    "curve": "0xa94b29765277f62157e2b9a618c505aad9c15c52",
+    "symbol": "PICKLE"
+  },
+  "0xae42727e1b9c21dfce3b57c1d96cb99a7ba1c894": {
+    "holderCount": 10,
+    "buyCount": 10,
+    "sellCount": 0,
+    "totalVolume": "77515119883907986063",
+    "curve": "0x122c23963d53fc29821473ca8fb2b4ac0b7d79c3",
+    "symbol": "CHONK"
+  },
+  "0xa37b645036efe146948bf7c5c095c52645927fba": {
+    "holderCount": 12,
+    "buyCount": 14,
+    "sellCount": 0,
+    "totalVolume": "77800217381526566621",
+    "curve": "0x50a14209762b75ce98ac90dbf0edc1dbdb481a13",
+    "symbol": "GOBLN"
+  },
+  "0xc7c367909204d4cac7e2127c253c16c1eadd5c20": {
+    "holderCount": 13,
+    "buyCount": 13,
+    "sellCount": 0,
+    "totalVolume": "78632954608803371504",
+    "curve": "0xe261541f30b0fbeaedc0e891deda73dba1e643e3",
+    "symbol": "SIGMA"
+  },
+  "0x0669e210ed829b89398919e40aa0b345b413f587": {
+    "holderCount": 17,
+    "buyCount": 17,
+    "sellCount": 1,
+    "totalVolume": "81611078106415881362",
+    "curve": "0x23e0e3e4126fe523bc83b604e53652378edc40bc",
+    "symbol": "PARTY"
+  },
+  "0xc9cefbddb84659fb969d07222f601f6aebe8ca71": {
+    "holderCount": 14,
+    "buyCount": 14,
+    "sellCount": 0,
+    "totalVolume": "79454886680282007792",
+    "curve": "0xacb3b8863534499ec05d4223c96892512a059bd4",
+    "symbol": "WOJAK"
+  },
+  "0x87775e70964525d74887cc53a889a10fa033a7bf": {
+    "holderCount": 13,
+    "buyCount": 13,
+    "sellCount": 1,
+    "totalVolume": "88562649537522789309",
+    "curve": "0xbed38dac498e825b9c3fb3e9bedc925231dc33c0",
+    "symbol": "TRASH"
+  },
+  "0x72e9c625ecda3c8e46b2b5c61cb46a3793376ab1": {
+    "holderCount": 15,
+    "buyCount": 16,
+    "sellCount": 1,
+    "totalVolume": "84920445223927915953",
+    "curve": "0x39350197e1b1d84d2a60718d0befdf90cbc9fb40",
+    "symbol": "BNNA"
+  },
+  "0x4b3d6a902966592d34fd493fc572e10ea2801c36": {
+    "holderCount": 15,
+    "buyCount": 15,
+    "sellCount": 0,
+    "totalVolume": "80891572555846959911",
+    "curve": "0x51293278a742bc939e1844946df1f6e12517880a",
+    "symbol": "GOOSE"
+  },
+  "0xfe6e5f6e2bebf962566ac233dd6778fb8f52c195": {
+    "holderCount": 10,
+    "buyCount": 11,
+    "sellCount": 1,
+    "totalVolume": "84053245218996426812",
+    "curve": "0xabec64365e4f7141de44f13e27fce027c804059a",
+    "symbol": "DISCO"
+  },
+  "0x85e8a8b99053869eaca8c79f76c701507ef237c2": {
+    "holderCount": 10,
+    "buyCount": 10,
+    "sellCount": 0,
+    "totalVolume": "80355700653439334398",
+    "curve": "0x3e5a22891bb01369760ed730a6733303981ac2f1",
+    "symbol": "PFROG"
+  },
+  "0x3b596d5cfa0e8522671c36acdd4b865ba1dfb873": {
+    "holderCount": 12,
+    "buyCount": 13,
+    "sellCount": 1,
+    "totalVolume": "77759204279443589218",
+    "curve": "0x92719a71e5ae2c305fca95c5cd725b1c7f05c2d0",
+    "symbol": "KING"
+  },
+  "0x8bd8e38a1afcfd11b83ac03a6589191fec460e2d": {
+    "holderCount": 10,
+    "buyCount": 13,
+    "sellCount": 1,
+    "totalVolume": "87570527058605965137",
+    "curve": "0xbeda192b57784749a09f8ae9084fe5d079711f12",
+    "symbol": "MELT"
+  },
+  "0xe8c7f8f68ff6be8addfc1f5788aa0866e15f8b0d": {
+    "holderCount": 15,
+    "buyCount": 15,
+    "sellCount": 0,
+    "totalVolume": "80998570254354743062",
+    "curve": "0xca380b5269b9997a6f4cf90953aa69b002724581",
+    "symbol": "CHICK"
+  },
+  "0xf69f90a043f29bf6290a03fb5cc3b137ecbf9f3a": {
+    "holderCount": 11,
+    "buyCount": 12,
+    "sellCount": 0,
+    "totalVolume": "79825225030433500719",
+    "curve": "0x4a0259970293190a32e782eaf133b517420ba6ad",
+    "symbol": "AXO"
+  },
+  "0x9f93b7a46adb1bdf8562c49f7ee1226428e72df7": {
+    "holderCount": 15,
+    "buyCount": 16,
+    "sellCount": 1,
+    "totalVolume": "82553201328681990255",
+    "curve": "0x8395e22dc36ee87cf1e0b0ef57f5020c45b26e8b",
+    "symbol": "SLOTH"
+  },
+  "0xb8c675045055f98303a832c2740397c59ffea00a": {
+    "holderCount": 12,
+    "buyCount": 13,
+    "sellCount": 0,
+    "totalVolume": "80553166501023025694",
+    "curve": "0xd25ce77bbefe13b475b7e37c45a5bb93d2d83ff3",
+    "symbol": "CLOWN"
+  },
+  "0xca54fcfcd7547df96887ecdac149ab34aaccc2cf": {
+    "holderCount": 12,
+    "buyCount": 13,
+    "sellCount": 1,
+    "totalVolume": "82589709898543497328",
+    "curve": "0xc841ceca8d180a26f5e830f5a2a385668e912cd5",
+    "symbol": "TATO"
+  }
+}
