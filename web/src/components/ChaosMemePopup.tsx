@@ -1,26 +1,29 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 
-interface MemeConfig {
-  src: string
-  caption: string
-}
-
-const MEME_CONFIGS: MemeConfig[] = [
-  { src: '/memes/doge.gif', caption: 'Much wow!' },
-  { src: '/memes/moon.gif', caption: 'TO THE MOON!' },
-  { src: '/memes/rocket.gif', caption: 'LFG!' },
-  { src: '/memes/fire.gif', caption: 'This is fine 🔥' },
-  { src: '/memes/party.gif', caption: 'WAGMI!' },
-  { src: '/memes/money.gif', caption: 'Making it rain!' },
-  { src: '/memes/stonks.gif', caption: 'STONKS!' },
-  { src: '/memes/wow.gif', caption: 'WOW!' },
+const MEME_IMAGES = [
+  '/memes/doge.gif',
+  '/memes/moon.gif',
+  '/memes/rocket.gif',
+  '/memes/fire.gif',
+  '/memes/party.gif',
+  '/memes/money.gif',
+  '/memes/stonks.gif',
+  '/memes/wow.gif',
+  '/memes/pepe-thumbsup.gif',
+  '/memes/this-is-fine-dog.gif',
+  '/memes/surprised-pikachu.gif',
+  '/memes/thinking.gif',
+  '/memes/awkward-monkey.gif',
+  '/memes/success-kid.gif',
+  '/memes/mind-blown.gif',
+  '/memes/excited.gif',
 ]
 
 type BubbleShape = 'burst' | 'cloud' | 'speech' | 'pow'
 
 interface Popup {
   id: number
-  meme: MemeConfig
+  src: string
   x: number
   y: number
   shape: BubbleShape
@@ -57,7 +60,7 @@ export function ChaosMemePopup({ active, containerRef }: ChaosMemePopupProps) {
     const rect = containerRef.current.getBoundingClientRect()
     const popup: Popup = {
       id: popupIdRef.current++,
-      meme: getRandomItem(MEME_CONFIGS),
+      src: getRandomItem(MEME_IMAGES),
       x: Math.random() * (rect.width - 180) + 40,
       y: Math.random() * (rect.height - 140) + 40,
       shape: getRandomItem(['burst', 'cloud', 'speech', 'pow'] as BubbleShape[]),
@@ -66,7 +69,7 @@ export function ChaosMemePopup({ active, containerRef }: ChaosMemePopupProps) {
       scale: 0.85 + Math.random() * 0.3,
     }
 
-    setPopups(prev => [...prev.slice(-3), popup])
+    setPopups(prev => [...prev.slice(-6), popup])
   }, [containerRef])
 
   useEffect(() => {
@@ -75,16 +78,16 @@ export function ChaosMemePopup({ active, containerRef }: ChaosMemePopupProps) {
       return
     }
 
-    setTimeout(() => createPopup(), 200)
+    setTimeout(() => createPopup(), 100)
 
     const spawnPopup = () => {
       if (!active) return
       createPopup()
-      const nextDelay = 4000 + Math.random() * 4000
+      const nextDelay = 600 + Math.random() * 800
       setTimeout(spawnPopup, nextDelay)
     }
 
-    const initialTimer = setTimeout(spawnPopup, 2000)
+    const initialTimer = setTimeout(spawnPopup, 300)
     return () => clearTimeout(initialTimer)
   }, [active, createPopup])
 
@@ -93,7 +96,7 @@ export function ChaosMemePopup({ active, containerRef }: ChaosMemePopupProps) {
 
     const timer = setTimeout(() => {
       setPopups(prev => prev.slice(1))
-    }, 3000)
+    }, 2000)
 
     return () => clearTimeout(timer)
   }, [popups])
@@ -116,12 +119,11 @@ export function ChaosMemePopup({ active, containerRef }: ChaosMemePopupProps) {
         >
           <div className="chaos-popup-content">
             <img 
-              src={popup.meme.src} 
+              src={popup.src} 
               alt="" 
               className="chaos-popup-image"
               loading="eager"
             />
-            <span className="chaos-popup-caption">{popup.meme.caption}</span>
           </div>
         </div>
       ))}

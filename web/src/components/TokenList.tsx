@@ -321,21 +321,12 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
     }
   }, [])
 
-  // Chaos board cycling - shuffle and/or change page every ~5 seconds
+  // Chaos board cycling - rotate the token list every ~5 seconds (last becomes first)
   const cycleBoard = useCallback(() => {
     setIsCycling(true)
     setChaosSeed(prev => prev + 1)
-    
-    // 50% chance to also change page for more visible cycling
-    if (Math.random() > 0.5) {
-      const maxPage = Math.ceil(sortedTokens.length / PAGE_SIZE) - 1
-      if (maxPage > 0) {
-        setPage(prev => (prev + 1) % (maxPage + 1))
-      }
-    }
-    
     setTimeout(() => setIsCycling(false), 350)
-  }, [sortedTokens.length])
+  }, [])
 
   useEffect(() => {
     if (isChaosMode) {
@@ -375,16 +366,13 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
     const start = page * PAGE_SIZE
     let tokens = sortedTokens.slice(start, start + PAGE_SIZE)
     
-    // Apply deterministic shuffle when in chaos mode
-    if (isChaosMode && chaosSeed > 0) {
-      const shuffled = [...tokens]
-      for (let i = shuffled.length - 1; i > 0; i--) {
-        // Deterministic pseudo-random based on seed and index
-        const seed = chaosSeed * 1000 + i
-        const j = Math.floor(Math.abs(Math.sin(seed) * 10000) % (i + 1))
-        ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    // Apply circular rotation when in chaos mode (last becomes first)
+    if (isChaosMode && chaosSeed > 0 && tokens.length > 1) {
+      const rotations = chaosSeed % tokens.length
+      for (let r = 0; r < rotations; r++) {
+        const last = tokens.pop()!
+        tokens.unshift(last)
       }
-      tokens = shuffled
     }
     
     return tokens
