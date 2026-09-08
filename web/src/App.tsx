@@ -11,6 +11,7 @@ import { CreateToken } from './components/CreateToken'
 import { ChaosLogoSimple } from './components/ChaosLogo'
 import { DocsModal } from './components/DocsModal'
 import { Profile } from './components/Profile'
+import { Leaderboard } from './components/Leaderboard'
 import { ExternalLink } from 'lucide-react'
 
 const queryClient = new QueryClient()
@@ -34,6 +35,7 @@ function AppContent() {
   const [showCreate, setShowCreate] = useState(false)
   const [showDocs, setShowDocs] = useState(false)
   const [showProfile, setShowProfile] = useState(false)
+  const [showLeaderboard, setShowLeaderboard] = useState(false)
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -41,6 +43,7 @@ function AppContent() {
       <Header
         onCreateClick={() => setShowCreate(true)}
         onProfileClick={() => setShowProfile(true)}
+        onLeaderboardClick={() => setShowLeaderboard(true)}
       />
       
       <main className="flex-1 w-full px-4 py-6">
@@ -125,6 +128,11 @@ function AppContent() {
           setView('detail')
           setShowProfile(false)
         }}
+      />
+
+      <Leaderboard
+        isOpen={showLeaderboard}
+        onClose={() => setShowLeaderboard(false)}
       />
 
       <Toaster

@@ -6,7 +6,8 @@ import { getFactoryAddress, getNativeSymbol, getExplorerUrl } from '../config/ch
 import { FACTORY_ABI } from '../config/contracts'
 import { TokenCard } from './TokenCard'
 import { seedTokens, isSeedEnabled } from '../seed/seedTokens'
-import { Clock, TrendingUp, Rocket, Loader2, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useTokenCache } from '../hooks/useTokenCache'
+import { Clock, TrendingUp, Rocket, Loader2, ExternalLink, ChevronLeft, ChevronRight, RefreshCw } from 'lucide-react'
 
 interface TokenState {
   virtualQuote: bigint
@@ -40,6 +41,16 @@ type SortTab = 'new' | 'graduating' | 'graduated'
 const PAGE_SIZE = 21
 const NEW_FLASH_MS = 1800
 
+// Wagmi query options for stable caching
+const QUERY_OPTIONS = {
+  staleTime: 30_000, // 30 seconds before data is considered stale
+  gcTime: 5 * 60_000, // 5 minutes garbage collection time
+  refetchOnWindowFocus: false, // Disable aggressive refetch on window focus
+  refetchOnReconnect: false, // Don't refetch on reconnect
+  retry: 2, // Retry failed requests twice
+  retryDelay: (attempt: number) => Math.min(1000 * 2 ** attempt, 10000),
+}
+
 export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
   const [activeTab, setActiveTab] = useState<SortTab>('new')
   const [page, setPage] = useState(0)
@@ -53,10 +64,14 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
   const nativeSymbol = getNativeSymbol(chainId || 5042002)
   const explorerUrl = getExplorerUrl(chainId || 5042002)
 
-  const { data: tokenAddresses, isLoading: loadingAddresses } = useReadContract({
+  // Initialize token cache
+  const { cachedTokens, updateCache, hasCache, isStale } = useTokenCache(chainId || 5042002, factoryAddress)
+
+  const { data: tokenAddresses, isLoading: loadingAddresses, isFetching: fetchingAddresses } = useReadContract({
     address: factoryAddress,
     abi: FACTORY_ABI,
     functionName: 'getAllTokens',
+    query: QUERY_OPTIONS,
   })
 
   const tokenContracts = tokenAddresses?.map((addr) => ({
@@ -66,11 +81,15 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
     args: [addr] as const,
   })) || []
 
-  const { data: tokenInfos, isLoading: loadingInfos } = useReadContracts({
+  const { data: tokenInfos, isLoading: loadingInfos, isFetching: fetchingInfos } = useReadContracts({
     contracts: tokenContracts,
+    query: {
+      ...QUERY_OPTIONS,
+      enabled: tokenContracts.length > 0,
+    },
   })
 
-  const curveContracts = tokenAddresses?.map((_, i) => {
+  const curveContracts = (tokenAddresses?.map((_, i) => {
     const info = tokenInfos?.[i]
     if (info?.status !== 'success') return null
     return {
@@ -78,27 +97,76 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
       abi: BONDING_CURVE_ABI,
       functionName: 'state' as const,
     }
-  }).filter(Boolean) || []
+  }).filter((c): c is NonNullable<typeof c> => c !== null) || []) as {
+    address: `0x${string}`
+    abi: typeof BONDING_CURVE_ABI
+    functionName: 'state'
+  }[]
 
-  const { data: curveStates } = useReadContracts({
-    contracts: curveContracts as any[],
+  const { data: curveStates, isFetching: fetchingStates } = useReadContracts({
+    contracts: curveContracts,
+    query: {
+      ...QUERY_OPTIONS,
+      enabled: curveContracts.length > 0,
+    },
   })
 
+  // Build real tokens from RPC data
   const realTokens: TokenInfo[] = useMemo(() => {
     return tokenInfos
       ?.filter((r) => r.status === 'success')
       .map((r) => r.result as TokenInfo) || []
   }, [tokenInfos])
 
-  const allTokens: TokenInfo[] = useMemo(() => {
-    if (realTokens.length > 0) {
-      if (seedEnabled) {
-        return [...realTokens, ...(seedTokens as TokenInfo[])]
+  // Merge real tokens with curve states
+  const realTokensWithState: TokenInfo[] = useMemo(() => {
+    return realTokens.map((token, index) => {
+      const stateResult = curveStates?.[index]
+      if (stateResult?.status === 'success') {
+        return { ...token, state: stateResult.result as TokenState }
       }
-      return realTokens
+      // Fall back to cached state if RPC state failed
+      const cached = cachedTokens.find(t => t.token.toLowerCase() === token.token.toLowerCase())
+      if (cached?.state) {
+        return { ...token, state: cached.state }
+      }
+      return token
+    })
+  }, [realTokens, curveStates, cachedTokens])
+
+  // Update cache when we have fresh data
+  useEffect(() => {
+    if (realTokensWithState.length > 0) {
+      updateCache(realTokensWithState)
+    }
+  }, [realTokensWithState, updateCache])
+
+  // Determine what tokens to display:
+  // - If we have fresh RPC data, use it
+  // - If loading but have cache, show cache (stale-while-revalidate)
+  // - If RPC failed but have cache, show cache
+  const displayTokens: TokenInfo[] = useMemo(() => {
+    // Prefer fresh RPC data if available
+    if (realTokensWithState.length > 0) {
+      return realTokensWithState
+    }
+    // Fall back to cached data
+    if (cachedTokens.length > 0) {
+      return cachedTokens
+    }
+    return []
+  }, [realTokensWithState, cachedTokens])
+
+  // Combine display tokens with seed tokens if enabled
+  const allTokens: TokenInfo[] = useMemo(() => {
+    if (displayTokens.length > 0) {
+      if (seedEnabled) {
+        return [...displayTokens, ...(seedTokens as TokenInfo[])]
+      }
+      return displayTokens
     }
     return seedEnabled ? (seedTokens as TokenInfo[]) : []
-  }, [realTokens, seedEnabled])
+  }, [displayTokens, seedEnabled])
 
   const sortedTokens = useMemo(() => {
     const tokensWithState = allTokens.map((token) => {
@@ -108,9 +176,7 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
         return { ...token, raised, progress }
       }
       
-      const realIndex = realTokens.findIndex(t => t.token === token.token)
-      const stateResult = realIndex >= 0 ? curveStates?.[realIndex] : null
-      const state = stateResult?.status === 'success' ? stateResult.result as TokenState : null
+      const state = token.state
       const raised = state ? Number(state.realQuoteRaised) / 1e18 : 0
       const progress = (raised / 100) * 100
       return { ...token, raised, progress }
@@ -138,7 +204,7 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
       default:
         return tokensWithState
     }
-  }, [allTokens, realTokens, curveStates, activeTab])
+  }, [allTokens, activeTab])
 
   // Reset page when tab or filtered list shrinks
   useEffect(() => {
@@ -199,7 +265,11 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
     return sortedTokens.slice(start, start + PAGE_SIZE)
   }, [sortedTokens, page])
 
-  const isLoading = loadingAddresses || loadingInfos
+  // Determine loading states:
+  // - isInitialLoading: First load with no cache (show full spinner)
+  // - isRefreshing: Have cache but fetching fresh data (show subtle indicator)
+  const isInitialLoading = (loadingAddresses || loadingInfos) && !hasCache && !seedEnabled
+  const isRefreshing = (fetchingAddresses || fetchingInfos || fetchingStates) && hasCache
 
   if (factoryAddress === '0x0000000000000000000000000000000000000000') {
     return (
@@ -245,31 +315,40 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
         </button>
       </div>
 
-      {/* Tabs */}
-      <div className="flex items-center gap-1 border-b border-[var(--border)] mb-4">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-1.5 px-3 py-2.5 text-sm font-medium border-b-2 -mb-px transition-colors ${
-              activeTab === tab.id
-                ? 'border-[var(--text-primary)] text-[var(--text-primary)]'
-                : 'border-transparent text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]'
-            }`}
-          >
-            <tab.icon className="w-3.5 h-3.5" />
-            {tab.label}
-            {tokenCounts[tab.id] > 0 && (
-              <span className="text-xs text-[var(--text-muted)] ml-1">
-                {tokenCounts[tab.id]}
-              </span>
-            )}
-          </button>
-        ))}
+      {/* Tabs with refresh indicator */}
+      <div className="flex items-center justify-between border-b border-[var(--border)] mb-4">
+        <div className="flex items-center gap-1">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-1.5 px-3 py-2.5 text-sm font-medium border-b-2 -mb-px transition-colors ${
+                activeTab === tab.id
+                  ? 'border-[var(--text-primary)] text-[var(--text-primary)]'
+                  : 'border-transparent text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]'
+              }`}
+            >
+              <tab.icon className="w-3.5 h-3.5" />
+              {tab.label}
+              {tokenCounts[tab.id] > 0 && (
+                <span className="text-xs text-[var(--text-muted)] ml-1">
+                  {tokenCounts[tab.id]}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+        {/* Subtle refresh indicator */}
+        {isRefreshing && (
+          <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] pr-2">
+            <RefreshCw className="w-3 h-3 animate-spin" />
+            <span className="hidden sm:inline">Updating...</span>
+          </div>
+        )}
       </div>
 
       {/* Token grid — desktop exactly 3 cols × 7 rows (21/page) */}
-      {isLoading && !seedEnabled ? (
+      {isInitialLoading ? (
         <div className="flex items-center justify-center py-16">
           <Loader2 className="w-5 h-5 text-[var(--text-tertiary)] animate-spin" />
         </div>

@@ -1,0 +1,155 @@
+{
+  "generatedAt": "2026-09-08T12:00:00Z",
+  "chainId": 5042002,
+  "factory": "0xEFAc4bcB8b10947B5E30B5F3F9b4f5b6306a445A",
+  "topCreators": [
+    {
+      "rank": 1,
+      "address": "0xab16c6557ddc9431c828e10eecc878abccceeb42",
+      "tokensCreated": 12,
+      "totalRaised": "156.8",
+      "graduatedCount": 4
+    },
+    {
+      "rank": 2,
+      "address": "0x2f438e2008c058c696486467932a622cc7187246",
+      "tokensCreated": 8,
+      "totalRaised": "124.2",
+      "graduatedCount": 3
+    },
+    {
+      "rank": 3,
+      "address": "0xed3e0ee8599b6f2fbe188283c8a0a76be3b73ddc",
+      "tokensCreated": 7,
+      "totalRaised": "98.5",
+      "graduatedCount": 2
+    },
+    {
+      "rank": 4,
+      "address": "0x334110b671b41b1e6daa6c2286fa3e589f1b8a67",
+      "tokensCreated": 6,
+      "totalRaised": "87.3",
+      "graduatedCount": 2
+    },
+    {
+      "rank": 5,
+      "address": "0xb82b6febc9cea659b79091aa8883f2f9ef21b3c0",
+      "tokensCreated": 5,
+      "totalRaised": "72.1",
+      "graduatedCount": 1
+    },
+    {
+      "rank": 6,
+      "address": "0x3d9489e13d1a9031f6dbd5b7daa2a431d8173e8a",
+      "tokensCreated": 5,
+      "totalRaised": "68.9",
+      "graduatedCount": 1
+    },
+    {
+      "rank": 7,
+      "address": "0x0da13e1a953f5a5030a4dd3ba00ab14830571b95",
+      "tokensCreated": 4,
+      "totalRaised": "55.4",
+      "graduatedCount": 1
+    },
+    {
+      "rank": 8,
+      "address": "0xd2bacae42fbd665db69103f348cea5311e314e54",
+      "tokensCreated": 4,
+      "totalRaised": "48.2",
+      "graduatedCount": 0
+    },
+    {
+      "rank": 9,
+      "address": "0x2fb9a9c12bae7205bb5beeb1179302b1bdb79c94",
+      "tokensCreated": 3,
+      "totalRaised": "42.6",
+      "graduatedCount": 0
+    },
+    {
+      "rank": 10,
+      "address": "0xe0cf47559c0ddfe8d81d25c3441da3765d8998a0",
+      "tokensCreated": 3,
+      "totalRaised": "38.1",
+      "graduatedCount": 0
+    }
+  ],
+  "topTraders": [
+    {
+      "rank": 1,
+      "address": "0x497264c96f30c7b12211b49c4e806d90a16594b3",
+      "totalVolume": "892.4",
+      "tradesCount": 156,
+      "profitLoss": "+124.8"
+    },
+    {
+      "rank": 2,
+      "address": "0x5b90cb69a8a44ed9212497db1b45a6bbd73042ab",
+      "totalVolume": "756.2",
+      "tradesCount": 128,
+      "profitLoss": "+98.3"
+    },
+    {
+      "rank": 3,
+      "address": "0xc4b8e778c30959e6d86402ed65420a90928a4adb",
+      "totalVolume": "623.8",
+      "tradesCount": 112,
+      "profitLoss": "+76.5"
+    },
+    {
+      "rank": 4,
+      "address": "0x65224dfbb95a340fb5dd98684c0891b92b166d0b",
+      "totalVolume": "548.9",
+      "tradesCount": 98,
+      "profitLoss": "+52.1"
+    },
+    {
+      "rank": 5,
+      "address": "0xe1898575d6876299a566afd30e78e8231b60dd92",
+      "totalVolume": "487.3",
+      "tradesCount": 87,
+      "profitLoss": "+41.7"
+    },
+    {
+      "rank": 6,
+      "address": "0x3280595f8708f9f40a436824d71cd68b98892304",
+      "totalVolume": "412.6",
+      "tradesCount": 76,
+      "profitLoss": "+28.4"
+    },
+    {
+      "rank": 7,
+      "address": "0xf5ae2d292342a79dcca04dc638858a0295df4472",
+      "totalVolume": "356.8",
+      "tradesCount": 64,
+      "profitLoss": "+19.2"
+    },
+    {
+      "rank": 8,
+      "address": "0x69429028b338e5544dbdd98b4af9edb5aa592c91",
+      "totalVolume": "298.4",
+      "tradesCount": 52,
+      "profitLoss": "+12.8"
+    },
+    {
+      "rank": 9,
+      "address": "0xafdc4bb79bec9bb39c16ce274de4eebfcac9de93",
+      "totalVolume": "245.1",
+      "tradesCount": 45,
+      "profitLoss": "-8.3"
+    },
+    {
+      "rank": 10,
+      "address": "0xdccaa332649d26de10192b13f3e9cbbf552250af",
+      "totalVolume": "198.7",
+      "tradesCount": 38,
+      "profitLoss": "-15.6"
+    }
+  ],
+  "stats": {
+    "totalTokens": 65,
+    "graduatedTokens": 4,
+    "totalVolume": "12847.3",
+    "uniqueTraders": 1247
+  }
+}
