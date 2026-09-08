@@ -1,0 +1,82 @@
+{
+  "token": "0xff8a0c6f9c862659e567e8285f8e7f95947e0e8b",
+  "curve": "0x7fb2927c249723f18b5192f4847104c498e28b89",
+  "createBlock": "61122542",
+  "indexedAt": "2026-09-08T21:08:07.580Z",
+  "holderCount": 2,
+  "buyCount": 2,
+  "sellCount": 2,
+  "totalVolume": "7156620155323388275",
+  "holders": [
+    {
+      "address": "0xcf41dcad5824e9734535d838550b79c6d22a2b9c",
+      "balance": "77914557308414959000033695",
+      "percentage": 95.86
+    },
+    {
+      "address": "0xd842212ee2ef77b40b95aff7a90a028318478309",
+      "balance": "3359661088694599444237114",
+      "percentage": 4.13
+    }
+  ],
+  "trades": [
+    {
+      "type": "sell",
+      "trader": "0xD842212Ee2ef77b40B95AFF7a90A028318478309",
+      "quoteAmount": "264427562028797645",
+      "tokenAmount": "5720504015885399053701030",
+      "newPrice": "46460597860",
+      "timestamp": 1788890171,
+      "txHash": "0xc34166b8e1ee116eab772e0c9a649df495baa809d02aaafc087d47cffa2a31a1",
+      "blockNumber": "61125267"
+    },
+    {
+      "type": "sell",
+      "trader": "0xD842212Ee2ef77b40B95AFF7a90A028318478309",
+      "quoteAmount": "1570992593294590630",
+      "tokenAmount": "32193312643510903765417053",
+      "newPrice": "47209103447",
+      "timestamp": 1788890153,
+      "txHash": "0x6905ed042a60a6d1823c0e35b0193c435793c1479dbb149ccafbd52693324ac7",
+      "blockNumber": "61125258"
+    },
+    {
+      "type": "buy",
+      "trader": "0xD842212Ee2ef77b40B95AFF7a90A028318478309",
+      "quoteAmount": "2041500000000000000",
+      "tokenAmount": "41273477748090902263355197",
+      "newPrice": "51779384345",
+      "timestamp": 1788890115,
+      "txHash": "0xc26ee30968976e3a67647506ce401deb32eadb21fbdb0599c78e09b25db77ed8",
+      "blockNumber": "61125239"
+    },
+    {
+      "type": "buy",
+      "trader": "0xcf41dCad5824e9734535D838550b79C6D22a2b9C",
+      "quoteAmount": "3279700000000000000",
+      "tokenAmount": "77914557308414959000033695",
+      "newPrice": "46029267362",
+      "timestamp": 1788889447,
+      "txHash": "0x07ce1f9b66c87bcca6461a2363c9668df990f3b4aa8e4d5ab2ce55d21f377728",
+      "blockNumber": "61124905"
+    }
+  ],
+  "priceHistory": [
+    {
+      "time": 1788889447,
+      "price": 4.6029267362e-8
+    },
+    {
+      "time": 1788890115,
+      "price": 5.1779384345e-8
+    },
+    {
+      "time": 1788890153,
+      "price": 4.7209103447e-8
+    },
+    {
+      "time": 1788890171,
+      "price": 4.646059786e-8
+    }
+  ]
+}

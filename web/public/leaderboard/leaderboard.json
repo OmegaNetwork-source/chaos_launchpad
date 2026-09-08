@@ -1,103 +1,572 @@
 {
-  "generatedAt": "2026-09-08T20:38:51.380Z",
+  "generatedAt": "2026-09-08T21:10:53.420Z",
+  "factoryAddress": "0xEFAc4bcB8b10947B5E30B5F3F9b4f5b6306a445A",
+  "blockRange": {
+    "from": "61031564",
+    "to": "61131564"
+  },
+  "totalWallets": 80,
+  "refreshIntervalHours": 24,
   "entries": [
+    {
+      "wallet": "0xc46c1f8b4fef6d45c6f3bcb433e928c4db4fbae0",
+      "tokensLaunched": 64,
+      "feesClaimed": "0",
+      "chaosVolume": "864033916308199529695",
+      "tradeCount": 67
+    },
+    {
+      "wallet": "0x8312902ff49d0c7fc6a7c371f948ae58e62e86c3",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "62372871671271062635",
+      "tradeCount": 10
+    },
+    {
+      "wallet": "0xf4786f74540e2646e88d150d3e55c4b799eb634f",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "53472881057706056944",
+      "tradeCount": 16
+    },
+    {
+      "wallet": "0xd15479a22caa4b731f18c3ec1d6fb80ac68edba1",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "46851040030445924493",
+      "tradeCount": 15
+    },
+    {
+      "wallet": "0x78f454dc3d2acb3340837fedc87a3be023f3d231",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "44482832564152596502",
+      "tradeCount": 15
+    },
+    {
+      "wallet": "0xefacdb4d0762d28659fc5496be53da994a0d2311",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "43948346363316956744",
+      "tradeCount": 16
+    },
+    {
+      "wallet": "0x604d2e253478407737fcce348d488965b5cb09e6",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "38848323008314526733",
+      "tradeCount": 12
+    },
+    {
+      "wallet": "0xcf41dcad5824e9734535d838550b79c6d22a2b9c",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "33503277040853608763",
+      "tradeCount": 12
+    },
+    {
+      "wallet": "0xa195a4662fdac8034bf40af52f5f9940ddddb0fd",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "33165585914011846958",
+      "tradeCount": 10
+    },
+    {
+      "wallet": "0x55e2d61b28c1c105ff2d672880998352d46ee5e2",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "32774261807013675465",
+      "tradeCount": 14
+    },
     {
       "wallet": "0xeed940f93fdc72e0bbfa1fd447ae3396ba92c53b",
       "tokensLaunched": 0,
       "feesClaimed": "0",
-      "chaosVolume": "5906537582865757224",
-      "tradeCount": 3
+      "chaosVolume": "32521232789468898330",
+      "tradeCount": 15
     },
     {
-      "wallet": "0x12e5defd0d5e2890011ccec1fa4466e301122b74",
+      "wallet": "0x114d439f941d5d3146fa65d00ed5ac480696d826",
       "tokensLaunched": 0,
       "feesClaimed": "0",
-      "chaosVolume": "5679162793764413063",
-      "tradeCount": 4
-    },
-    {
-      "wallet": "0x52cb6c8510ed3828787ff9dbf8ee015fe72a39fd",
-      "tokensLaunched": 0,
-      "feesClaimed": "0",
-      "chaosVolume": "5102433351862626954",
-      "tradeCount": 3
+      "chaosVolume": "31925662091441004741",
+      "tradeCount": 15
     },
     {
       "wallet": "0xac552197aa6e49cbd0189b84bbf654cdf58cb33d",
       "tokensLaunched": 0,
       "feesClaimed": "0",
-      "chaosVolume": "4267400000000000000",
-      "tradeCount": 2
+      "chaosVolume": "31542290787006431542",
+      "tradeCount": 15
     },
     {
-      "wallet": "0xca7ce1b36baa515248eefb9dcbb7a52fdaa10b56",
+      "wallet": "0x52cb6c8510ed3828787ff9dbf8ee015fe72a39fd",
       "tokensLaunched": 0,
       "feesClaimed": "0",
-      "chaosVolume": "3817800000000000000",
-      "tradeCount": 2
+      "chaosVolume": "31423565207389450777",
+      "tradeCount": 14
     },
     {
-      "wallet": "0x8257a72d283c20b2190bb532dc1ac0aeb3bbf4ff",
+      "wallet": "0xbd25bcc2f9b4b8e373e39812484973ac32aa69a3",
       "tokensLaunched": 0,
       "feesClaimed": "0",
-      "chaosVolume": "3323000000000000000",
-      "tradeCount": 2
+      "chaosVolume": "29812253038749358802",
+      "tradeCount": 7
     },
     {
-      "wallet": "0x91289ad4835d05ecaceedb0c90974499c97b3ced",
+      "wallet": "0xc9c2a06c5978a3b03d263dd7468883b1cb6e2cb6",
       "tokensLaunched": 0,
       "feesClaimed": "0",
-      "chaosVolume": "3022551643547947222",
-      "tradeCount": 3
+      "chaosVolume": "29808913731066146373",
+      "tradeCount": 10
     },
     {
-      "wallet": "0x8fdb405e069277eb8309af3eea9700ad9d79a968",
+      "wallet": "0xa01d8d0d6634d07f4fced9ea7b85547ca75a812f",
       "tokensLaunched": 0,
       "feesClaimed": "0",
-      "chaosVolume": "2612448020819148944",
-      "tradeCount": 2
+      "chaosVolume": "29175687580733729585",
+      "tradeCount": 9
+    },
+    {
+      "wallet": "0x5dfaba696429400af645c96b47d6de9548ffa31c",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "28983376243269461773",
+      "tradeCount": 9
+    },
+    {
+      "wallet": "0x6f522ba7fe6897987e03236053998e1729c9fb21",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "28318612671510058230",
+      "tradeCount": 12
+    },
+    {
+      "wallet": "0xb210ddcc1aad8def72d4f3e85dced50bb107a76e",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "27153209107531725630",
+      "tradeCount": 18
+    },
+    {
+      "wallet": "0x1cedf6c7ff5ea40d7d119c11e331969566cd56b0",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "24564164902728086023",
+      "tradeCount": 9
+    },
+    {
+      "wallet": "0x12e5defd0d5e2890011ccec1fa4466e301122b74",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "24436419510998255250",
+      "tradeCount": 12
+    },
+    {
+      "wallet": "0x6e512df1c7263ec1eee02f693b85b50633714a86",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "24152554340640359374",
+      "tradeCount": 11
+    },
+    {
+      "wallet": "0x6540356f54641f2ecac0efd333896676349a5a4f",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "22276903511475479807",
+      "tradeCount": 13
+    },
+    {
+      "wallet": "0x1a3f3fe452e419130ed3f9b028dda0d03ee147a0",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "21950556397887584850",
+      "tradeCount": 7
     },
     {
       "wallet": "0xd842212ee2ef77b40b95aff7a90a028318478309",
       "tokensLaunched": 0,
       "feesClaimed": "0",
-      "chaosVolume": "2545900000000000000",
-      "tradeCount": 2
+      "chaosVolume": "21467826223434458119",
+      "tradeCount": 10
+    },
+    {
+      "wallet": "0xd7c455232c3ec5d4707a1706897fa6a10731e455",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "21135213405159665502",
+      "tradeCount": 8
+    },
+    {
+      "wallet": "0x57705b65e99cd62be35b9e61d3978e1f0727ba40",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "20566781484576766706",
+      "tradeCount": 7
+    },
+    {
+      "wallet": "0x80842e7359519b1d0ff04df4cdee454e53df80d4",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "20196581392922722366",
+      "tradeCount": 9
     },
     {
       "wallet": "0xc68323ce13c2355ded961be4877bab6ea84d323a",
       "tokensLaunched": 0,
       "feesClaimed": "0",
-      "chaosVolume": "2368232531338968908",
+      "chaosVolume": "19883691894989663460",
+      "tradeCount": 11
+    },
+    {
+      "wallet": "0x8a0896db604df5ff248ce918bb058e6423fc585a",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "19806024677461501108",
+      "tradeCount": 9
+    },
+    {
+      "wallet": "0x487d7062e017671ca7c59b06263c81026d045af1",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "19798335765199365387",
+      "tradeCount": 6
+    },
+    {
+      "wallet": "0x6bfbe47bfd8a7bafec8055e556de263becfdad81",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "19724104441913472022",
+      "tradeCount": 9
+    },
+    {
+      "wallet": "0x277d177e2ceb4084442763cf4074c550ce15f3b7",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "19508283404647730656",
+      "tradeCount": 5
+    },
+    {
+      "wallet": "0xdb113b658b1fcdadaeaa83f198952d5eb5e7f7f8",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "19355800819294561170",
+      "tradeCount": 8
+    },
+    {
+      "wallet": "0x493015a2723757210d5bc30be0839385f339d128",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "18511273787650248426",
+      "tradeCount": 11
+    },
+    {
+      "wallet": "0x382329733dded996228d0507ef1d64e053031a86",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "18392368202967087572",
+      "tradeCount": 11
+    },
+    {
+      "wallet": "0xca0302108b7f45c823034a7ec147d0b8c25a550f",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "17945844824808370000",
+      "tradeCount": 6
+    },
+    {
+      "wallet": "0xf16261ca948c0782820794f6926020e89b3c768d",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "17821766578033501339",
+      "tradeCount": 5
+    },
+    {
+      "wallet": "0x0c6ec980e6eba251804a67c32fe2f43dc1de3759",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "17752011095242431256",
+      "tradeCount": 5
+    },
+    {
+      "wallet": "0x8da8e1496fda3a4483026529609434c3c2d452f2",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "15934076210132111445",
+      "tradeCount": 5
+    },
+    {
+      "wallet": "0x34b0a95395d125a94911df25f50c7411832b98bc",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "15442697031318816371",
+      "tradeCount": 5
+    },
+    {
+      "wallet": "0x46b59de06caf6ed429b6cecde8c31ac8bf6b5e91",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "14903411803004164803",
+      "tradeCount": 4
+    },
+    {
+      "wallet": "0x60ef676a8c1cb3faf30a7c8ebf1a3b14ef77302f",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "14759381545619657715",
+      "tradeCount": 7
+    },
+    {
+      "wallet": "0xd6887330d4a3d30a5a36f9ec1d2558ac722a2896",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "14157169136932018323",
+      "tradeCount": 7
+    },
+    {
+      "wallet": "0xef0e7d3bda90263a2eee202858f3bbaa5ea18235",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "14119370032960739434",
+      "tradeCount": 4
+    },
+    {
+      "wallet": "0x7fc3fec06961a49f923959b1bbe69e8fde37331c",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "13943146096430062698",
+      "tradeCount": 4
+    },
+    {
+      "wallet": "0x6bf07f126ec982192cad68b5595812948b979bdf",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "13872531055488282852",
+      "tradeCount": 7
+    },
+    {
+      "wallet": "0x2d2f0a2401602f9bdeae2d3cbab2bdb87bfc26f2",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "13709835598165496124",
+      "tradeCount": 7
+    },
+    {
+      "wallet": "0xa33c41d929d7bdce7cc67754fda47e506e175207",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "13355672168316625601",
+      "tradeCount": 5
+    },
+    {
+      "wallet": "0xec1885e5be6e579f793305e0b4522aeb5c884435",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "13082793319821808239",
+      "tradeCount": 7
+    },
+    {
+      "wallet": "0xca7ce1b36baa515248eefb9dcbb7a52fdaa10b56",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "12584532933794386381",
+      "tradeCount": 7
+    },
+    {
+      "wallet": "0x5b7febdad44818b854b73d4e8a41521ad3e306fb",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "12325877519378370609",
+      "tradeCount": 5
+    },
+    {
+      "wallet": "0x1e58b38e5566172976422daf8ab1f8fee63f03e4",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "11662042948589324378",
+      "tradeCount": 6
+    },
+    {
+      "wallet": "0x88fbfc126809d220d9e12ef94f564e7af562fb4e",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "11651507761784337756",
+      "tradeCount": 5
+    },
+    {
+      "wallet": "0x17e264816a69fa53cf9e2f3ba0ad9f8dca0a5f02",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "10883436763033236152",
+      "tradeCount": 8
+    },
+    {
+      "wallet": "0xff83d02771a1e4b92844bd5cf78091d4685b2adc",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "10550857780098127199",
+      "tradeCount": 6
+    },
+    {
+      "wallet": "0x8257a72d283c20b2190bb532dc1ac0aeb3bbf4ff",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "9747574508156870269",
+      "tradeCount": 4
+    },
+    {
+      "wallet": "0x92c70cfce24dd27b288ec5f4573a2a848fbf6756",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "9590439909763793629",
+      "tradeCount": 4
+    },
+    {
+      "wallet": "0x5caed54854ba0bf627f85e6633329444e2d4ebd6",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "9508192408691117922",
+      "tradeCount": 2
+    },
+    {
+      "wallet": "0x25b2877393387c757f77895d00edc499cb543460",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "9382324828534124880",
+      "tradeCount": 2
+    },
+    {
+      "wallet": "0xd9f5c295b14425d86347840aaf02462dcb516bff",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "8814411690455674739",
+      "tradeCount": 7
+    },
+    {
+      "wallet": "0xeb487ee2c4b113f77eaa7a6047eb58434ac1de4f",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "8330726428281048853",
       "tradeCount": 2
     },
     {
       "wallet": "0xc72ed561d96f0b6cb65e863f6c4de5846becfbe3",
       "tokensLaunched": 0,
       "feesClaimed": "0",
-      "chaosVolume": "1335058276173504279",
+      "chaosVolume": "8268573093381866108",
+      "tradeCount": 4
+    },
+    {
+      "wallet": "0xd62796fceb8baf19f781eb09e66bf97bfddff13a",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "7428400000000000000",
       "tradeCount": 2
     },
     {
-      "wallet": "0x6bf07f126ec982192cad68b5595812948b979bdf",
+      "wallet": "0x91289ad4835d05ecaceedb0c90974499c97b3ced",
       "tokensLaunched": 0,
       "feesClaimed": "0",
-      "chaosVolume": "1325700000000000000",
+      "chaosVolume": "7239751643547947222",
+      "tradeCount": 4
+    },
+    {
+      "wallet": "0x99ed3587ffd17a0eaaf2a098a9af906c136fe1e3",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "7024437866480094133",
+      "tradeCount": 2
+    },
+    {
+      "wallet": "0x8fdb405e069277eb8309af3eea9700ad9d79a968",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "7017331819533669549",
+      "tradeCount": 4
+    },
+    {
+      "wallet": "0x2e54b586d9784032c65d242a2e97b46143d45422",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "6777485194506806702",
+      "tradeCount": 5
+    },
+    {
+      "wallet": "0x135ddc4cad50023ba39c90c10cdc779fb5488fc0",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "6477354808999342379",
+      "tradeCount": 2
+    },
+    {
+      "wallet": "0xb918a15bd6e83998ba14dc6ac304fd48dfbd4df0",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "5347258334781536278",
+      "tradeCount": 3
+    },
+    {
+      "wallet": "0x5a6e1abb9afc0b077ac4ed380f699d215bae7393",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "4726028488485246961",
+      "tradeCount": 2
+    },
+    {
+      "wallet": "0xa4b77ab492dde3d788fcc86818fd45a43306b0a2",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "3890700000000000000",
       "tradeCount": 1
+    },
+    {
+      "wallet": "0x47f9bd3bac2ad5bccd280d50f1feabd1df9c0ebe",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "3602378627883850115",
+      "tradeCount": 3
+    },
+    {
+      "wallet": "0xcf2866b8f5a79b62cb058c9dc812314fd8404a5a",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "3480000000000000000",
+      "tradeCount": 1
+    },
+    {
+      "wallet": "0x018419da93b9c802e8c6d9901bc0396a713af60b",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "3253522609672826253",
+      "tradeCount": 2
+    },
+    {
+      "wallet": "0x9289736bf8851c743f75cb010e39f746ad6a110f",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "2924801526950944691",
+      "tradeCount": 2
     },
     {
       "wallet": "0xbb27159aedb9074faf5511946d4b08f4ac53b652",
       "tokensLaunched": 0,
       "feesClaimed": "0",
-      "chaosVolume": "1241900000000000000",
+      "chaosVolume": "2269272384430796598",
+      "tradeCount": 3
+    },
+    {
+      "wallet": "0x80f0d5f7c21b91bfd42190f77cd812406b12799e",
+      "tokensLaunched": 0,
+      "feesClaimed": "0",
+      "chaosVolume": "2102900000000000000",
       "tradeCount": 1
     },
     {
-      "wallet": "0x0c6ec980e6eba251804a67c32fe2f43dc1de3759",
-      "tokensLaunched": 0,
+      "wallet": "0x189d68bbe7935bb36699642c76fda96a7e872424",
+      "tokensLaunched": 2,
       "feesClaimed": "0",
-      "chaosVolume": "891200000000000000",
-      "tradeCount": 1
+      "chaosVolume": "0",
+      "tradeCount": 0
     }
   ]
 }
