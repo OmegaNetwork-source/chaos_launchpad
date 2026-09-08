@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
 import { parseUnits } from 'viem'
+import { validateSingleField, validateTokenContent, type ContentFilterResult } from '../utils/contentFilter'
 import { 
   FACTORY_ABI, 
   PROTOCOL_FEE_BPS, 
@@ -48,6 +49,17 @@ export function CreateToken({ isOpen, onClose, onCreated }: CreateTokenProps) {
   const [creatorPostGradFeeBps, setCreatorPostGradFeeBps] = useState(DEFAULT_CREATOR_POST_GRAD_FEE_BPS)
   const [selectedQuoteToken, setSelectedQuoteToken] = useState<`0x${string}`>(NATIVE_QUOTE)
 
+  const [contentError, setContentError] = useState<ContentFilterResult['field'] | null>(null)
+
+  const validateField = useCallback((value: string, field: ContentFilterResult['field']) => {
+    const result = validateSingleField(value, field)
+    if (!result.isValid) {
+      setContentError(field)
+    } else if (contentError === field) {
+      setContentError(null)
+    }
+  }, [contentError])
+
   const factoryAddress = getFactoryAddress(chainId || 5042002)
   const nativeSymbol = getNativeSymbol(chainId || 5042002)
   const quoteTokens = getQuoteTokens(chainId || 5042002)
@@ -70,6 +82,20 @@ export function CreateToken({ isOpen, onClose, onCreated }: CreateTokenProps) {
 
     if (!name.trim() || !symbol.trim()) {
       toast.error('Name and ticker required')
+      return
+    }
+
+    const contentCheck = validateTokenContent({
+      name,
+      symbol,
+      description,
+      twitter,
+      telegram,
+      website,
+      discord,
+    })
+    if (!contentCheck.isValid) {
+      setContentError(contentCheck.field ?? null)
       return
     }
 
@@ -136,6 +162,7 @@ export function CreateToken({ isOpen, onClose, onCreated }: CreateTokenProps) {
       setSelectedQuoteToken(NATIVE_QUOTE)
       setShowAdvanced(false)
       setShowSocials(false)
+      setContentError(null)
       reset()
       onCreated()
     }
@@ -175,11 +202,20 @@ export function CreateToken({ isOpen, onClose, onCreated }: CreateTokenProps) {
               <input
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value)
+                  validateField(e.target.value, 'name')
+                }}
+                onBlur={() => validateField(name, 'name')}
                 placeholder="e.g. Doge Moon"
-                className="w-full px-3 py-2.5 bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--border-hover)] transition-colors"
+                className={`w-full px-3 py-2.5 bg-[var(--bg-secondary)] border rounded-lg text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none transition-colors ${
+                  contentError === 'name' ? 'border-[var(--red)]' : 'border-[var(--border)] focus:border-[var(--border-hover)]'
+                }`}
                 maxLength={50}
               />
+              {contentError === 'name' && (
+                <p className="text-xs text-[var(--red)] mt-1">This name isn't allowed. Please choose something else.</p>
+              )}
             </div>
 
             {/* Ticker */}
@@ -192,12 +228,22 @@ export function CreateToken({ isOpen, onClose, onCreated }: CreateTokenProps) {
                 <input
                   type="text"
                   value={symbol}
-                  onChange={(e) => setSymbol(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''))}
+                  onChange={(e) => {
+                    const val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '')
+                    setSymbol(val)
+                    validateField(val, 'symbol')
+                  }}
+                  onBlur={() => validateField(symbol, 'symbol')}
                   placeholder="DMOON"
-                  className="w-full pl-7 pr-3 py-2.5 bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--border-hover)] transition-colors uppercase font-medium"
+                  className={`w-full pl-7 pr-3 py-2.5 bg-[var(--bg-secondary)] border rounded-lg text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none transition-colors uppercase font-medium ${
+                    contentError === 'symbol' ? 'border-[var(--red)]' : 'border-[var(--border)] focus:border-[var(--border-hover)]'
+                  }`}
                   maxLength={10}
                 />
               </div>
+              {contentError === 'symbol' && (
+                <p className="text-xs text-[var(--red)] mt-1">This ticker isn't allowed. Please choose something else.</p>
+              )}
             </div>
 
             {/* Image URL */}
@@ -221,12 +267,21 @@ export function CreateToken({ isOpen, onClose, onCreated }: CreateTokenProps) {
               </label>
               <textarea
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => {
+                  setDescription(e.target.value)
+                  validateField(e.target.value, 'description')
+                }}
+                onBlur={() => validateField(description, 'description')}
                 placeholder="Tell us about your coin..."
                 rows={2}
-                className="w-full px-3 py-2.5 bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--border-hover)] transition-colors resize-none"
+                className={`w-full px-3 py-2.5 bg-[var(--bg-secondary)] border rounded-lg text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none transition-colors resize-none ${
+                  contentError === 'description' ? 'border-[var(--red)]' : 'border-[var(--border)] focus:border-[var(--border-hover)]'
+                }`}
                 maxLength={500}
               />
+              {contentError === 'description' && (
+                <p className="text-xs text-[var(--red)] mt-1">This description contains content that isn't allowed. Please revise it.</p>
+              )}
             </div>
 
             {/* Quote Token Selector */}
@@ -294,10 +349,20 @@ export function CreateToken({ isOpen, onClose, onCreated }: CreateTokenProps) {
                     <input
                       type="text"
                       value={twitter}
-                      onChange={(e) => setTwitter(e.target.value.replace('@', ''))}
+                      onChange={(e) => {
+                        const val = e.target.value.replace('@', '')
+                        setTwitter(val)
+                        validateField(val, 'twitter')
+                      }}
+                      onBlur={() => validateField(twitter, 'twitter')}
                       placeholder="@username or full URL"
-                      className="w-full px-3 py-2 bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--border-hover)] transition-colors"
+                      className={`w-full px-3 py-2 bg-[var(--bg-secondary)] border rounded-lg text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none transition-colors ${
+                        contentError === 'twitter' ? 'border-[var(--red)]' : 'border-[var(--border)] focus:border-[var(--border-hover)]'
+                      }`}
                     />
+                    {contentError === 'twitter' && (
+                      <p className="text-xs text-[var(--red)] mt-1">This content isn't allowed.</p>
+                    )}
                   </div>
 
                   {/* Telegram */}
@@ -309,10 +374,19 @@ export function CreateToken({ isOpen, onClose, onCreated }: CreateTokenProps) {
                     <input
                       type="text"
                       value={telegram}
-                      onChange={(e) => setTelegram(e.target.value)}
+                      onChange={(e) => {
+                        setTelegram(e.target.value)
+                        validateField(e.target.value, 'telegram')
+                      }}
+                      onBlur={() => validateField(telegram, 'telegram')}
                       placeholder="t.me/group or @group"
-                      className="w-full px-3 py-2 bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--border-hover)] transition-colors"
+                      className={`w-full px-3 py-2 bg-[var(--bg-secondary)] border rounded-lg text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none transition-colors ${
+                        contentError === 'telegram' ? 'border-[var(--red)]' : 'border-[var(--border)] focus:border-[var(--border-hover)]'
+                      }`}
                     />
+                    {contentError === 'telegram' && (
+                      <p className="text-xs text-[var(--red)] mt-1">This content isn't allowed.</p>
+                    )}
                   </div>
 
                   {/* Website */}
@@ -324,10 +398,19 @@ export function CreateToken({ isOpen, onClose, onCreated }: CreateTokenProps) {
                     <input
                       type="url"
                       value={website}
-                      onChange={(e) => setWebsite(e.target.value)}
+                      onChange={(e) => {
+                        setWebsite(e.target.value)
+                        validateField(e.target.value, 'website')
+                      }}
+                      onBlur={() => validateField(website, 'website')}
                       placeholder="https://..."
-                      className="w-full px-3 py-2 bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--border-hover)] transition-colors"
+                      className={`w-full px-3 py-2 bg-[var(--bg-secondary)] border rounded-lg text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none transition-colors ${
+                        contentError === 'website' ? 'border-[var(--red)]' : 'border-[var(--border)] focus:border-[var(--border-hover)]'
+                      }`}
                     />
+                    {contentError === 'website' && (
+                      <p className="text-xs text-[var(--red)] mt-1">This content isn't allowed.</p>
+                    )}
                   </div>
 
                   {/* Discord */}
@@ -339,10 +422,19 @@ export function CreateToken({ isOpen, onClose, onCreated }: CreateTokenProps) {
                     <input
                       type="text"
                       value={discord}
-                      onChange={(e) => setDiscord(e.target.value)}
+                      onChange={(e) => {
+                        setDiscord(e.target.value)
+                        validateField(e.target.value, 'discord')
+                      }}
+                      onBlur={() => validateField(discord, 'discord')}
                       placeholder="discord.gg/... or full URL"
-                      className="w-full px-3 py-2 bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-[var(--border-hover)] transition-colors"
+                      className={`w-full px-3 py-2 bg-[var(--bg-secondary)] border rounded-lg text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none transition-colors ${
+                        contentError === 'discord' ? 'border-[var(--red)]' : 'border-[var(--border)] focus:border-[var(--border-hover)]'
+                      }`}
                     />
+                    {contentError === 'discord' && (
+                      <p className="text-xs text-[var(--red)] mt-1">This content isn't allowed.</p>
+                    )}
                   </div>
                 </div>
               )}
@@ -501,7 +593,7 @@ export function CreateToken({ isOpen, onClose, onCreated }: CreateTokenProps) {
             ) : (
               <button
                 type="submit"
-                disabled={isPending || isConfirming || !name || !symbol}
+                disabled={isPending || isConfirming || !name || !symbol || !!contentError}
                 className="w-full py-3 btn-primary rounded-lg text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-40"
               >
                 {isPending || isConfirming ? (

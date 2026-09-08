@@ -103,6 +103,9 @@ function HowItWorks() {
       <p className="text-sm text-[var(--text-secondary)]">
         Chaos is the quickest way to launch memes on Arc Testnet.
       </p>
+      <p className="text-xs text-[var(--text-muted)]">
+        Hateful, racist, or harmful token names and metadata are prohibited.
+      </p>
       <div className="grid gap-3">
         <div className="bg-[var(--bg-secondary)] rounded-lg p-4">
           <div className="flex items-center gap-3 mb-2">
