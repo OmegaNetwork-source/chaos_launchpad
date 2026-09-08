@@ -32,9 +32,12 @@ interface TokenCardProps {
   onClick: () => void
   nativeSymbol?: string
   isNew?: boolean
+  chaosFlash?: boolean
+  chaosHighlight?: boolean
+  chaosMode?: boolean
 }
 
-export function TokenCard({ tokenInfo, onClick, nativeSymbol = 'USDC', isNew = false }: TokenCardProps) {
+export function TokenCard({ tokenInfo, onClick, nativeSymbol = 'USDC', isNew = false, chaosFlash = false, chaosHighlight = false, chaosMode = false }: TokenCardProps) {
   const isSeed = tokenInfo.isSeed === true
   
   const { data: chainState } = useReadContract({
@@ -92,10 +95,17 @@ export function TokenCard({ tokenInfo, onClick, nativeSymbol = 'USDC', isNew = f
     imageUrl = resolveTokenImage(meta.image || '')
   } catch {}
 
+  const chaosClasses = [
+    isNew && 'token-card-new',
+    chaosFlash && 'chaos-card-flash',
+    chaosHighlight && 'chaos-card-highlight',
+    chaosMode && 'chaos-card',
+  ].filter(Boolean).join(' ')
+
   return (
     <div
       onClick={onClick}
-      className={`card-hover bg-[var(--bg-card)] border border-[var(--border)] rounded-lg p-3 cursor-pointer${isNew ? ' token-card-new' : ''}`}
+      className={`card-hover bg-[var(--bg-card)] border border-[var(--border)] rounded-lg p-3 cursor-pointer ${chaosClasses}`}
     >
       <div className="flex items-start gap-3">
         {/* Token avatar */}

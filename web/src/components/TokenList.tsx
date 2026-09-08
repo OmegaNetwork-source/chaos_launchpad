@@ -9,6 +9,7 @@ import { seedTokens, isSeedEnabled } from '../seed/seedTokens'
 import { useTokenCache } from '../hooks/useTokenCache'
 import { useChaos } from '../context/ChaosContext'
 import { YeetModal } from './YeetModal'
+import { ChaosMemePopup, ChaosFlashOverlay } from './ChaosMemePopup'
 import { Clock, TrendingUp, Rocket, Loader2, ExternalLink, ChevronLeft, ChevronRight, RefreshCw, Zap, Sparkles } from 'lucide-react'
 
 interface TokenState {
@@ -62,9 +63,13 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
   const [showYeet, setShowYeet] = useState(false)
   const seenAddressesRef = useRef<Set<string> | null>(null)
   const flashTimersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map())
+  const gridRef = useRef<HTMLDivElement>(null)
   const seedEnabled = isSeedEnabled()
   const { chainId } = useAccount()
   const { isChaosMode, enableChaosMode, disableChaosMode } = useChaos()
+  
+  // Chaos mode visual effects
+  const { flashCards, highlightIndex } = ChaosFlashOverlay({ active: isChaosMode })
 
   const factoryAddress = getFactoryAddress(chainId || 5042002)
   const nativeSymbol = getNativeSymbol(chainId || 5042002)
@@ -452,16 +457,24 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {pageTokens.map((token) => (
+          <div 
+            ref={gridRef}
+            className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 relative ${isChaosMode ? 'chaos-grid' : ''}`}
+          >
+            {pageTokens.map((token, index) => (
               <TokenCard
                 key={token.token}
                 tokenInfo={token}
                 onClick={() => onSelectToken(token)}
                 nativeSymbol={nativeSymbol}
                 isNew={flashing.has(token.token.toLowerCase())}
+                chaosFlash={isChaosMode && flashCards.has(index)}
+                chaosHighlight={isChaosMode && highlightIndex === index}
+                chaosMode={isChaosMode}
               />
             ))}
+            {/* Chaos meme popups */}
+            <ChaosMemePopup active={isChaosMode} containerRef={gridRef} />
           </div>
 
           {sortedTokens.length > PAGE_SIZE && (
