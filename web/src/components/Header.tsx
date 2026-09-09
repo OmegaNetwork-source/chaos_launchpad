@@ -97,32 +97,46 @@ export function Header({ onProfileClick, onLeaderboardClick }: HeaderProps) {
     }
   }, [connectError, isMobileDevice])
 
-  const ensureArcChain = () => {
-    const config = getChainConfig(supportedChains[0].id)
-    if (!config) return
+  const ensureArcChain = async () => {
+    const chainConfig = getChainConfig(supportedChains[0].id)
+    if (!chainConfig) return
     const eth = (window as unknown as { ethereum?: { request: (args: { method: string; params?: unknown[] }) => Promise<unknown> } }).ethereum
     if (!eth?.request) return
-    eth.request({
-      method: 'wallet_addEthereumChain',
-      params: [config.addChainParams],
-    }).catch(() => {})
+    
+    try {
+      await eth.request({
+        method: 'wallet_addEthereumChain',
+        params: [chainConfig.addChainParams],
+      })
+    } catch {
+      // User rejected or chain already added - both are fine
+    }
+    
     try {
       switchChain({ chainId: supportedChains[0].id as 5042002 | 4441 })
     } catch {
-      /* user may reject */
+      // User may reject switch
     }
   }
 
-  const handleConnect = async (selectedConnector: typeof connectors[0]) => {
+  const handleConnect = (selectedConnector: typeof connectors[0]) => {
     setFriendlyError(null)
-    try {
-      connect({ connector: selectedConnector })
-      setShowConnectorModal(false)
-      // Prompt MetaMask / injected wallets to add Arc Testnet
-      setTimeout(() => ensureArcChain(), 400)
-    } catch (err) {
-      console.error('Connect error:', err)
-    }
+    setShowConnectorModal(false)
+    
+    connect(
+      { connector: selectedConnector },
+      {
+        onSuccess: async () => {
+          // Connection succeeded - wait briefly for MetaMask mobile to stabilize
+          // then safely prompt to add Arc Testnet
+          await new Promise(r => setTimeout(r, 200))
+          await ensureArcChain()
+        },
+        onError: (error) => {
+          console.error('Connect error:', error)
+        },
+      }
+    )
   }
 
   const handleSwitchNetwork = (targetChainId: number) => {
