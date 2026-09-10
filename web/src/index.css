@@ -1022,3 +1022,51 @@ body.chaos-mode .chaos-card:nth-child(3n+2) {
 .chaos-board-cycling {
   animation: chaos-board-shuffle 0.35s ease-out;
 }
+
+/* ===========================================
+   SEARCH AND FILTER STYLES
+   =========================================== */
+
+/* Search input focus */
+.search-input:focus {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
+}
+
+/* Select dropdown styling */
+select {
+  background-image: none;
+}
+
+select option {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  padding: 8px 12px;
+}
+
+/* Chaos mode search enhancements */
+body.chaos-mode input[type="text"]:focus {
+  border-color: var(--chaos-neon-cyan);
+  box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.1), 0 0 10px rgba(0, 255, 255, 0.15);
+}
+
+body.chaos-mode select:focus {
+  border-color: var(--chaos-neon-cyan);
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.2);
+}
+
+/* Filter badge in chaos mode */
+body.chaos-mode .filter-active-dot {
+  background: var(--chaos-neon-cyan);
+  box-shadow: 0 0 6px var(--chaos-neon-cyan);
+}
+
+/* Empty state icon animation */
+@keyframes empty-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.empty-state-icon {
+  animation: empty-bounce 2s ease-in-out infinite;
+}
