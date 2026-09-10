@@ -10,7 +10,40 @@ import { useTokenCache } from '../hooks/useTokenCache'
 import { useChaos } from '../context/ChaosContext'
 import { YeetModal } from './YeetModal'
 import { ChaosMemePopup, ChaosFlashOverlay } from './ChaosMemePopup'
-import { Clock, TrendingUp, Rocket, Loader2, ExternalLink, ChevronLeft, ChevronRight, RefreshCw, Zap } from 'lucide-react'
+import { Clock, TrendingUp, Rocket, Loader2, ExternalLink, ChevronLeft, ChevronRight, RefreshCw, Zap, Search, X, SlidersHorizontal, ChevronDown } from 'lucide-react'
+
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState(value)
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), delay)
+    return () => clearTimeout(timer)
+  }, [value, delay])
+  return debouncedValue
+}
+
+type ProgressFilter = 'all' | 'early' | 'mid' | 'graduating'
+type SortBy = 'newest' | 'oldest' | 'progress-high' | 'progress-low' | 'raised-high' | 'raised-low'
+
+interface FilterState {
+  progress: ProgressFilter
+  sortBy: SortBy
+}
+
+const PROGRESS_FILTERS: { id: ProgressFilter; label: string; range: [number, number] }[] = [
+  { id: 'all', label: 'All Progress', range: [0, 100] },
+  { id: 'early', label: 'Early (0-25%)', range: [0, 25] },
+  { id: 'mid', label: 'Mid (25-75%)', range: [25, 75] },
+  { id: 'graduating', label: 'Graduating (75%+)', range: [75, 100] },
+]
+
+const SORT_OPTIONS: { id: SortBy; label: string }[] = [
+  { id: 'newest', label: 'Newest First' },
+  { id: 'oldest', label: 'Oldest First' },
+  { id: 'progress-high', label: 'Progress: High to Low' },
+  { id: 'progress-low', label: 'Progress: Low to High' },
+  { id: 'raised-high', label: 'Raised: High to Low' },
+  { id: 'raised-low', label: 'Raised: Low to High' },
+]
 
 const CHAOS_CYCLE_INTERVAL_MIN = 4000
 const CHAOS_CYCLE_INTERVAL_MAX = 6000
@@ -70,6 +103,12 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
   const seedEnabled = isSeedEnabled()
   const { chainId } = useAccount()
   const { isChaosMode } = useChaos()
+  
+  const [searchQuery, setSearchQuery] = useState('')
+  const [showFilters, setShowFilters] = useState(false)
+  const [filters, setFilters] = useState<FilterState>({ progress: 'all', sortBy: 'newest' })
+  const debouncedSearch = useDebounce(searchQuery.trim(), 200)
+  const searchInputRef = useRef<HTMLInputElement>(null)
   
   // Chaos mode board cycling state
   const [chaosSeed, setChaosSeed] = useState(0)
@@ -250,28 +289,70 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
       return 0
     }
 
+    let filtered = tokensWithState
+
     switch (activeTab) {
       case 'new':
-        return [...tokensWithState]
-          .filter(t => !t.graduated)
-          .sort((a, b) => sortByRealFirst(a, b) || Number(b.createdAt - a.createdAt))
+        filtered = tokensWithState.filter(t => !t.graduated)
+        break
       case 'graduating':
-        return [...tokensWithState]
-          .filter(t => !t.graduated && t.progress >= 50)
-          .sort((a, b) => sortByRealFirst(a, b) || b.progress - a.progress)
+        filtered = tokensWithState.filter(t => !t.graduated && t.progress >= 50)
+        break
       case 'graduated':
-        return [...tokensWithState]
-          .filter(t => t.graduated)
-          .sort((a, b) => sortByRealFirst(a, b) || Number(b.createdAt - a.createdAt))
-      default:
-        return tokensWithState
+        filtered = tokensWithState.filter(t => t.graduated)
+        break
     }
-  }, [allTokens, activeTab])
 
-  // Reset page when tab or filtered list shrinks
+    if (debouncedSearch) {
+      const query = debouncedSearch.toLowerCase()
+      filtered = filtered.filter(t => {
+        const nameMatch = t.name.toLowerCase().includes(query)
+        const symbolMatch = t.symbol.toLowerCase().includes(query)
+        const addressMatch = t.token.toLowerCase().includes(query.replace(/^0x/i, '').toLowerCase()) ||
+                            t.token.toLowerCase() === query.toLowerCase()
+        return nameMatch || symbolMatch || addressMatch
+      })
+    }
+
+    if (filters.progress !== 'all' && activeTab !== 'graduated') {
+      const progressFilter = PROGRESS_FILTERS.find(p => p.id === filters.progress)
+      if (progressFilter) {
+        const [min, max] = progressFilter.range
+        filtered = filtered.filter(t => t.progress >= min && t.progress <= max)
+      }
+    }
+
+    const getSortComparator = () => {
+      switch (filters.sortBy) {
+        case 'oldest':
+          return (a: typeof filtered[0], b: typeof filtered[0]) => 
+            sortByRealFirst(a, b) || Number(a.createdAt - b.createdAt)
+        case 'progress-high':
+          return (a: typeof filtered[0], b: typeof filtered[0]) => 
+            sortByRealFirst(a, b) || b.progress - a.progress
+        case 'progress-low':
+          return (a: typeof filtered[0], b: typeof filtered[0]) => 
+            sortByRealFirst(a, b) || a.progress - b.progress
+        case 'raised-high':
+          return (a: typeof filtered[0], b: typeof filtered[0]) => 
+            sortByRealFirst(a, b) || b.raised - a.raised
+        case 'raised-low':
+          return (a: typeof filtered[0], b: typeof filtered[0]) => 
+            sortByRealFirst(a, b) || a.raised - b.raised
+        case 'newest':
+        default:
+          return (a: typeof filtered[0], b: typeof filtered[0]) => 
+            sortByRealFirst(a, b) || Number(b.createdAt - a.createdAt)
+      }
+    }
+
+    return [...filtered].sort(getSortComparator())
+  }, [allTokens, activeTab, debouncedSearch, filters])
+
+  // Reset page when tab, search, or filters change
   useEffect(() => {
     setPage(0)
-  }, [activeTab])
+  }, [activeTab, debouncedSearch, filters])
 
   useEffect(() => {
     const maxPage = Math.max(0, Math.ceil(sortedTokens.length / PAGE_SIZE) - 1)
@@ -475,6 +556,124 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
         )}
       </div>
 
+      {/* Search and filters */}
+      <div className="mb-4 space-y-3">
+        {/* Search bar */}
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-tertiary)] pointer-events-none" />
+            <input
+              ref={searchInputRef}
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by name, symbol, or address..."
+              className="w-full pl-9 pr-9 py-2.5 bg-[var(--bg-input)] border border-[var(--border)] rounded-lg text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--border-hover)] transition-colors"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => {
+                  setSearchQuery('')
+                  searchInputRef.current?.focus()
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] transition-colors"
+                aria-label="Clear search"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className={`flex items-center gap-1.5 px-3 py-2.5 rounded-lg border transition-colors ${
+              showFilters || filters.progress !== 'all' || filters.sortBy !== 'newest'
+                ? 'bg-[var(--accent-dim)] border-[var(--border-hover)] text-[var(--text-primary)]'
+                : 'bg-[var(--bg-secondary)] border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--border-hover)]'
+            }`}
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+            <span className="hidden sm:inline text-sm">Filters</span>
+            {(filters.progress !== 'all' || filters.sortBy !== 'newest') && (
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
+            )}
+          </button>
+        </div>
+
+        {/* Filter controls */}
+        {showFilters && (
+          <div className="flex flex-wrap items-center gap-2 p-3 bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg animate-fade-in">
+            {/* Progress filter - only show for non-graduated tabs */}
+            {activeTab !== 'graduated' && (
+              <div className="relative">
+                <select
+                  value={filters.progress}
+                  onChange={(e) => setFilters(f => ({ ...f, progress: e.target.value as ProgressFilter }))}
+                  className="appearance-none pl-3 pr-8 py-1.5 bg-[var(--bg-input)] border border-[var(--border)] rounded-lg text-sm text-[var(--text-secondary)] focus:outline-none focus:border-[var(--border-hover)] cursor-pointer"
+                >
+                  {PROGRESS_FILTERS.map(pf => (
+                    <option key={pf.id} value={pf.id}>{pf.label}</option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-tertiary)] pointer-events-none" />
+              </div>
+            )}
+
+            {/* Sort options */}
+            <div className="relative">
+              <select
+                value={filters.sortBy}
+                onChange={(e) => setFilters(f => ({ ...f, sortBy: e.target.value as SortBy }))}
+                className="appearance-none pl-3 pr-8 py-1.5 bg-[var(--bg-input)] border border-[var(--border)] rounded-lg text-sm text-[var(--text-secondary)] focus:outline-none focus:border-[var(--border-hover)] cursor-pointer"
+              >
+                {SORT_OPTIONS.map(opt => (
+                  <option key={opt.id} value={opt.id}>{opt.label}</option>
+                ))}
+              </select>
+              <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-tertiary)] pointer-events-none" />
+            </div>
+
+            {/* Clear filters */}
+            {(filters.progress !== 'all' || filters.sortBy !== 'newest') && (
+              <button
+                onClick={() => setFilters({ progress: 'all', sortBy: 'newest' })}
+                className="flex items-center gap-1 px-2 py-1.5 text-xs text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] transition-colors"
+              >
+                <X className="w-3 h-3" />
+                Clear
+              </button>
+            )}
+
+            {/* Result count */}
+            <div className="ml-auto text-xs text-[var(--text-muted)]">
+              {sortedTokens.length} {sortedTokens.length === 1 ? 'token' : 'tokens'}
+              {debouncedSearch && ` matching "${debouncedSearch}"`}
+            </div>
+          </div>
+        )}
+
+        {/* Active search/filter indicator when collapsed */}
+        {!showFilters && (debouncedSearch || filters.progress !== 'all' || filters.sortBy !== 'newest') && (
+          <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
+            <span>{sortedTokens.length} {sortedTokens.length === 1 ? 'result' : 'results'}</span>
+            {debouncedSearch && (
+              <span className="px-2 py-0.5 bg-[var(--bg-secondary)] border border-[var(--border)] rounded-full">
+                "{debouncedSearch}"
+              </span>
+            )}
+            {filters.progress !== 'all' && (
+              <span className="px-2 py-0.5 bg-[var(--bg-secondary)] border border-[var(--border)] rounded-full">
+                {PROGRESS_FILTERS.find(p => p.id === filters.progress)?.label}
+              </span>
+            )}
+            {filters.sortBy !== 'newest' && (
+              <span className="px-2 py-0.5 bg-[var(--bg-secondary)] border border-[var(--border)] rounded-full">
+                {SORT_OPTIONS.find(s => s.id === filters.sortBy)?.label}
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+
       {/* Token grid — desktop exactly 3 cols × 7 rows (21/page) */}
       {isInitialLoading ? (
         <div className="flex items-center justify-center py-16">
@@ -482,20 +681,41 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
         </div>
       ) : sortedTokens.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-sm text-[var(--text-tertiary)] mb-4">
-            {activeTab === 'graduated' 
-              ? 'No graduated tokens yet' 
-              : activeTab === 'graduating'
-                ? 'No tokens close to graduation'
-                : 'No tokens yet'}
-          </p>
-          {activeTab === 'new' && (
-            <button
-              onClick={onCreateToken}
-              className="px-4 py-2 btn-secondary rounded-lg text-sm"
-            >
-              Create first token
-            </button>
+          {debouncedSearch || filters.progress !== 'all' ? (
+            <>
+              <Search className="w-8 h-8 text-[var(--text-muted)] mx-auto mb-3" />
+              <p className="text-sm text-[var(--text-tertiary)] mb-4">
+                No tokens found {debouncedSearch && `matching "${debouncedSearch}"`}
+                {filters.progress !== 'all' && ` with ${PROGRESS_FILTERS.find(p => p.id === filters.progress)?.label.toLowerCase()}`}
+              </p>
+              <button
+                onClick={() => {
+                  setSearchQuery('')
+                  setFilters({ progress: 'all', sortBy: 'newest' })
+                }}
+                className="px-4 py-2 btn-secondary rounded-lg text-sm"
+              >
+                Clear search & filters
+              </button>
+            </>
+          ) : (
+            <>
+              <p className="text-sm text-[var(--text-tertiary)] mb-4">
+                {activeTab === 'graduated' 
+                  ? 'No graduated tokens yet' 
+                  : activeTab === 'graduating'
+                    ? 'No tokens close to graduation'
+                    : 'No tokens yet'}
+              </p>
+              {activeTab === 'new' && (
+                <button
+                  onClick={onCreateToken}
+                  className="px-4 py-2 btn-secondary rounded-lg text-sm"
+                >
+                  Create first token
+                </button>
+              )}
+            </>
           )}
         </div>
       ) : (
