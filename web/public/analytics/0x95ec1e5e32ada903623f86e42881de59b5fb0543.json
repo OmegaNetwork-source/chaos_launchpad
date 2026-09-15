@@ -1,0 +1,190 @@
+{
+  "token": "0x95ec1e5e32ada903623f86e42881de59b5fb0543",
+  "curve": "0xb85a65f0af44c6deb029c3391e5bc93d2119efc7",
+  "createBlock": "51163159",
+  "indexedAt": "2026-09-15T18:03:02.590Z",
+  "chainId": 4441,
+  "holderCount": 1,
+  "buyCount": 11,
+  "sellCount": 1,
+  "totalVolume": "46056064934758536826",
+  "holders": [
+    {
+      "address": "0xc46c1f8b4fef6d45c6f3bcb433e928c4db4fbae0",
+      "balance": "466340905263741110916044352",
+      "percentage": 100
+    }
+  ],
+  "trades": [
+    {
+      "type": "buy",
+      "trader": "0xC46c1f8B4FEF6D45C6f3BCB433e928c4db4FbaE0",
+      "quoteAmount": "1587500000000000000",
+      "tokenAmount": "7430028555247960756697466",
+      "newPrice": "215578431311",
+      "timestamp": 1789491441,
+      "txHash": "0xdba9193cd6ac82bbb927fdd59e1c007b1837f879da0473e1c00c7f6ee8ff6de3",
+      "blockNumber": "51166411"
+    },
+    {
+      "type": "buy",
+      "trader": "0xC46c1f8B4FEF6D45C6f3BCB433e928c4db4FbaE0",
+      "quoteAmount": "3438100000000000000",
+      "tokenAmount": "17283308406425233910592133",
+      "newPrice": "206288729048",
+      "timestamp": 1789491355,
+      "txHash": "0xe8ac685491f1bd5088a3995b34f3b8b3d33ae4a02f472e6572faacb6243edc5f",
+      "blockNumber": "51166368"
+    },
+    {
+      "type": "buy",
+      "trader": "0xC46c1f8B4FEF6D45C6f3BCB433e928c4db4FbaE0",
+      "quoteAmount": "5343300000000000000",
+      "tokenAmount": "30634240170598416176787475",
+      "newPrice": "186871062371",
+      "timestamp": 1789491283,
+      "txHash": "0x3c2536dcda2b54608773426eb50de4cc92079616292242dc461dc571e4b533b0",
+      "blockNumber": "51166332"
+    },
+    {
+      "type": "buy",
+      "trader": "0xC46c1f8B4FEF6D45C6f3BCB433e928c4db4FbaE0",
+      "quoteAmount": "2371400000000000000",
+      "tokenAmount": "15339863778726908135283048",
+      "newPrice": "158597793810",
+      "timestamp": 1789491215,
+      "txHash": "0xda11428b4c9a5d264b5b11ce5f20dd1e7c55294f00710507ad64bf701f98e671",
+      "blockNumber": "51166298"
+    },
+    {
+      "type": "buy",
+      "trader": "0xC46c1f8B4FEF6D45C6f3BCB433e928c4db4FbaE0",
+      "quoteAmount": "4498200000000000000",
+      "tokenAmount": "32690099502410990327359200",
+      "newPrice": "146792473542",
+      "timestamp": 1789491169,
+      "txHash": "0xbc38d8f4a048c76a706fcc6658c1c527d111a12397039864be9b209d8c15189a",
+      "blockNumber": "51166275"
+    },
+    {
+      "type": "buy",
+      "trader": "0xC46c1f8B4FEF6D45C6f3BCB433e928c4db4FbaE0",
+      "quoteAmount": "2064500000000000000",
+      "tokenAmount": "16841384582157039796537061",
+      "newPrice": "125653778926",
+      "timestamp": 1789491093,
+      "txHash": "0x7a14220bedcafc5d616be425a67a948ead4fabe5986159621257bb470d5dd7ee",
+      "blockNumber": "51166237"
+    },
+    {
+      "type": "buy",
+      "trader": "0xC46c1f8B4FEF6D45C6f3BCB433e928c4db4FbaE0",
+      "quoteAmount": "3646400000000000000",
+      "tokenAmount": "33148344338753527301035806",
+      "newPrice": "116501881424",
+      "timestamp": 1789491047,
+      "txHash": "0xd6c8719722ce6e8551716757a03cacbe2345e2965a1dd43f3e1c3021cad4a420",
+      "blockNumber": "51166214"
+    },
+    {
+      "type": "buy",
+      "trader": "0xC46c1f8B4FEF6D45C6f3BCB433e928c4db4FbaE0",
+      "quoteAmount": "8437200000000000000",
+      "tokenAmount": "99038049266865945103788034",
+      "newPrice": "101182708106",
+      "timestamp": 1789490997,
+      "txHash": "0x79ab78d7adeaa617042d7ea540e03be67da6b24c9d70e2bc957812c693d4f48d",
+      "blockNumber": "51166189"
+    },
+    {
+      "type": "buy",
+      "trader": "0xC46c1f8B4FEF6D45C6f3BCB433e928c4db4FbaE0",
+      "quoteAmount": "3299900000000000000",
+      "tokenAmount": "50639519207282216579462745",
+      "newPrice": "69874793800",
+      "timestamp": 1789490957,
+      "txHash": "0x6986b2a5f729bc81bc6841c425a52f5012dd843cbe04a8d3efa7a7d283b01fa4",
+      "blockNumber": "51166169"
+    },
+    {
+      "type": "sell",
+      "trader": "0xC46c1f8B4FEF6D45C6f3BCB433e928c4db4FbaE0",
+      "quoteAmount": "1763664934758536826",
+      "tokenAmount": "28816953080342271675617891",
+      "newPrice": "59201972548",
+      "timestamp": 1789490905,
+      "txHash": "0xd35cfff021992eb673f66dd0b04a47387f08c1aa57947b16d9d2e75981514fae",
+      "blockNumber": "51166143"
+    },
+    {
+      "type": "buy",
+      "trader": "0xC46c1f8B4FEF6D45C6f3BCB433e928c4db4FbaE0",
+      "quoteAmount": "4911100000000000000",
+      "tokenAmount": "85078344931913282163274786",
+      "newPrice": "64947966700",
+      "timestamp": 1789490815,
+      "txHash": "0x68e04224b0789c07067db9176cb9db55a9d3057fcbb237d75c20218e7b972b75",
+      "blockNumber": "51166098"
+    },
+    {
+      "type": "buy",
+      "trader": "0xC46c1f8B4FEF6D45C6f3BCB433e928c4db4FbaE0",
+      "quoteAmount": "4694800000000000000",
+      "tokenAmount": "107034675603701862340844489",
+      "newPrice": "49979077423",
+      "timestamp": 1789490741,
+      "txHash": "0x5ca3df2e2ce994240898a5629da9164cc7a30cc3e7f1e6b1304cfc7acec76543",
+      "blockNumber": "51166061"
+    }
+  ],
+  "priceHistory": [
+    {
+      "time": 1789490741,
+      "price": 4.9979077423e-8
+    },
+    {
+      "time": 1789490815,
+      "price": 6.49479667e-8
+    },
+    {
+      "time": 1789490905,
+      "price": 5.9201972548e-8
+    },
+    {
+      "time": 1789490957,
+      "price": 6.98747938e-8
+    },
+    {
+      "time": 1789490997,
+      "price": 1.01182708106e-7
+    },
+    {
+      "time": 1789491047,
+      "price": 1.16501881424e-7
+    },
+    {
+      "time": 1789491093,
+      "price": 1.25653778926e-7
+    },
+    {
+      "time": 1789491169,
+      "price": 1.46792473542e-7
+    },
+    {
+      "time": 1789491215,
+      "price": 1.5859779381e-7
+    },
+    {
+      "time": 1789491283,
+      "price": 1.86871062371e-7
+    },
+    {
+      "time": 1789491355,
+      "price": 2.06288729048e-7
+    },
+    {
+      "time": 1789491441,
+      "price": 2.15578431311e-7
+    }
+  ]
+}
