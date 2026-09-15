@@ -98,7 +98,7 @@ export const chainConfigs: Record<number, ChainConfig> = {
   },
   [litvm.id]: {
     chain: litvm,
-    factoryAddress: (import.meta.env.VITE_FACTORY_ADDRESS_LITVM as `0x${string}`) || '0x6cca297514fe2b68349e64bF6949B0f6A9CBC03A',
+    factoryAddress: (import.meta.env.VITE_FACTORY_ADDRESS_LITVM as `0x${string}`) || '0x1D7Ae764b0EafEFb3B186964d34DCAafb8d70BA7',
     nativeSymbol: 'zkLTC',
     explorerUrl: 'https://liteforge.explorer.caldera.xyz',
     addChainParams: {

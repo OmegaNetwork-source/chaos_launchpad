@@ -61,14 +61,14 @@
 
 ### LaunchpadFactory v3 (ERC-20 Quote Support)
 
-**Factory Address:** `0x6cca297514fe2b68349e64bF6949B0f6A9CBC03A`
+**Factory Address:** `0x1D7Ae764b0EafEFb3B186964d34DCAafb8d70BA7`
 
 - **Fee Recipient:** `0x4d467E27F0CF402E958CC7Bb47aE258F00ABCD41` (Olympus Treasury)
 - **Native Gas:** zkLTC (18 decimals)
 - **Graduation Range:** $5 - $10,000
 - **Quote Token Support:** Native zkLTC + ERC-20 tokens
 
-**Explorer:** [View on LiteForge](https://liteforge.explorer.caldera.xyz/address/0x6cca297514fe2b68349e64bF6949B0f6A9CBC03A)
+**Explorer:** [View on LiteForge](https://liteforge.explorer.caldera.xyz/address/0x1D7Ae764b0EafEFb3B186964d34DCAafb8d70BA7)
 
 ### Sample Tokens on LitVM
 
@@ -85,7 +85,7 @@
 VITE_FACTORY_ADDRESS_ARC=0xEFAc4bcB8b10947B5E30B5F3F9b4f5b6306a445A
 
 # LitVM
-VITE_FACTORY_ADDRESS_LITVM=0x6cca297514fe2b68349e64bF6949B0f6A9CBC03A
+VITE_FACTORY_ADDRESS_LITVM=0x1D7Ae764b0EafEFb3B186964d34DCAafb8d70BA7
 ```
 
 ---

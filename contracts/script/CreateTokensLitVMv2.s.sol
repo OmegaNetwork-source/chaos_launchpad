@@ -6,7 +6,7 @@ import "../src/LaunchpadFactory.sol";
 import "../src/BondingCurve.sol";
 
 contract CreateTokensLitVMv2 is Script {
-    address constant FACTORY = 0x6cca297514fe2b68349e64bF6949B0f6A9CBC03A;
+    address constant FACTORY = 0x1D7Ae764b0EafEFb3B186964d34DCAafb8d70BA7;
 
     function run() external {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
