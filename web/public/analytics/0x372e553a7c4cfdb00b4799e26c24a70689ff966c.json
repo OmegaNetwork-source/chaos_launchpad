@@ -2,7 +2,7 @@
   "token": "0x372e553a7c4cfdb00b4799e26c24a70689ff966c",
   "curve": "0xb42cd3af974ed42291cbd035653ee26d5f42427e",
   "createBlock": "51125747",
-  "indexedAt": "2026-09-15T17:21:19.168Z",
+  "indexedAt": "2026-09-15T18:00:10.047Z",
   "chainId": 4441,
   "holderCount": 6,
   "buyCount": 18,
@@ -47,7 +47,7 @@
       "quoteAmount": "90000000000000000",
       "tokenAmount": "2034516281222658846720108",
       "newPrice": "43781461293",
-      "timestamp": 1789482772,
+      "timestamp": 1789466827,
       "txHash": "0x244e399444736cd9c99f7d7666f5dee68d02a1866ac862ed01a947332424a839",
       "blockNumber": "51154104"
     },
@@ -57,7 +57,7 @@
       "quoteAmount": "130000000000000000",
       "tokenAmount": "2958564207787062395921973",
       "newPrice": "43541835429",
-      "timestamp": 1789482730,
+      "timestamp": 1789466785,
       "txHash": "0x7d604a263a9328fe5455db1138a9bd96252fe34daf730b0d04c3f9cb0bfbfa3c",
       "blockNumber": "51154083"
     },
@@ -67,7 +67,7 @@
       "quoteAmount": "170000000000000000",
       "tokenAmount": "3904656992342539215952121",
       "newPrice": "43196870065",
-      "timestamp": 1789482094,
+      "timestamp": 1789466149,
       "txHash": "0xddccb4c08b890821d6724667d35a3efab197d9b033edfab031179bcc010db0f0",
       "blockNumber": "51153765"
     },
@@ -77,7 +77,7 @@
       "quoteAmount": "350000000000000000",
       "tokenAmount": "8169217136710263373015806",
       "newPrice": "42747831622",
-      "timestamp": 1789482052,
+      "timestamp": 1789466107,
       "txHash": "0xe2d3ff739ff03a90134639e7667ec1b31697a2127760c8fc045f911f90dd764b",
       "blockNumber": "51153744"
     },
@@ -87,7 +87,7 @@
       "quoteAmount": "256335979041597711",
       "tokenAmount": "6158170634547265028376771",
       "newPrice": "41830728159",
-      "timestamp": 1789482020,
+      "timestamp": 1789466075,
       "txHash": "0xefdb6aecaca60ab05e441b1f47f2c09b3cd39befa2e673b5620ad7ce16478ab2",
       "blockNumber": "51153728"
     },
@@ -97,7 +97,7 @@
       "quoteAmount": "370000000000000000",
       "tokenAmount": "8688130541034547924040899",
       "newPrice": "42519286519",
-      "timestamp": 1789481954,
+      "timestamp": 1789466009,
       "txHash": "0xf2509bc9250c6b4b68e7b6b69d2be2df9d5768cf3025afc90359efb7688d36e4",
       "blockNumber": "51153695"
     },
@@ -107,7 +107,7 @@
       "quoteAmount": "150000000000000000",
       "tokenAmount": "3579728879409982406896383",
       "newPrice": "41552686726",
-      "timestamp": 1789481928,
+      "timestamp": 1789465983,
       "txHash": "0x2a59ef9d665508907a722e9c05e9d24a2d95bb05c75ec7411c6f1385d659d04b",
       "blockNumber": "51153682"
     },
@@ -117,7 +117,7 @@
       "quoteAmount": "42127188124943839",
       "tokenAmount": "1035472406613776011387811",
       "newPrice": "41163987994",
-      "timestamp": 1789481596,
+      "timestamp": 1789465651,
       "txHash": "0x4aeb69d92c1314bd3283359bdbfab76c11d082b3ea83f27183ca77752c01a936",
       "blockNumber": "51153516"
     },
@@ -127,7 +127,7 @@
       "quoteAmount": "120000000000000000",
       "tokenAmount": "2880312674864467347393077",
       "newPrice": "41275860454",
-      "timestamp": 1789481404,
+      "timestamp": 1789465459,
       "txHash": "0x457650a148d24dcc42ce1293cb88f28a2e622beaffcea720ba3f4326089f7ef5",
       "blockNumber": "51153420"
     },
@@ -137,7 +137,7 @@
       "quoteAmount": "320000000000000000",
       "tokenAmount": "7788296717731899122190206",
       "newPrice": "40965795325",
-      "timestamp": 1789481108,
+      "timestamp": 1789465163,
       "txHash": "0x0c144941144049c782243aa960de1de2b4107214fe0c7da9236ae3dc52e54fd5",
       "blockNumber": "51153272"
     },
@@ -147,7 +147,7 @@
       "quoteAmount": "190000000000000000",
       "tokenAmount": "4699748816160635639474158",
       "newPrice": "40144670106",
-      "timestamp": 1789480732,
+      "timestamp": 1789464787,
       "txHash": "0xbd1f4eba1ffe397b4ab831788031eb00708d19649509f7259fb1c489c37758a0",
       "blockNumber": "51153084"
     },
@@ -157,7 +157,7 @@
       "quoteAmount": "200000000000000000",
       "tokenAmount": "5009224190701693854052019",
       "newPrice": "39661060214",
-      "timestamp": 1789480562,
+      "timestamp": 1789464617,
       "txHash": "0x5e8122244e993e2a9ccfdcf09355b8d628ce9478cbf34f4f72e93828a900c259",
       "blockNumber": "51152999"
     },
@@ -167,7 +167,7 @@
       "quoteAmount": "208787835258023610",
       "tokenAmount": "5365527107314807767185963",
       "newPrice": "39155163220",
-      "timestamp": 1789479274,
+      "timestamp": 1789463329,
       "txHash": "0x56dee170fc79a335e709b40ae31149ffa8520e029b897fc9b003db028a6fc062",
       "blockNumber": "51152355"
     },
@@ -177,7 +177,7 @@
       "quoteAmount": "230000000000000000",
       "tokenAmount": "5760876910204069374624986",
       "newPrice": "39697417269",
-      "timestamp": 1789479208,
+      "timestamp": 1789463263,
       "txHash": "0x849569560c891eeebb06089831a078f8d8ecc5032fa217b72ab606c5798a35f2",
       "blockNumber": "51152322"
     },
@@ -187,7 +187,7 @@
       "quoteAmount": "120000000000000000",
       "tokenAmount": "3039694445200337996841787",
       "newPrice": "39115648347",
-      "timestamp": 1789479176,
+      "timestamp": 1789463231,
       "txHash": "0x86f2d2a8bc2b8cee4590cf454147d0f9ccff5e0468b9f2c9f4ce4320b89d9fa7",
       "blockNumber": "51152306"
     },
@@ -197,7 +197,7 @@
       "quoteAmount": "200000000000000000",
       "tokenAmount": "5118924722495011094402610",
       "newPrice": "38813821531",
-      "timestamp": 1789479136,
+      "timestamp": 1789463191,
       "txHash": "0xe428bf613e48c6cb3b9a783e578d9ece45d45fc338dd7de5a56607dd2c25b7c4",
       "blockNumber": "51152286"
     },
@@ -207,7 +207,7 @@
       "quoteAmount": "100000000000000000",
       "tokenAmount": "2584536280165324221240120",
       "newPrice": "38313374621",
-      "timestamp": 1789427982,
+      "timestamp": 1789412037,
       "txHash": "0xb37d86d4f115baa5b177400375a482fd8bdb5365285ca41ef084575d9bf90762",
       "blockNumber": "51126709"
     },
@@ -217,7 +217,7 @@
       "quoteAmount": "30000000000000000",
       "tokenAmount": "778655654199145940661047",
       "newPrice": "38064368878",
-      "timestamp": 1789426776,
+      "timestamp": 1789410831,
       "txHash": "0xc8a43e8f69eaee474de0de6f47479cbbb8351099d7b2e696ea5f9f5e2024df28",
       "blockNumber": "51126106"
     },
@@ -227,7 +227,7 @@
       "quoteAmount": "120000000000000000",
       "tokenAmount": "3129954003200425517292111",
       "newPrice": "37989825457",
-      "timestamp": 1789426744,
+      "timestamp": 1789410799,
       "txHash": "0x54c9ee3ed3e5fb959ac413256eb4d295684818c2b3ad92ad22b39860dba4e634",
       "blockNumber": "51126090"
     },
@@ -237,7 +237,7 @@
       "quoteAmount": "50786561432976465",
       "tokenAmount": "1362811256256988858651548",
       "newPrice": "37692382402",
-      "timestamp": 1789426702,
+      "timestamp": 1789410757,
       "txHash": "0x700d2361f3e3a67f322907e65d14e304773e77e0eaa033cc608fbbdc745650dd",
       "blockNumber": "51126069"
     },
@@ -247,7 +247,7 @@
       "quoteAmount": "50000000000000000",
       "tokenAmount": "1306955531749079555927595",
       "newPrice": "37821460977",
-      "timestamp": 1789426640,
+      "timestamp": 1789410695,
       "txHash": "0x20b69b3be6887415151a5f9a3c2e5a3ed6db322b8a2733d63c7127d080a443e8",
       "blockNumber": "51126038"
     },
@@ -257,98 +257,98 @@
       "quoteAmount": "80000000000000000",
       "tokenAmount": "2100072608893392590701275",
       "newPrice": "37697659778",
-      "timestamp": 1789426592,
+      "timestamp": 1789410647,
       "txHash": "0x56494ec2d56851adef470b0f5ff1bcc31df1590191953e45545cfc21d9d14c30",
       "blockNumber": "51126014"
     }
   ],
   "priceHistory": [
     {
-      "time": 1789426592,
+      "time": 1789410647,
       "price": 3.7697659778e-8
     },
     {
-      "time": 1789426640,
+      "time": 1789410695,
       "price": 3.7821460977e-8
     },
     {
-      "time": 1789426702,
+      "time": 1789410757,
       "price": 3.7692382402e-8
     },
     {
-      "time": 1789426744,
+      "time": 1789410799,
       "price": 3.7989825457e-8
     },
     {
-      "time": 1789426776,
+      "time": 1789410831,
       "price": 3.8064368878e-8
     },
     {
-      "time": 1789427982,
+      "time": 1789412037,
       "price": 3.8313374621e-8
     },
     {
-      "time": 1789479136,
+      "time": 1789463191,
       "price": 3.8813821531e-8
     },
     {
-      "time": 1789479176,
+      "time": 1789463231,
       "price": 3.9115648347e-8
     },
     {
-      "time": 1789479208,
+      "time": 1789463263,
       "price": 3.9697417269e-8
     },
     {
-      "time": 1789479274,
+      "time": 1789463329,
       "price": 3.915516322e-8
     },
     {
-      "time": 1789480562,
+      "time": 1789464617,
       "price": 3.9661060214e-8
     },
     {
-      "time": 1789480732,
+      "time": 1789464787,
       "price": 4.0144670106e-8
     },
     {
-      "time": 1789481108,
+      "time": 1789465163,
       "price": 4.0965795325e-8
     },
     {
-      "time": 1789481404,
+      "time": 1789465459,
       "price": 4.1275860454e-8
     },
     {
-      "time": 1789481596,
+      "time": 1789465651,
       "price": 4.1163987994e-8
     },
     {
-      "time": 1789481928,
+      "time": 1789465983,
       "price": 4.1552686726e-8
     },
     {
-      "time": 1789481954,
+      "time": 1789466009,
       "price": 4.2519286519e-8
     },
     {
-      "time": 1789482020,
+      "time": 1789466075,
       "price": 4.1830728159e-8
     },
     {
-      "time": 1789482052,
+      "time": 1789466107,
       "price": 4.2747831622e-8
     },
     {
-      "time": 1789482094,
+      "time": 1789466149,
       "price": 4.3196870065e-8
     },
     {
-      "time": 1789482730,
+      "time": 1789466785,
       "price": 4.3541835429e-8
     },
     {
-      "time": 1789482772,
+      "time": 1789466827,
       "price": 4.3781461293e-8
     }
   ]
