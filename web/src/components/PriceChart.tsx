@@ -1,11 +1,18 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createChart, ColorType, AreaSeries, CrosshairMode } from 'lightweight-charts'
-import type { IChartApi, Time } from 'lightweight-charts'
+import type { IChartApi, Time, ISeriesApi, SeriesType } from 'lightweight-charts'
 import { Loader2 } from 'lucide-react'
 
 export interface PriceDataPoint {
   time: number
   price: number
+}
+
+interface TooltipData {
+  price: number
+  time: number
+  x: number
+  y: number
 }
 
 interface PriceChartProps {
@@ -17,6 +24,23 @@ interface PriceChartProps {
   className?: string
 }
 
+const formatPrice = (price: number): string => {
+  if (price < 0.00000001) return price.toExponential(2)
+  if (price < 0.0001) return price.toFixed(10)
+  if (price < 1) return price.toFixed(6)
+  return price.toFixed(2)
+}
+
+const formatTime = (timestamp: number): string => {
+  const date = new Date(timestamp * 1000)
+  return date.toLocaleString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
+
 export function PriceChart({
   isSeed,
   priceHistory = [],
@@ -25,6 +49,8 @@ export function PriceChart({
 }: PriceChartProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null)
   const chartRef = useRef<IChartApi | null>(null)
+  const seriesRef = useRef<ISeriesApi<SeriesType> | null>(null)
+  const [tooltip, setTooltip] = useState<TooltipData | null>(null)
 
   useEffect(() => {
     if (!chartContainerRef.current || isLoading || priceHistory.length === 0 || isSeed) return
@@ -42,9 +68,9 @@ export function PriceChart({
         horzLines: { color: 'rgba(255, 255, 255, 0.04)' },
       },
       crosshair: {
-        mode: CrosshairMode.Normal,
-        vertLine: { color: 'rgba(255, 255, 255, 0.2)', width: 1, style: 2 },
-        horzLine: { color: 'rgba(255, 255, 255, 0.2)', width: 1, style: 2 },
+        mode: CrosshairMode.Magnet,
+        vertLine: { color: 'rgba(255, 255, 255, 0.4)', width: 1, style: 0, labelVisible: false },
+        horzLine: { color: 'rgba(255, 255, 255, 0.4)', width: 1, style: 0, labelVisible: true },
       },
       timeScale: {
         borderColor: 'rgba(255, 255, 255, 0.08)',
@@ -83,14 +109,15 @@ export function PriceChart({
       lineWidth: 2,
       priceFormat: {
         type: 'custom',
-        formatter: (price: number) => {
-          if (price < 0.00000001) return price.toExponential(2)
-          if (price < 0.0001) return price.toFixed(10)
-          if (price < 1) return price.toFixed(6)
-          return price.toFixed(2)
-        },
+        formatter: formatPrice,
       },
+      crosshairMarkerVisible: true,
+      crosshairMarkerRadius: 5,
+      crosshairMarkerBorderColor: '#22c55e',
+      crosshairMarkerBackgroundColor: '#fff',
+      crosshairMarkerBorderWidth: 2,
     })
+    seriesRef.current = areaSeries
 
     const chartData = priceHistory.map((d) => ({
       time: d.time as Time,
@@ -107,6 +134,27 @@ export function PriceChart({
     areaSeries.setData(chartData)
     chart.timeScale().fitContent()
 
+    chart.subscribeCrosshairMove((param) => {
+      if (!param.point || !param.time || param.point.x < 0 || param.point.y < 0) {
+        setTooltip(null)
+        return
+      }
+
+      const seriesData = param.seriesData.get(areaSeries)
+      if (!seriesData || !('value' in seriesData)) {
+        setTooltip(null)
+        return
+      }
+
+      const time = typeof param.time === 'number' ? param.time : Number(param.time)
+      setTooltip({
+        price: seriesData.value as number,
+        time,
+        x: param.point.x,
+        y: param.point.y,
+      })
+    })
+
     const handleResize = () => {
       if (chartContainerRef.current) {
         chart.applyOptions({ width: chartContainerRef.current.clientWidth })
@@ -118,6 +166,8 @@ export function PriceChart({
       window.removeEventListener('resize', handleResize)
       chart.remove()
       chartRef.current = null
+      seriesRef.current = null
+      setTooltip(null)
     }
   }, [priceHistory, isLoading, isSeed])
 
@@ -165,10 +215,31 @@ export function PriceChart({
       <div className="px-3 py-2 border-b border-[var(--border)]">
         <div className="flex items-center justify-between">
           <span className="text-xs font-medium text-[var(--text-tertiary)]">Price chart</span>
-          <span className="text-[10px] text-[var(--text-muted)]">{priceHistory.length} trades</span>
+          {tooltip ? (
+            <div className="flex items-center gap-2 text-[10px]">
+              <span className="text-[var(--text-secondary)] font-mono">{formatPrice(tooltip.price)}</span>
+              <span className="text-[var(--text-muted)]">{formatTime(tooltip.time)}</span>
+            </div>
+          ) : (
+            <span className="text-[10px] text-[var(--text-muted)]">{priceHistory.length} trades</span>
+          )}
         </div>
       </div>
-      <div ref={chartContainerRef} className="w-full cursor-grab active:cursor-grabbing touch-none" style={{ touchAction: 'none' }} />
+      <div className="relative">
+        <div ref={chartContainerRef} className="w-full cursor-crosshair" />
+        {tooltip && (
+          <div
+            className="absolute pointer-events-none z-10 px-2 py-1 rounded bg-[var(--bg-elevated)] border border-[var(--border)] shadow-lg"
+            style={{
+              left: Math.min(tooltip.x + 12, (chartContainerRef.current?.clientWidth ?? 300) - 120),
+              top: Math.max(tooltip.y - 40, 4),
+            }}
+          >
+            <div className="text-xs font-mono text-[#22c55e] font-semibold">{formatPrice(tooltip.price)}</div>
+            <div className="text-[10px] text-[var(--text-muted)]">{formatTime(tooltip.time)}</div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
