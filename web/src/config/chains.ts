@@ -98,7 +98,8 @@ export const chainConfigs: Record<number, ChainConfig> = {
   },
   [litvm.id]: {
     chain: litvm,
-    factoryAddress: (import.meta.env.VITE_FACTORY_ADDRESS_LITVM as `0x${string}`) || '0x1D7Ae764b0EafEFb3B186964d34DCAafb8d70BA7',
+    // Hardcoded: Vercel had stale VITE_FACTORY_ADDRESS_LITVM env override; bypass env to ensure correct factory
+    factoryAddress: '0x1D7Ae764b0EafEFb3B186964d34DCAafb8d70BA7',
     nativeSymbol: 'zkLTC',
     explorerUrl: 'https://liteforge.explorer.caldera.xyz',
     addChainParams: {
