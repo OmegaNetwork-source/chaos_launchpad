@@ -60,6 +60,9 @@ contract BondingCurve is IBondingCurve, ReentrancyGuard {
     // Protocol fee is fixed
     uint256 public constant PROTOCOL_FEE_BPS = 100;
 
+    // Minimum quote amount to prevent dust attacks / no-op transfers
+    uint256 public constant MIN_QUOTE_AMOUNT = 1;
+
     address public token;
     address public immutable factory;
     address public creator;
@@ -93,6 +96,7 @@ contract BondingCurve is IBondingCurve, ReentrancyGuard {
     error NoFeesToClaim();
     error InvalidParams();
     error WrongQuoteMode();
+    error InsufficientQuoteReceived();
 
     event CreatorFeesClaimed(address indexed creator, uint256 amount);
 
@@ -245,6 +249,7 @@ contract BondingCurve is IBondingCurve, ReentrancyGuard {
     }
 
     /// @notice Buy tokens with ERC-20 quote token (requires approval)
+    /// @dev Uses balance delta to prevent no-op ERC20 exploits
     function buyWithToken(uint256 quoteAmount, uint256 minTokensOut)
         external
         override
@@ -256,10 +261,20 @@ contract BondingCurve is IBondingCurve, ReentrancyGuard {
         if (quoteToken == address(0)) revert WrongQuoteMode();
         if (quoteAmount == 0) revert ZeroAmount();
 
+        // Snapshot balance before transfer
+        uint256 balanceBefore = IERC20(quoteToken).balanceOf(address(this));
+
         // Transfer quote tokens from buyer
         IERC20(quoteToken).safeTransferFrom(msg.sender, address(this), quoteAmount);
 
-        tokensOut = _executeBuy(quoteAmount, minTokensOut);
+        // Calculate actual received amount (balance delta)
+        uint256 received = IERC20(quoteToken).balanceOf(address(this)) - balanceBefore;
+
+        // Revert if no tokens were actually received (no-op ERC20 protection)
+        if (received < MIN_QUOTE_AMOUNT) revert InsufficientQuoteReceived();
+
+        // Use actual received amount for pricing, not declared amount
+        tokensOut = _executeBuy(received, minTokensOut);
     }
 
     function _executeBuy(uint256 quoteIn, uint256 minTokensOut) internal returns (uint256 tokensOut) {

@@ -40,12 +40,20 @@ contract LaunchpadFactory is ILaunchpadFactory, Ownable, Pausable {
     mapping(address => address) public tokenToCurve;
     mapping(address => address) public curveToToken;
 
+    /// @notice Allowlist of quote tokens that can be used for bonding curves
+    /// @dev address(0) represents native currency (zkLTC on LitVM, USDC on Arc)
+    mapping(address => bool) public allowedQuoteTokens;
+
     error InvalidAddress();
     error TokenNotFound();
     error OnlyCurve();
+    error QuoteTokenNotAllowed();
 
     constructor() Ownable(msg.sender) {
         feeRecipient = OLYMPUS_TREASURY;
+        // Allowlist native currency by default (zkLTC on LitVM, USDC on Arc)
+        allowedQuoteTokens[address(0)] = true;
+        emit QuoteTokenAllowlistUpdated(address(0), true);
     }
 
     /**
@@ -63,6 +71,7 @@ contract LaunchpadFactory is ILaunchpadFactory, Ownable, Pausable {
 
     /**
      * @notice Create a new memecoin with bonding curve (default parameters, native quote)
+     * @dev Native quote (address(0)) must be allowlisted
      */
     function createToken(string memory name, string memory symbol, string memory metadataURI)
         external
@@ -70,6 +79,9 @@ contract LaunchpadFactory is ILaunchpadFactory, Ownable, Pausable {
         whenNotPaused
         returns (address tokenAddr, address curveAddr)
     {
+        // Native quote must be allowlisted
+        if (!allowedQuoteTokens[address(0)]) revert QuoteTokenNotAllowed();
+
         BondingCurve curve = new BondingCurve(address(this));
         curveAddr = address(curve);
 
@@ -82,6 +94,7 @@ contract LaunchpadFactory is ILaunchpadFactory, Ownable, Pausable {
     /**
      * @notice Create a new memecoin with custom bonding curve parameters
      * @param params Custom curve parameters including quoteToken
+     * @dev Quote token must be allowlisted by factory owner
      */
     function createTokenWithParams(
         string memory name,
@@ -94,6 +107,9 @@ contract LaunchpadFactory is ILaunchpadFactory, Ownable, Pausable {
         whenNotPaused
         returns (address tokenAddr, address curveAddr)
     {
+        // Quote token must be allowlisted (address(0) = native, must also be explicitly allowed)
+        if (!allowedQuoteTokens[params.quoteToken]) revert QuoteTokenNotAllowed();
+
         BondingCurve curve = new BondingCurve(address(this));
         curveAddr = address(curve);
 
@@ -217,5 +233,27 @@ contract LaunchpadFactory is ILaunchpadFactory, Ownable, Pausable {
 
     function unpause() external onlyOwner {
         _unpause();
+    }
+
+    // =========== Quote Token Allowlist ===========
+
+    /**
+     * @notice Set whether a quote token is allowed for new bonding curves
+     * @param token The quote token address (address(0) for native)
+     * @param allowed Whether the token should be allowed
+     * @dev Only callable by factory owner. On LitVM: native zkLTC and Omega token.
+     */
+    function setQuoteTokenAllowed(address token, bool allowed) external onlyOwner {
+        allowedQuoteTokens[token] = allowed;
+        emit QuoteTokenAllowlistUpdated(token, allowed);
+    }
+
+    /**
+     * @notice Check if a quote token is allowed
+     * @param token The quote token address (address(0) for native)
+     * @return Whether the token is allowed for new bonding curves
+     */
+    function isQuoteTokenAllowed(address token) external view returns (bool) {
+        return allowedQuoteTokens[token];
     }
 }
