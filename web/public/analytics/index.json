@@ -510,5 +510,85 @@
     "totalVolume": "0",
     "curve": "0x24e7cf9d250ca7603d60746f7c44890a978062f9",
     "symbol": "CHAPOT"
+  },
+  "0x4a3fd8d61379fa4af9a2017def5ebda9adb7a047": {
+    "holderCount": 6,
+    "buyCount": 17,
+    "sellCount": 7,
+    "totalVolume": "3550396062376280530",
+    "curve": "0x173a4f74b432b9321fd05fcd4bd0711b2567defc",
+    "symbol": "LFROG"
+  },
+  "0xfc64fb7944c2af218dc08f87014da65ec041be40": {
+    "holderCount": 5,
+    "buyCount": 11,
+    "sellCount": 5,
+    "totalVolume": "1216689421292736995",
+    "curve": "0x4ac4d8b1d4871babee6f5ed66ae6d94f05da2fd0",
+    "symbol": "ZKDOGE"
+  },
+  "0x372e553a7c4cfdb00b4799e26c24a70689ff966c": {
+    "holderCount": 6,
+    "buyCount": 18,
+    "sellCount": 4,
+    "totalVolume": "3578037563857541625",
+    "curve": "0xb42cd3af974ed42291cbd035653ee26d5f42427e",
+    "symbol": "CATA"
+  },
+  "0x59c6412982608eb73bd357ce4e28eb1571aff127": {
+    "holderCount": 4,
+    "buyCount": 13,
+    "sellCount": 3,
+    "totalVolume": "2492962470901062219",
+    "curve": "0x90a1bd7e182f5095ddeaa20eb7026e4ea2d5e211",
+    "symbol": "BBANA"
+  },
+  "0xfc6318198151ff03e2437080d830652f4ebb8d26": {
+    "holderCount": 2,
+    "buyCount": 11,
+    "sellCount": 3,
+    "totalVolume": "2171776056552680908",
+    "curve": "0x8283082f8b9281ebef1e3691b5b2579031c9a760",
+    "symbol": "MMOOSE"
+  },
+  "0x62a217254ded7121fca7ddf530e5541eed510f9e": {
+    "holderCount": 3,
+    "buyCount": 9,
+    "sellCount": 1,
+    "totalVolume": "764641701822685650",
+    "curve": "0x4c4f8589b7214506cadf36591b774f289fb03e4f",
+    "symbol": "CCRAB"
+  },
+  "0xc8f8ee8e8b48e75d1296a7e72055e0e320b0abfb": {
+    "holderCount": 6,
+    "buyCount": 16,
+    "sellCount": 3,
+    "totalVolume": "3072357276660203302",
+    "curve": "0x0158c63212a206dea02eef489812beb708a3270f",
+    "symbol": "PPENG"
+  },
+  "0xc2126d4345ce85de4528845eabdfe350a00840b7": {
+    "holderCount": 3,
+    "buyCount": 9,
+    "sellCount": 2,
+    "totalVolume": "863643339477694454",
+    "curve": "0x85d7e3a6301fd711cb399188c7a08a815d0a7e72",
+    "symbol": "TTOAD"
+  },
+  "0xed5df656b691cbc3218a5daf1bbda519a3aac0b3": {
+    "holderCount": 6,
+    "buyCount": 13,
+    "sellCount": 2,
+    "totalVolume": "1133951985355952318",
+    "curve": "0x5be2fd760c4296213f9579d2bae7324e75cbd66a",
+    "symbol": "GGOOSE"
+  },
+  "0x30bc3620c6c8f78bcf1a7614df0e6b599260c84c": {
+    "holderCount": 3,
+    "buyCount": 9,
+    "sellCount": 1,
+    "totalVolume": "799340336808020486",
+    "curve": "0x37f4bf2c4139b3f8140a52eaf6cd6fa135f98ced",
+    "symbol": "WWHALE"
   }
 }
