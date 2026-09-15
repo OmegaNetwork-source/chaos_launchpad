@@ -50,7 +50,7 @@ The factory now maintains an allowlist of approved quote tokens. Only the factor
 
 On LitVM, the allowed quote tokens are:
 1. **Native zkLTC** (`address(0)`) - Allowlisted by default
-2. **Omega Token** - Address TBD, must be allowlisted by owner after deployment
+2. **pOmega** (`0xCdE5530b1AD4a4F38870b3B3eF28E7455Cb88125`) - Platform token, allowlisted on factory
 
 ### Prerequisites
 

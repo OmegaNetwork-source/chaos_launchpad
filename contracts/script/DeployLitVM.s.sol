@@ -17,7 +17,7 @@ import "../src/LaunchpadFactory.sol";
  * ## Quote Token Allowlist (owner-only control)
  * On LitVM, quote tokens are:
  * - Native zkLTC: address(0) - allowlisted by default in constructor
- * - Omega Token: TBD - set OMEGA_TOKEN env var when address is known
+ * - pOmega: 0xCdE5530b1AD4a4F38870b3B3eF28E7455Cb88125 - platform token, already allowlisted on factory
  *
  * Only the factory owner can allowlist additional quote tokens.
  * This prevents malicious quote tokens (no-op ERC20s) from being used.

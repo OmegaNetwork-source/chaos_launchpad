@@ -20,6 +20,13 @@ The FUSE token is the first ERC-20 quote token on Arc Testnet. It allows creator
 | Symbol | Address | Category | Decimals |
 |--------|---------|----------|----------|
 | zkLTC | Native (`0x0...0`) | Native | 18 |
+| pOmega | `0xCdE5530b1AD4a4F38870b3B3eF28E7455Cb88125` | Platform | 18 |
+
+### pOmega Platform Token
+
+pOmega is the platform token for LitVM. It allows creators to launch memecoins paired with pOmega instead of native zkLTC.
+
+**Contract:** `0xCdE5530b1AD4a4F38870b3B3eF28E7455Cb88125`
 
 ## Adding New Quote Tokens
 

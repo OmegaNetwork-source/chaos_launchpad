@@ -46,6 +46,14 @@ export const litvmQuoteTokens: QuoteToken[] = [
     category: 'native',
     chainId: 4441,
   },
+  {
+    address: '0xCdE5530b1AD4a4F38870b3B3eF28E7455Cb88125',
+    symbol: 'pOmega',
+    name: 'pOmega',
+    decimals: 18,
+    category: 'platform',
+    chainId: 4441,
+  },
 ]
 
 // Combined quote tokens by chain
