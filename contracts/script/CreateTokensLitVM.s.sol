@@ -9,7 +9,7 @@ import "../src/LaunchpadFactory.sol";
  * @notice Create sample tokens on LitVM testnet
  */
 contract CreateTokensLitVM is Script {
-    address constant LITVM_FACTORY = 0x5A2F02120E355Dd914308c525E8350C0c02cd945;
+    address constant LITVM_FACTORY = 0x1D7Ae764b0EafEFb3B186964d34DCAafb8d70BA7;
 
     struct TokenData {
         string name;

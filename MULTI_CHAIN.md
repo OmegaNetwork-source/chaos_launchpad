@@ -7,7 +7,7 @@ Fuse contracts are designed to be **chain-portable**. This document covers deplo
 | Chain | Status | Native Asset | Chain ID | Factory |
 |-------|--------|--------------|----------|---------|
 | **Arc Testnet** | ✅ Active | USDC (18 decimals) | 5042002 | `0xC84589BE267E2F7811231e71e46E2f7a9f4d7fD3` |
-| **LitVM LiteForge** | ✅ Active | zkLTC (18 decimals) | 4441 | `0x5A2F02120E355Dd914308c525E8350C0c02cd945` |
+| **LitVM LiteForge** | ✅ Active | zkLTC (18 decimals) | 4441 | `0x1D7Ae764b0EafEFb3B186964d34DCAafb8d70BA7` |
 
 ### Chain Details
 
@@ -68,7 +68,7 @@ export const supportedChains = {
   litvm: {
     id: 4441,
     name: 'LitVM LiteForge',
-    factoryAddress: '0x5A2F02120E355Dd914308c525E8350C0c02cd945',
+    factoryAddress: '0x1D7Ae764b0EafEFb3B186964d34DCAafb8d70BA7',
     nativeSymbol: 'zkLTC',
     explorer: 'https://liteforge.explorer.caldera.xyz',
   },
@@ -162,7 +162,7 @@ const fuseArc = new FuseSDK({
 
 // LitVM deployment
 const fuseLit = new FuseSDK({
-  factoryAddress: '0x5A2F02120E355Dd914308c525E8350C0c02cd945',
+  factoryAddress: '0x1D7Ae764b0EafEFb3B186964d34DCAafb8d70BA7',
   rpcUrl: 'https://liteforge.rpc.caldera.xyz/http',
 })
 
