@@ -8,12 +8,15 @@ optimizer_runs = 200
 via_ir = false
 evm_version = "cancun"
 
-# Arc Testnet
+# Network RPC endpoints
 [rpc_endpoints]
 arc_testnet = "${ARC_TESTNET_RPC_URL}"
+litvm = "https://liteforge.rpc.caldera.xyz/http"
 
+# Block explorers for verification
 [etherscan]
 arc_testnet = { key = "${ARCSCAN_API_KEY}", url = "https://api.testnet.arcscan.app/api" }
+litvm = { key = "${LITVM_EXPLORER_API_KEY}", url = "https://liteforge.explorer.caldera.xyz/api" }
 
 [fmt]
 line_length = 120

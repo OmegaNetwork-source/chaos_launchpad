@@ -109,6 +109,9 @@ contract FuseTest is Test {
     // =========== ERC-20 Quote Token Tests ===========
 
     function test_CreateTokenWithERC20Quote() public {
+        // Allowlist mockQuote first (owner action)
+        factory.setQuoteTokenAllowed(address(mockQuote), true);
+
         CurveParams memory params = CurveParams({
             virtualQuote: 30e18,
             graduationTarget: 100e18,
@@ -128,6 +131,9 @@ contract FuseTest is Test {
     }
 
     function test_BuyWithERC20Quote() public {
+        // Allowlist mockQuote first (owner action)
+        factory.setQuoteTokenAllowed(address(mockQuote), true);
+
         CurveParams memory params = CurveParams({
             virtualQuote: 30e18,
             graduationTarget: 100e18,
@@ -159,6 +165,9 @@ contract FuseTest is Test {
     }
 
     function test_RevertBuyNativeOnERC20Curve() public {
+        // Allowlist mockQuote first (owner action)
+        factory.setQuoteTokenAllowed(address(mockQuote), true);
+
         CurveParams memory params = CurveParams({
             virtualQuote: 30e18,
             graduationTarget: 100e18,

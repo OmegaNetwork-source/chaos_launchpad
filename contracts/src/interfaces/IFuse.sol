@@ -94,6 +94,7 @@ interface ILaunchpadFactory {
     );
     event TokenGraduated(address indexed token, address indexed pair);
     event FeeRecipientUpdated(address indexed oldRecipient, address indexed newRecipient);
+    event QuoteTokenAllowlistUpdated(address indexed token, bool allowed);
 
     function createToken(string memory name, string memory symbol, string memory metadataURI)
         external
@@ -113,6 +114,9 @@ interface ILaunchpadFactory {
     function getTokenCount() external view returns (uint256);
     function feeRecipient() external view returns (address);
     function defaultParams() external view returns (CurveParams memory);
+    function setQuoteTokenAllowed(address token, bool allowed) external;
+    function isQuoteTokenAllowed(address token) external view returns (bool);
+    function allowedQuoteTokens(address token) external view returns (bool);
 }
 
 interface ISimplePair {

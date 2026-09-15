@@ -35,7 +35,7 @@ contract CreateFusePairedToken is Script {
             virtualQuote: 50e18,        // 50 FUSE virtual
             graduationTarget: 50e18,    // Graduate at 50 FUSE (low for testing)
             creatorFeeBps: 50,          // 0.5% creator fee
-            quoteToken: FUSE_TOKEN      // ERC-20 quote mode!,
+            quoteToken: FUSE_TOKEN,     // ERC-20 quote mode!
             creatorPostGradFeeBps: 0
         });
 
