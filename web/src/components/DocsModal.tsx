@@ -101,7 +101,7 @@ function HowItWorks() {
   return (
     <div className="space-y-4">
       <p className="text-sm text-[var(--text-secondary)]">
-        Chaos is the quickest way to launch memes on Arc Testnet.
+        Chaos is the quickest way to launch memes on LitVM LiteForge.
       </p>
       <p className="text-xs text-[var(--text-muted)]">
         Hateful, racist, or harmful token names and metadata are prohibited.
@@ -115,7 +115,7 @@ function HowItWorks() {
             <h3 className="font-medium text-[var(--text-primary)]">Create</h3>
           </div>
           <p className="text-xs text-[var(--text-secondary)] ml-10">
-            Launch a token with a name, symbol, and image. Pick native USDC or CHAOS as your quote pair.
+            Launch a token with a name, symbol, and image. Trade against native zkLTC on the bonding curve.
           </p>
         </div>
         <div className="bg-[var(--bg-secondary)] rounded-lg p-4">
@@ -191,33 +191,28 @@ function Chains() {
     <div className="space-y-3">
       <div className="bg-[var(--bg-secondary)] rounded-lg p-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-[var(--text-primary)] font-medium">Arc Testnet</span>
-          <span className="text-xs text-[var(--text-muted)]">Chain ID: 5042002</span>
-        </div>
-        <p className="text-xs text-[var(--text-secondary)] mb-2">Circle's L1 where USDC is native gas.</p>
-        <a
-          href="https://testnet.arcscan.app"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] flex items-center gap-1"
-        >
-          Explorer <ExternalLink className="w-3 h-3" />
-        </a>
-      </div>
-      <div className="bg-[var(--bg-secondary)] rounded-lg p-4">
-        <div className="flex items-center justify-between mb-2">
           <span className="text-sm text-[var(--text-primary)] font-medium">LitVM LiteForge</span>
           <span className="text-xs text-[var(--text-muted)]">Chain ID: 4441</span>
         </div>
         <p className="text-xs text-[var(--text-secondary)] mb-2">Caldera rollup with zkLTC native gas.</p>
-        <a
-          href="https://liteforge.explorer.caldera.xyz"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] flex items-center gap-1"
-        >
-          Explorer <ExternalLink className="w-3 h-3" />
-        </a>
+        <div className="flex flex-col gap-1.5">
+          <a
+            href="https://liteforge.explorer.caldera.xyz"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] flex items-center gap-1"
+          >
+            Explorer <ExternalLink className="w-3 h-3" />
+          </a>
+          <a
+            href="https://liteforge.hub.caldera.xyz"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] flex items-center gap-1"
+          >
+            Faucet <ExternalLink className="w-3 h-3" />
+          </a>
+        </div>
       </div>
     </div>
   )
@@ -236,28 +231,15 @@ function Contracts() {
           </thead>
           <tbody className="text-[var(--text-secondary)]">
             <tr className="border-t border-[var(--border)]">
-              <td className="py-2.5 text-[var(--text-primary)]">Factory (Arc)</td>
+              <td className="py-2.5 text-[var(--text-primary)]">Factory (LitVM)</td>
               <td className="py-2.5">
                 <a
-                  href="https://testnet.arcscan.app/address/0xEFAc4bcB8b10947B5E30B5F3F9b4f5b6306a445A"
+                  href="https://liteforge.explorer.caldera.xyz/address/0x1D7Ae764b0EafEFb3B186964d34DCAafb8d70BA7"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-mono text-xs hover:text-[var(--text-primary)] flex items-center gap-1"
                 >
-                  0xEFAc...445A <ExternalLink className="w-3 h-3" />
-                </a>
-              </td>
-            </tr>
-            <tr className="border-t border-[var(--border)]">
-              <td className="py-2.5 text-[var(--text-primary)]">CHAOS Token</td>
-              <td className="py-2.5">
-                <a
-                  href="https://testnet.arcscan.app/address/0x40eF85CCc195Ae13f50E0bE9A2A6Be2a7493530a"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-mono text-xs hover:text-[var(--text-primary)] flex items-center gap-1"
-                >
-                  0x40eF...530a <ExternalLink className="w-3 h-3" />
+                  0x1D7A...0BA7 <ExternalLink className="w-3 h-3" />
                 </a>
               </td>
             </tr>
@@ -265,7 +247,7 @@ function Contracts() {
               <td className="py-2.5 text-[var(--text-primary)]">Fee Recipient</td>
               <td className="py-2.5">
                 <a
-                  href="https://testnet.arcscan.app/address/0x4d467E27F0CF402E958CC7Bb47aE258F00ABCD41"
+                  href="https://liteforge.explorer.caldera.xyz/address/0x4d467E27F0CF402E958CC7Bb47aE258F00ABCD41"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-mono text-xs hover:text-[var(--text-primary)] flex items-center gap-1"
@@ -285,24 +267,18 @@ function QuotePairing() {
   return (
     <div className="space-y-4">
       <p className="text-sm text-[var(--text-secondary)]">
-        Tokens can be paired with different quote assets for trading:
+        Tokens trade against LitVM native gas on the bonding curve:
       </p>
       <div className="space-y-2">
         <div className="bg-[var(--bg-secondary)] rounded-lg p-3">
-          <h4 className="text-sm font-medium text-[var(--text-primary)] mb-1">Native USDC</h4>
+          <h4 className="text-sm font-medium text-[var(--text-primary)] mb-1">Native zkLTC</h4>
           <p className="text-xs text-[var(--text-secondary)]">
-            Circle's native gas token on Arc. Uses <code className="text-[var(--near-grad)]">msg.value</code> for buys.
-          </p>
-        </div>
-        <div className="bg-[var(--bg-secondary)] rounded-lg p-3">
-          <h4 className="text-sm font-medium text-[var(--text-primary)] mb-1">CHAOS (ERC-20)</h4>
-          <p className="text-xs text-[var(--text-secondary)]">
-            Platform token. Uses <code className="text-[var(--near-grad)]">buyWithToken()</code> after approval.
+            LitVM LiteForge gas token. Uses <code className="text-[var(--near-grad)]">msg.value</code> for buys.
           </p>
         </div>
       </div>
       <p className="text-xs text-[var(--text-muted)]">
-        The LaunchpadFactory v3 accepts any ERC-20 as a quote token — no allowlist required.
+        The factory also supports ERC-20 quote tokens via <code className="text-[var(--near-grad)]">buyWithToken()</code> after approval.
       </p>
     </div>
   )
@@ -335,7 +311,7 @@ function SDK() {
       <div className="bg-[var(--bg-secondary)] rounded-lg p-3 font-mono text-xs overflow-x-auto">
         <pre className="text-[var(--text-secondary)]">{`import { ChaosSDK } from '@chaos/sdk'
 
-const sdk = new ChaosSDK({ chainId: 5042002 })
+const sdk = new ChaosSDK({ chainId: 4441 })
 
 // Create a token
 const tx = await sdk.createToken({
@@ -358,21 +334,12 @@ function Links() {
   return (
     <div className="grid gap-2">
       <a
-        href="https://faucet.circle.com"
+        href="https://liteforge.hub.caldera.xyz"
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center justify-between p-3 bg-[var(--bg-secondary)] rounded-lg hover:bg-[var(--bg-hover)] transition-colors"
       >
-        <span className="text-sm text-[var(--text-primary)]">Circle Faucet</span>
-        <ExternalLink className="w-4 h-4 text-[var(--text-tertiary)]" />
-      </a>
-      <a
-        href="https://testnet.arcscan.app"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center justify-between p-3 bg-[var(--bg-secondary)] rounded-lg hover:bg-[var(--bg-hover)] transition-colors"
-      >
-        <span className="text-sm text-[var(--text-primary)]">Arc Explorer</span>
+        <span className="text-sm text-[var(--text-primary)]">LitVM Faucet</span>
         <ExternalLink className="w-4 h-4 text-[var(--text-tertiary)]" />
       </a>
       <a
@@ -385,12 +352,12 @@ function Links() {
         <ExternalLink className="w-4 h-4 text-[var(--text-tertiary)]" />
       </a>
       <a
-        href="https://docs.arc.io"
+        href="https://liteforge.rpc.caldera.xyz/http"
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center justify-between p-3 bg-[var(--bg-secondary)] rounded-lg hover:bg-[var(--bg-hover)] transition-colors"
       >
-        <span className="text-sm text-[var(--text-primary)]">Arc Documentation</span>
+        <span className="text-sm text-[var(--text-primary)]">LitVM RPC</span>
         <ExternalLink className="w-4 h-4 text-[var(--text-tertiary)]" />
       </a>
     </div>

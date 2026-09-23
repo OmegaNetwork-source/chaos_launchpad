@@ -97,7 +97,7 @@ export function Header({ onProfileClick, onLeaderboardClick }: HeaderProps) {
     }
   }, [connectError, isMobileDevice])
 
-  const ensureArcChain = async () => {
+  const ensureLitvmChain = async () => {
     const chainConfig = getChainConfig(supportedChains[0].id)
     if (!chainConfig) return
     const eth = (window as unknown as { ethereum?: { request: (args: { method: string; params?: unknown[] }) => Promise<unknown> } }).ethereum
@@ -113,7 +113,7 @@ export function Header({ onProfileClick, onLeaderboardClick }: HeaderProps) {
     }
     
     try {
-      switchChain({ chainId: supportedChains[0].id as 5042002 | 4441 })
+      switchChain({ chainId: supportedChains[0].id as 4441 })
     } catch {
       // User may reject switch
     }
@@ -128,9 +128,9 @@ export function Header({ onProfileClick, onLeaderboardClick }: HeaderProps) {
       {
         onSuccess: async () => {
           // Connection succeeded - wait briefly for MetaMask mobile to stabilize
-          // then safely prompt to add Arc Testnet
+          // then safely prompt to add LitVM LiteForge
           await new Promise(r => setTimeout(r, 200))
-          await ensureArcChain()
+          await ensureLitvmChain()
         },
         onError: (error) => {
           console.error('Connect error:', error)
@@ -150,7 +150,7 @@ export function Header({ onProfileClick, onLeaderboardClick }: HeaderProps) {
           params: [config.addChainParams],
         }).catch(() => {})
       }
-      switchChain({ chainId: targetChainId as 5042002 | 4441 })
+      switchChain({ chainId: targetChainId as 4441 })
       setShowNetworkMenu(false)
     } catch (err) {
       console.error('Switch chain error:', err)

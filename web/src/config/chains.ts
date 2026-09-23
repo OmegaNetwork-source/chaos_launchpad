@@ -19,35 +19,6 @@ export interface ChainConfig {
   }
 }
 
-export const arcTestnet = defineChain({
-  id: 5042002,
-  name: 'Arc Testnet',
-  nativeCurrency: {
-    name: 'USDC',
-    symbol: 'USDC',
-    decimals: 18,
-  },
-  rpcUrls: {
-    default: {
-      http: ['https://rpc.testnet.arc.network'],
-      webSocket: ['wss://rpc.testnet.arc.network'],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: 'ArcScan',
-      url: 'https://testnet.arcscan.app',
-    },
-  },
-  contracts: {
-    multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-      blockCreated: 1,
-    },
-  },
-  testnet: true,
-})
-
 export const litvm = defineChain({
   id: 4441,
   name: 'LitVM LiteForge',
@@ -78,30 +49,13 @@ export const litvm = defineChain({
 })
 
 export const chainConfigs: Record<number, ChainConfig> = {
-  [arcTestnet.id]: {
-    chain: arcTestnet,
-    factoryAddress: (import.meta.env.VITE_FACTORY_ADDRESS_ARC as `0x${string}`) || '0xEFAc4bcB8b10947B5E30B5F3F9b4f5b6306a445A',
-    nativeSymbol: 'USDC',
-    explorerUrl: 'https://testnet.arcscan.app',
-    faucetUrl: 'https://faucet.circle.com',
-    addChainParams: {
-      chainId: '0x4CEF52',
-      chainName: 'Arc Testnet',
-      nativeCurrency: {
-        name: 'USDC',
-        symbol: 'USDC',
-        decimals: 18,
-      },
-      rpcUrls: ['https://rpc.testnet.arc.network'],
-      blockExplorerUrls: ['https://testnet.arcscan.app'],
-    },
-  },
   [litvm.id]: {
     chain: litvm,
     // Hardcoded: Vercel had stale VITE_FACTORY_ADDRESS_LITVM env override; bypass env to ensure correct factory
     factoryAddress: '0x1D7Ae764b0EafEFb3B186964d34DCAafb8d70BA7',
     nativeSymbol: 'zkLTC',
     explorerUrl: 'https://liteforge.explorer.caldera.xyz',
+    faucetUrl: 'https://liteforge.hub.caldera.xyz',
     addChainParams: {
       chainId: '0x1159',
       chainName: 'LitVM LiteForge',
@@ -116,8 +70,8 @@ export const chainConfigs: Record<number, ChainConfig> = {
   },
 }
 
-export const supportedChains = [arcTestnet, litvm] as const
-export const defaultChain = arcTestnet
+export const supportedChains = [litvm] as const
+export const defaultChain = litvm
 
 export function getChainConfig(chainId: number): ChainConfig | undefined {
   return chainConfigs[chainId]
@@ -132,5 +86,5 @@ export function getExplorerUrl(chainId: number): string {
 }
 
 export function getNativeSymbol(chainId: number): string {
-  return chainConfigs[chainId]?.nativeSymbol || 'ETH'
+  return chainConfigs[chainId]?.nativeSymbol || 'zkLTC'
 }

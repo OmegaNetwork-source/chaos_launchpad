@@ -118,12 +118,12 @@ export function TokenList({ onSelectToken, onCreateToken }: TokenListProps) {
   // Chaos mode visual effects
   const { flashCards, highlightIndex } = ChaosFlashOverlay({ active: isChaosMode })
 
-  const factoryAddress = getFactoryAddress(chainId || 5042002)
-  const nativeSymbol = getNativeSymbol(chainId || 5042002)
-  const explorerUrl = getExplorerUrl(chainId || 5042002)
+  const factoryAddress = getFactoryAddress(chainId || 4441)
+  const nativeSymbol = getNativeSymbol(chainId || 4441)
+  const explorerUrl = getExplorerUrl(chainId || 4441)
 
   // Initialize token cache
-  const { cachedTokens, updateCache, hasCache } = useTokenCache(chainId || 5042002, factoryAddress)
+  const { cachedTokens, updateCache, hasCache } = useTokenCache(chainId || 4441, factoryAddress)
 
   // First, get the token count to verify if factory really has tokens
   // This is a cheap call that helps us distinguish "RPC failed" from "truly empty"

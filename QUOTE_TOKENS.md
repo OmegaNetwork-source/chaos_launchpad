@@ -1,21 +1,8 @@
-# Quote Tokens - Fuse Launchpad
+# Quote Tokens - Chaos Launchpad
 
-Fuse supports multiple quote tokens for bonding curve trading. Tokens can be paired with the chain's native currency or with allowlisted ERC-20 tokens.
+Chaos supports quote tokens for bonding curve trading. On the live LitVM product path, tokens are paired with native zkLTC (and optionally ERC-20 quote tokens via the factory).
 
-## Arc Testnet (Chain ID: 5042002)
-
-| Symbol | Address | Category | Decimals |
-|--------|---------|----------|----------|
-| USDC | Native (`0x0...0`) | Native | 18 |
-| FUSE | `0x21f81368d55Bcf08984C6a2A8d9327Deef2b92B7` | Platform | 18 |
-
-### FUSE Platform Token
-
-The FUSE token is the first ERC-20 quote token on Arc Testnet. It allows creators to launch memecoins paired with FUSE instead of native USDC.
-
-**Contract:** `0x21f81368d55Bcf08984C6a2A8d9327Deef2b92B7`
-
-## LitVM LiteForge (Chain ID: 4441)
+## LitVM LiteForge (Chain ID: 4441) — Live
 
 | Symbol | Address | Category | Decimals |
 |--------|---------|----------|----------|
@@ -35,7 +22,7 @@ pOmega is the platform token for LitVM. It allows creators to launch memecoins p
 Add the token to `web/src/config/quoteTokens.ts`:
 
 ```typescript
-export const arcQuoteTokens: QuoteToken[] = [
+export const litvmQuoteTokens: QuoteToken[] = [
   // ... existing tokens
   {
     address: '0xYOUR_TOKEN_ADDRESS',
@@ -43,7 +30,7 @@ export const arcQuoteTokens: QuoteToken[] = [
     name: 'Token Name',
     decimals: 18,
     category: 'custom', // native | platform | stablecoin | stock | currency | collectible | custom
-    chainId: 5042002,
+    chainId: 4441,
   },
 ]
 ```
@@ -81,17 +68,10 @@ Selling works the same way - the quote tokens are returned to the seller.
 
 | Category | Description |
 |----------|-------------|
-| `native` | Chain's native currency (USDC on Arc, zkLTC on LitVM) |
-| `platform` | Platform tokens (FUSE) |
+| `native` | Chain's native currency (zkLTC on LitVM) |
+| `platform` | Platform tokens |
 | `stablecoin` | Stablecoins (USDT, DAI, etc.) |
 | `stock` | Tokenized stocks |
-| `currency` | Fiat-pegged tokens |
-| `collectible` | Collectible tokens |
-| `custom` | Other tokens |
-
-## Contract Requirements
-
-- Quote token must be ERC-20 compliant
-- 18 decimals recommended (other decimals work but may affect UX)
-- Token must have sufficient liquidity for creators/buyers
-- Consider adding a faucet for testnet tokens
+| `currency` | FX / currency tokens |
+| `collectible` | Collectible / meme quotes |
+| `custom` | Other ERC-20 quotes |

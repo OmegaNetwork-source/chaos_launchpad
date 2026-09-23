@@ -68,7 +68,7 @@ async function fetchStaticLeaderboard(cacheBust: boolean): Promise<{ entries: Le
   }
 }
 
-export function useLeaderboard(_chainId: number = 5042002): LeaderboardData {
+export function useLeaderboard(_chainId: number = 4441): LeaderboardData {
   const [entries, setEntries] = useState<LeaderboardEntry[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)

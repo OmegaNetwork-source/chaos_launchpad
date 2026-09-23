@@ -60,9 +60,9 @@ export function CreateToken({ isOpen, onClose, onCreated }: CreateTokenProps) {
     }
   }, [contentError])
 
-  const factoryAddress = getFactoryAddress(chainId || 5042002)
-  const nativeSymbol = getNativeSymbol(chainId || 5042002)
-  const quoteTokens = getQuoteTokens(chainId || 5042002)
+  const factoryAddress = getFactoryAddress(chainId || 4441)
+  const nativeSymbol = getNativeSymbol(chainId || 4441)
+  const quoteTokens = getQuoteTokens(chainId || 4441)
   const selectedQuote = quoteTokens.find(t => t.address === selectedQuoteToken) || quoteTokens[0]
 
   const { writeContract, data: hash, isPending, reset } = useWriteContract()
