@@ -43,8 +43,8 @@ const MIN_AMOUNT = 0.001
 export function YeetModal({ isOpen, onClose, tokens, onSelectToken }: YeetModalProps) {
   const { address, isConnected, chainId } = useAccount()
   const { data: balance } = useBalance({ address })
-  const nativeSymbol = getNativeSymbol(chainId || 5042002)
-  const explorerUrl = getExplorerUrl(chainId || 5042002)
+  const nativeSymbol = getNativeSymbol(chainId || 4441)
+  const explorerUrl = getExplorerUrl(chainId || 4441)
 
   const [selectedToken, setSelectedToken] = useState<TokenInfo | null>(null)
   const [isSpinning, setIsSpinning] = useState(false)

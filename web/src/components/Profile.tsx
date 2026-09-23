@@ -13,7 +13,7 @@ import { FACTORY_ABI, BONDING_CURVE_ABI } from '../config/contracts'
 import { getFactoryAddress, getChainConfig, getNativeSymbol } from '../config/chains'
 import { getQuoteToken, isNativeQuote } from '../config/quoteTokens'
 
-const DEFAULT_CHAIN_ID = 5042002
+const DEFAULT_CHAIN_ID = 4441
 
 export interface ProfileTokenInfo {
   token: `0x${string}`

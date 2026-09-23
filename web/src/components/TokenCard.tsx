@@ -37,7 +37,7 @@ interface TokenCardProps {
   chaosMode?: boolean
 }
 
-export function TokenCard({ tokenInfo, onClick, nativeSymbol = 'USDC', isNew = false, chaosFlash = false, chaosHighlight = false, chaosMode = false }: TokenCardProps) {
+export function TokenCard({ tokenInfo, onClick, nativeSymbol = 'zkLTC', isNew = false, chaosFlash = false, chaosHighlight = false, chaosMode = false }: TokenCardProps) {
   const isSeed = tokenInfo.isSeed === true
   
   const { data: chainState } = useReadContract({

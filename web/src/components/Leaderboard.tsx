@@ -110,7 +110,7 @@ function SortButton({
   )
 }
 
-export function Leaderboard({ isOpen, onClose, chainId = 5042002 }: LeaderboardProps) {
+export function Leaderboard({ isOpen, onClose, chainId = 4441 }: LeaderboardProps) {
   const { entries, isLoading, error, refetch, hasData, generatedAt } = useLeaderboard(chainId)
   const [sortBy, setSortBy] = useState<SortField>('chaosVolume')
 

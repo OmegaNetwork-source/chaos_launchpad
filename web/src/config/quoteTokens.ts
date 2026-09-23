@@ -14,28 +14,6 @@ export interface QuoteToken {
 // Native quote tokens (address(0) means native value)
 export const NATIVE_QUOTE = '0x0000000000000000000000000000000000000000' as const
 
-// Arc Testnet quote tokens
-export const arcQuoteTokens: QuoteToken[] = [
-  {
-    address: NATIVE_QUOTE,
-    symbol: 'USDC',
-    name: 'Native USDC',
-    decimals: 18,
-    category: 'native',
-    chainId: 5042002,
-  },
-  {
-    address: '0x40eF85CCc195Ae13f50E0bE9A2A6Be2a7493530a',
-    symbol: 'CHAOS',
-    name: 'Chaos Platform Token',
-    decimals: 18,
-    category: 'platform',
-    chainId: 5042002,
-  },
-  // Legacy FUSE (deprecated)
-  // address: '0x21f81368d55Bcf08984C6a2A8d9327Deef2b92B7',
-]
-
 // LitVM quote tokens
 export const litvmQuoteTokens: QuoteToken[] = [
   {
@@ -58,7 +36,6 @@ export const litvmQuoteTokens: QuoteToken[] = [
 
 // Combined quote tokens by chain
 export const quoteTokensByChain: Record<number, QuoteToken[]> = {
-  5042002: arcQuoteTokens,
   4441: litvmQuoteTokens,
 }
 

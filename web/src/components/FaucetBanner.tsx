@@ -7,7 +7,7 @@ export function FaucetBanner() {
   const [dismissed, setDismissed] = useState(false)
   const { chainId } = useAccount()
   
-  const chainConfig = getChainConfig(chainId || 5042002)
+  const chainConfig = getChainConfig(chainId || 4441)
   
   if (dismissed || !chainConfig?.faucetUrl) return null
 

@@ -1,12 +1,8 @@
 # Chaos Launchpad
 
-Memecoin bonding-curve launchpad on Arc Testnet.
+Memecoin bonding-curve launchpad on **LitVM LiteForge** (zkLTC native gas).
 
-See DEPLOYED.md for contracts. Web app in `web/`.
-
-# Fuse — Memecoin Launchpad on Arc Testnet
-
-Fuse is a standalone pump.fun-style memecoin launchpad built on [Arc Testnet](https://docs.arc.io), Circle's L1 blockchain where USDC is the native gas token.
+See [DEPLOYED.md](DEPLOYED.md) for contracts. Web app in `web/`. Live site: https://chaos.omeganetwork.co
 
 **Create a coin in seconds. Trade on a bonding curve. Watch it graduate to the DEX.**
 
@@ -14,35 +10,28 @@ Fuse is a standalone pump.fun-style memecoin launchpad built on [Arc Testnet](ht
 
 - **Instant token creation** — Deploy your memecoin with name, ticker, and image
 - **Bonding curve trading** — Buy and sell tokens on a constant-product curve
-- **Native USDC** — All trades use USDC (Arc's native gas token, 18 decimals)
-- **Automatic graduation** — When 100 USDC is raised, liquidity moves to a DEX pair
+- **Native zkLTC** — Trades use LitVM native gas (18 decimals)
+- **Automatic graduation** — When the graduation target is raised, liquidity moves to a DEX pair
 - **Full-stack** — Solidity contracts, React website, REST API, and TypeScript SDK
 
-## Arc Testnet
-
-Arc is Circle's EVM-compatible L1 where USDC is the native gas token:
+## LitVM LiteForge (live product chain)
 
 | Property | Value |
 |----------|-------|
-| Chain ID | `5042002` (hex `0x4CEF52`) |
-| RPC | `https://rpc.testnet.arc.network` |
-| WebSocket | `wss://rpc.testnet.arc.network` |
-| Explorer | https://testnet.arcscan.app |
-| Faucet | https://faucet.circle.com |
-| Native Token | USDC (18 decimals for gas, 6 decimals for ERC-20) |
+| Chain ID | `4441` (hex `0x1159`) |
+| RPC | `https://liteforge.rpc.caldera.xyz/http` |
+| WebSocket | `wss://liteforge.rpc.caldera.xyz/ws` |
+| Explorer | https://liteforge.explorer.caldera.xyz |
+| Faucet | https://liteforge.hub.caldera.xyz |
+| Native Token | zkLTC (18 decimals) |
+| Factory | `0x1D7Ae764b0EafEFb3B186964d34DCAafb8d70BA7` (`VITE_FACTORY_ADDRESS_LITVM`) |
 
-### Arc EVM Differences
-
-- **USDC is native gas** — `msg.value` and `address.balance` use 18 decimals
-- **ERC-20 USDC** at `0x3600000000000000000000000000000000000000` uses 6 decimals
-- **Never transfer to `address(0)`** — Arc reverts these transfers
-- **No onchain randomness** — `PREVRANDAO` returns 0
-- See [Arc EVM Differences](https://docs.arc.io/arc/references/evm-differences) for full details
+The web app is **LitVM-only** (no Arc / dual-chain switcher).
 
 ## Project Structure
 
 ```
-fuse/
+chaos_launchpad/
 ├── contracts/          # Foundry smart contracts
 │   ├── src/
 │   │   ├── BondingCurve.sol       # Constant-product bonding curve
@@ -77,36 +66,35 @@ cd contracts
 forge test -vv
 ```
 
-All 20 tests should pass.
+### 3. Deploy to LitVM (optional — factory already live)
 
-### 3. Deploy to Arc Testnet
-
-1. Get testnet USDC from the [Circle Faucet](https://faucet.circle.com)
+1. Get testnet zkLTC from the [LitVM faucet](https://liteforge.hub.caldera.xyz)
 
 2. Create `.env` file in `/contracts`:
 ```bash
 cp contracts/.env.example contracts/.env
-# Edit with your private key
+# Edit with your private key and LitVM RPC
 ```
 
 3. Deploy:
 ```bash
 cd contracts
 source .env
-forge script script/Deploy.s.sol --rpc-url $ARC_TESTNET_RPC_URL --broadcast
+forge script script/Deploy.s.sol --rpc-url https://liteforge.rpc.caldera.xyz/http --broadcast
 ```
 
-4. Copy the factory address to your web and API `.env` files.
+4. Copy the factory address to `web/.env` as `VITE_FACTORY_ADDRESS_LITVM`.
 
 ### 4. Run the Website
 
 ```bash
-# Create .env with factory address
+# Create .env with LitVM factory address
 cp web/.env.example web/.env
-# Edit VITE_FACTORY_ADDRESS
+# Confirm VITE_FACTORY_ADDRESS_LITVM
 
 # Start dev server
-pnpm dev
+pnpm --filter @fuse-launchpad/web dev
+# or: cd web && pnpm dev
 ```
 
 Open http://localhost:43215
@@ -115,7 +103,7 @@ Open http://localhost:43215
 
 ```bash
 cp api/.env.example api/.env
-# Edit FACTORY_ADDRESS
+# Point RPC/factory at LitVM
 
 pnpm dev:api
 ```
@@ -136,21 +124,20 @@ Fees are charged on both buy and sell transactions on the bonding curve.
 
 Tokens can be created with custom bonding curve parameters (via `createTokenWithParams`):
 
-| Parameter | Default | Min | Max | Description |
-|-----------|---------|-----|-----|-------------|
-| `virtualUsdc` | 30 USDC | 10 USDC | 100 USDC | Initial virtual liquidity (affects starting price) |
-| `graduationTarget` | 100 USDC | 50 USDC | 500 USDC | USDC threshold to graduate to DEX |
-| `creatorFeeBps` | 30 (0.30%) | 0 | 100 (1%) | Creator's fee percentage |
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `virtualQuote` | 30 (native) | Initial virtual liquidity (affects starting price) |
+| `graduationTarget` | 100 (native) | Native threshold to graduate to DEX |
+| `creatorFeeBps` | 30 (0.30%) | Creator's fee percentage (0–100 bps) |
 
 ### Using Custom Parameters (Solidity)
 
 ```solidity
-import {CurveParams} from "./interfaces/ISpark.sol";
-
 CurveParams memory params = CurveParams({
-    virtualUsdc: 50e18,       // 50 USDC virtual liquidity
-    graduationTarget: 200e18, // 200 USDC to graduate
-    creatorFeeBps: 50         // 0.50% creator fee
+    virtualQuote: 50e18,
+    graduationTarget: 200e18,
+    creatorFeeBps: 50,
+    quoteToken: address(0) // native zkLTC
 });
 
 (address token, address curve) = factory.createTokenWithParams(
@@ -161,39 +148,22 @@ CurveParams memory params = CurveParams({
 );
 ```
 
-### Using Custom Parameters (SDK/Frontend)
-
-Pass `params` to `createTokenWithParams` instead of `createToken`:
-
-```typescript
-const tx = await factory.write.createTokenWithParams([
-  name,
-  symbol,
-  metadataURI,
-  {
-    virtualUsdc: parseUnits('50', 18),       // 50 USDC
-    graduationTarget: parseUnits('200', 18), // 200 USDC
-    creatorFeeBps: 50n,                       // 0.50%
-  }
-]);
-```
-
 ## Bonding Curve Math
 
-Spark uses a **constant-product** bonding curve (similar to Uniswap):
+Chaos uses a **constant-product** bonding curve (similar to Uniswap):
 
 ```
-virtualUsdc × virtualTokens = k (constant)
+virtualQuote × virtualTokens = k (constant)
 ```
 
 **For buys:**
 ```
-tokensOut = virtualTokens - k / (virtualUsdc + usdcIn)
+tokensOut = virtualTokens - k / (virtualQuote + quoteIn)
 ```
 
 **For sells:**
 ```
-usdcOut = virtualUsdc - k / (virtualTokens + tokensIn)
+quoteOut = virtualQuote - k / (virtualTokens + tokensIn)
 ```
 
 ### Tokenomics
@@ -203,16 +173,10 @@ usdcOut = virtualUsdc - k / (virtualTokens + tokensIn)
 | Total supply | 1,000,000,000 tokens |
 | Curve supply | 800,000,000 (80%) |
 | LP reserve | 200,000,000 (20%) |
-| Initial virtual USDC | 30 USDC |
-| Graduation target | 100 USDC raised |
+| Initial virtual quote | 30 zkLTC |
+| Graduation target | 100 zkLTC raised |
 | Protocol fee | 1.00% → `0x4d467E27F0CF402E958CC7Bb47aE258F00ABCD41` |
 | Creator fee | 0.30% → Token creator (claimable) |
-
-### Price Discovery
-
-- Initial price: ~0.0000000375 USDC per token
-- Price increases as tokens are bought
-- At graduation (~100 USDC raised), unsold tokens + LP reserve seed the DEX pair
 
 ## SDK Usage
 
@@ -220,26 +184,16 @@ usdcOut = virtualUsdc - k / (virtualTokens + tokensIn)
 import { FuseSDK } from '@fuse-launchpad/sdk'
 import { parseUnits } from 'viem'
 
-const spark = new FuseSDK({
-  factoryAddress: '0x...',
+const chaos = new FuseSDK({
+  factoryAddress: '0x1D7Ae764b0EafEFb3B186964d34DCAafb8d70BA7',
 })
 
-// List all tokens
-const tokens = await spark.listTokens()
+const tokens = await chaos.listTokens()
 
-// Get buy quote for 10 USDC
-const quote = await spark.getBuyQuote(
+const quote = await chaos.getBuyQuote(
   curveAddress,
   parseUnits('10', 18)
 )
-console.log(`You'll receive ${spark.formatTokens(quote.amount)} tokens`)
-
-// Prepare buy transaction (use with wagmi/viem wallet)
-const tx = await spark.prepareBuyTx({
-  curveAddress,
-  usdcAmount: parseUnits('10', 18),
-  slippageBps: 500, // 5%
-})
 ```
 
 See [sdk/README.md](sdk/README.md) for full documentation.
@@ -255,48 +209,23 @@ See [sdk/README.md](sdk/README.md) for full documentation.
 | `GET /stats` | Platform statistics |
 | `POST /sync` | Trigger manual re-index |
 
-## Contract Addresses
-
-After deployment, update these in your `.env` files:
-
-```
-FACTORY_ADDRESS=0x...  # LaunchpadFactory
-```
-
-Individual token and curve addresses are emitted in `TokenCreated` events.
-
 ## Development
-
-### Contracts
-
-```bash
-cd contracts
-forge build          # Compile
-forge test -vvv      # Test with traces
-forge fmt            # Format
-```
 
 ### Web
 
 ```bash
 cd web
+pnpm install
 pnpm dev             # Dev server on :43215
 pnpm build           # Production build
 ```
 
-### API
+### Contracts
 
 ```bash
-cd api
-pnpm dev             # Dev server on :43216
-```
-
-### SDK
-
-```bash
-cd sdk
-pnpm build           # Build to dist/
-pnpm dev             # Watch mode
+cd contracts
+forge build
+forge test -vvv
 ```
 
 ## Security Considerations
@@ -313,7 +242,7 @@ MIT
 
 ## Links
 
-- [Arc Testnet Docs](https://docs.arc.io)
-- [Circle Faucet](https://faucet.circle.com)
-- [ArcScan Explorer](https://testnet.arcscan.app)
-- [pump.fun](https://pump.fun) — Inspiration
+- [LitVM Faucet](https://liteforge.hub.caldera.xyz)
+- [LiteForge Explorer](https://liteforge.explorer.caldera.xyz)
+- [DEPLOYED.md](DEPLOYED.md) — contract addresses
+- Live app: https://chaos.omeganetwork.co

@@ -1,10 +1,9 @@
 import { http, createConfig, type CreateConnectorFn } from 'wagmi'
 import { injected, walletConnect } from 'wagmi/connectors'
-import { supportedChains, arcTestnet, litvm, chainConfigs } from './chains'
+import { supportedChains, litvm, chainConfigs } from './chains'
 
-export { arcTestnet, litvm } from './chains'
+export { litvm } from './chains'
 
-export const arcTestnetParams = chainConfigs[arcTestnet.id].addChainParams
 export const litvmParams = chainConfigs[litvm.id].addChainParams
 
 const getConnectors = (): CreateConnectorFn[] => {
@@ -37,7 +36,6 @@ export const config = createConfig({
   chains: supportedChains,
   connectors: getConnectors(),
   transports: {
-    [arcTestnet.id]: http(),
     [litvm.id]: http(),
   },
 })

@@ -105,8 +105,8 @@ export function TokenDetail({ tokenInfo, onBack }: TokenDetailProps) {
 
   const isSeed = tokenInfo.isSeed === true
   const isCreator = address && address.toLowerCase() === tokenInfo.creator.toLowerCase()
-  const explorerUrl = getExplorerUrl(chainId || 5042002)
-  const nativeSymbol = getNativeSymbol(chainId || 5042002)
+  const explorerUrl = getExplorerUrl(chainId || 4441)
+  const nativeSymbol = getNativeSymbol(chainId || 4441)
 
   const { data: quoteTokenAddr } = useReadContract({
     address: tokenInfo.curve,
@@ -117,7 +117,7 @@ export function TokenDetail({ tokenInfo, onBack }: TokenDetailProps) {
 
   const quoteToken = (quoteTokenAddr as `0x${string}` | undefined) || zeroAddress
   const isErc20Quote = !isSeed && quoteToken !== zeroAddress && !isNativeQuote(quoteToken)
-  const quoteMeta = getQuoteToken(chainId || 5042002, quoteToken)
+  const quoteMeta = getQuoteToken(chainId || 4441, quoteToken)
   const quoteSymbol = isErc20Quote ? quoteMeta?.symbol || 'CHAOS' : nativeSymbol
   const quoteDecimals = quoteMeta?.decimals ?? 18
 

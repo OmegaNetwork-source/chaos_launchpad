@@ -108,7 +108,7 @@ function AppContent() {
               Docs
             </button>
             <a
-              href="https://faucet.circle.com"
+              href="https://liteforge.hub.caldera.xyz"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors flex items-center gap-1"
@@ -116,7 +116,7 @@ function AppContent() {
               Faucet <ExternalLink className="w-3 h-3" />
             </a>
             <a
-              href="https://testnet.arcscan.app"
+              href="https://liteforge.explorer.caldera.xyz"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors flex items-center gap-1"
